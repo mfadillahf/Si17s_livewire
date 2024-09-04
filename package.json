@@ -1,0 +1,53 @@
+{
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "axios": "^1.6.4",
+        "laravel-vite-plugin": "^1.0",
+        "vite": "^5.0"
+    },
+    "dependencies": {
+        "@fullcalendar/daygrid": "^6.1.14",
+        "@fullcalendar/timegrid": "^6.1.14",
+        "@popperjs/core": "^2.11.8",
+        "animate.css": "^4.1.1",
+        "apexcharts": "^3.49.1",
+        "bootstrap": "^5.3.3",
+        "chart.js": "^4.4.3",
+        "clipboard": "^2.0.11",
+        "cropperjs": "^1.6.2",
+        "dragula": "^3.7.3",
+        "fullcalendar": "^6.1.14",
+        "gmaps": "^0.4.25",
+        "huebee": "^2.1.1",
+        "imask": "^7.6.1",
+        "jquery": "^3.7.1",
+        "jsvectormap": "^1.5.3",
+        "justgage": "^1.6.1",
+        "leaflet": "^1.9.4",
+        "listree": "^0.0.6",
+        "lucide": "^0.390.0",
+        "magic.css": "^1.4.8",
+        "mobius1-selectr": "^2.4.13",
+        "moment": "^2.30.1",
+        "nouislider": "^15.8.0",
+        "prismjs": "^1.29.0",
+        "quill": "^2.0.2",
+        "raphael": "^2.3.0",
+        "sass": "^1.77.4",
+        "simple-datatables": "^9.0.3",
+        "simplebar": "^6.2.6",
+        "starability": "^2.4.0",
+        "sweetalert": "^2.1.2",
+        "sweetalert2": "^11.11.1",
+        "tobii": "^2.0.0-alpha",
+        "tui-chart": "^3.11.3",
+        "vanillajs-datepicker": "^1.3.4",
+        "wnumb": "^1.2.0"
+    }
+}

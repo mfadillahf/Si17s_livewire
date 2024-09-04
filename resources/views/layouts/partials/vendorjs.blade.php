@@ -1,0 +1,2 @@
+{{-- vendorjs --}}
+@yield('script')
