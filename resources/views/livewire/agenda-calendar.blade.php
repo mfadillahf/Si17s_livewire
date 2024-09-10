@@ -1,4 +1,4 @@
-@extends('components.layouts.app', ['title' => 'Kalender'])
+<div>
 
 @section('content')
 <div class="card-header" style="padding-bottom: 10px">
@@ -29,3 +29,4 @@
 @section('script')
 @vite(['resources/js/pages/calendar.init.js'])
 @endsection
+</div>

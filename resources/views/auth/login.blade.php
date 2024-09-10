@@ -6,7 +6,7 @@
     <div class="card">
         <div class="card-body p-0 bg-black auth-header-box rounded-top">
             <div class="text-center p-3">
-                <a href="{{ route('any', 'livewire.dashboard')}}" class="logo logo-admin">
+                <a href="{{ route('any', 'home')}}" class="logo logo-admin">
                     <img src="/images/logo-lpse.png" height="50" alt="logo" class="auth-logo">
                 </a>
                 <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Si17s</h4>

@@ -7,6 +7,7 @@
     @yield('css')
 
     @include('layouts.partials/head-css')
+    @livewireStyles
 </head>
 
 <body>
@@ -21,13 +22,15 @@
             <div class="container-xxl">
 
                 @yield('content')
-                {{-- {{ $slot }} --}}
+                
 
             </div>
 
             @include('layouts.partials/endbar')
 
             @include('layouts.partials/footer')
+            
+            @livewireScripts
 
         </div>
     </div>

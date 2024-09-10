@@ -1,4 +1,4 @@
-@extends('components.layouts.app', ['title' => 'Agenda'])
+<div>
 
 @section('css')
 @vite(['node_modules/simple-datatables/dist/style.css'])
@@ -17,10 +17,10 @@
                 <div class="card-header">
                     <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="pill" wire::navigate href="livewire.agenda">Daftar Kegiatan</a>
+                            <a class="nav-link" data-toggle="pill" wire::navigate href="agenda">Daftar Kegiatan</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="pill" wire::navigate href="livewire.agenda-calendar">Kalender</a>
+                            <a class="nav-link" data-toggle="pill" wire::navigate href="agenda-kalender">Kalender</a>
                         </li>
                     </ul>
                 </div>
@@ -30,7 +30,7 @@
                         <table class="table datatable" id="datatable_2">
                             <thead>
                                 <tr>
-                                    <th style="width: 16px;">
+                                    <th style="width: 20px;">
                                         <div class="form-check mb-0 ms-n1">
                                             <input type="checkbox" class="form-check-input" wire:model="selectAll" id="select-all">
                                         </div>
@@ -48,3 +48,4 @@
 @section('script')
 @vite(['resources/js/pages/datatable.init.js'])
 @endsection
+</div>

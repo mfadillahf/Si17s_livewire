@@ -1,4 +1,4 @@
-@extends('components.layouts.app', ['title' => 'Si17s'])
+@extends('layouts.vertical', ['title' => 'Si17s'])
 
 @section('css')
 @vite(['node_modules/jsvectormap/dist/css/jsvectormap.min.css'])

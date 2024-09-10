@@ -1,11 +1,10 @@
-@extends('components.layouts.app', ['title' => 'Data Pemeliharaan Barang'])
+<div>
 
 @section('css')
 @vite(['node_modules/simple-datatables/dist/style.css'])
 @endsection
 
 @section('content')
-
 <div class="row justify-content-center">
     <div class="col-12">
         <div class="card">
@@ -353,3 +352,4 @@
 @section('script')
 @vite(['resources/js/pages/datatable.init.js'])
 @endsection
+</div>

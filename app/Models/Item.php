@@ -13,6 +13,9 @@ class Item extends Model
         'name',
         'merk',
         'type',
+        'image',
+        'procurement_year',
+        'spesification',
         'condition',
         'location',
     ];
