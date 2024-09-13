@@ -4,7 +4,7 @@
 @vite(['node_modules/simple-datatables/dist/style.css'])
 @endsection
 
-@section('content')
+
 <div class="row justify-content-center">
     <div class="col-12">
         <div class="card">
@@ -347,7 +347,7 @@
     </div> <!--end col-->
 </div><!--end row-->
 
-@endsection
+
 
 @section('script')
 @vite(['resources/js/pages/datatable.init.js'])

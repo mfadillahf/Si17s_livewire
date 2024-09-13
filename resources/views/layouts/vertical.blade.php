@@ -21,16 +21,16 @@
         <div class="page-content">
             <div class="container-xxl">
 
-                @yield('content')
+                @yield('content') 
+                {{ $slot ?? '' }}
                 
-
             </div>
 
-            @include('layouts.partials/endbar')
+        @include('layouts.partials/endbar')
 
-            @include('layouts.partials/footer')
-            
-            @livewireScripts
+        @include('layouts.partials/footer')
+
+        @livewireScripts
 
         </div>
     </div>

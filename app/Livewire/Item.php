@@ -3,9 +3,10 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\Attributes\Title;
 use App\Models\Item as ModelsItem;
-use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class Item extends Component
 {
@@ -15,13 +16,19 @@ class Item extends Component
     public $name;
     public $merk;
     public $type;
+    public $image;
     public $condition;
+    public $procurement_year;
+    public $spesification;
     public $location;
     public $item_id;
     public $item_selected_id=[];
     public $updateData = false;
-    public $isModalOpen = false;
-
+    public $isAddModalOpen = false;
+    
+    public $isEditModalOpen = false;
+    public $isDeleteModalOpen = false;
+    public $isDetailsModalOpen = false;
 
     public function render()
     { 
@@ -30,35 +37,36 @@ class Item extends Component
         ])->layout('layouts.vertical', ['title' => $this->title]);
     }
 
-    public function openModal()
+    public function openAddModal()
     {
-        $this->isModalOpen = true;
+        
+        $this->isAddModalOpen = true;
+        $this->dispatch('openAddModal');
+        
     }
 
-    public function closeModal()
+    public function closeAddModal()
     {
-        $this->resetForm();
-        $this->isModalOpen = false;
+        $this->isAddModalOpen = false;
     }
 
-    public function store () 
+    public function store()
     {
-        $rules = [
+        $this->validate([
             'name' => 'required|string|max:255',
             'merk' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'condition' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'image' => 'required|image|max:1024',  // Image validation
-            'procurement_year' => 'required|string|max:4',
-            'spesification' => 'required|string|max:255',
-        ];
-        $this->validate();
+            'procurement_year' => 'required|integer',
+            'spesification' => 'nullable|string',
+            'image' => 'nullable|image|max:2048', // Optional image validation
+        ]);
 
         $imagePath = null;
-
-        $this->image->storeAs('public/images/barang', $this->image->hashName());
-
+        if ($this->image) {
+            $imagePath = $this->image->storeAs('public/images/barang', $this->image->hashName());
+        }
 
         ModelsItem::create([
             'name' => $this->name,
@@ -66,65 +74,165 @@ class Item extends Component
             'type' => $this->type,
             'condition' => $this->condition,
             'location' => $this->location,
-            'image' => $this->image->hashName(),
+            'image' => $imagePath ? basename($imagePath) : null,
             'procurement_year' => $this->procurement_year,
             'spesification' => $this->spesification,
         ]);
 
-        session()->flash('message', 'Barang berhasil ditambahkan !');
+        session()->flash('message', 'Barang berhasil ditambahkan!');
+        $this->dispatch('closeAddModal');
+        $this->closeAddModal();
+        $this->clear();
+    }
+   
+
+    public function openEditModal($id)
+    {
+        $dataBarang = ModelsItem::find($id);
+        
+            $this->name = $dataBarang->name;
+            $this->merk = $dataBarang->merk;
+            $this->type = $dataBarang->type;
+            $this->condition = $dataBarang->condition;
+            $this->location = $dataBarang->location;
+            $this->procurement_year = $dataBarang->procurement_year;
+            $this->spesification = $dataBarang->spesification;
+            $this->updateData = true;
+            $this->item_id = $id;
+            $this->isEditModalOpen = true;
+            $this->dispatch('openEditModal');
+            
 
     }
 
+    public function closeEditModal()
+    {
+        $this->isEditModalOpen = false;
 
-    // public function edit($id)
-    // {
-    //     {
-    //         $dataBarang = ModelsItem::find($id);
-    //         $this->name = $dataBarang->nama; 
-    //         $this->merk = $dataBarang->merk; 
-    //         $this->type = $dataBarang->jenis; 
-    //         $this->condition = $dataBarang->kondisi; 
-    //         $this->location = $dataBarang->lokasi; 
+    }
+
+    public function update()
+{
+    $this->validate([
+        'name' => 'required|string|max:255',
+        'merk' => 'required|string|max:255',
+        'type' => 'required|string|max:255',
+        'condition' => 'required|string|max:255',
+        'location' => 'required|string|max:255',
+        'procurement_year' => 'required|integer',
+        'spesification' => 'nullable|string',
+        'image' => 'nullable|image|max:2048', // Optional image validation
+    ]);
+
+    $item = ModelsItem::find($this->item_id);
+
+    if ($item) {
+        $imagePath = $item->image; 
+
+        if ($this->image) {
+            
+            if ($item->image && Storage::exists('public/images/barang/' . $item->image)) {
+                Storage::delete('public/images/barang/' . $item->image);
+            }
+            $imagePath = $this->image->storeAs('public/images/barang', $this->image->hashName());
+        }
+
+        // Update item details
+        $item->update([
+            'name' => $this->name,
+            'merk' => $this->merk,
+            'type' => $this->type,
+            'condition' => $this->condition,
+            'location' => $this->location,
+            'procurement_year' => $this->procurement_year,
+            'spesification' => $this->spesification,
+            'image' => $imagePath ? basename($imagePath) : $item->image,
+        ]);
+
+        session()->flash('message', 'Data berhasil diperbarui!');
+        $this->dispatch('closeEditModal');
+        $this->closeEditModal();
+        $this->clear();
+    } else {
+        session()->flash('error', 'Item tidak ditemukan.');
+        $this->dispatch('closeEditModal');
+        $this->closeEditModal();
+        
+    }
+
+}
+
+public function detailsModal($id)
+{
+    $dataBarang = ModelsItem::find($id);
+          
+        $this->name = $dataBarang->name;
+        $this->merk = $dataBarang->merk;
+        $this->type = $dataBarang->type;
+        $this->condition = $dataBarang->condition;
+        $this->location = $dataBarang->location;
+        $this->procurement_year = $dataBarang->procurement_year;
+        $this->spesification = $dataBarang->spesification;
+        $this->image = $dataBarang->image ? asset('storage/images/barang/' . $dataBarang->image) : null;
+        $this->item_id = $id;
+        $this->isDetailsModalOpen = true;
+        $this->dispatch('detailsModal');
+}
+
+    public function openDeleteModal($id)  
+    {
+        if ($id != ''){
+            $this->item_id = $id;
+        }
+
+        $this->isDeleteModalOpen = true;
+        $this->dispatch('openDeleteModal');
+    }
+
+    public function closeDeleteModal()
+    {
+        $this->isDeleteModalOpen = false;
+    }
+
+    public function delete()  
+    {
+        // Delete a single item if item_id is set
+        if (!empty($this->item_id)) {
+            $item = ModelsItem::find($this->item_id);
+            if ($item) {
+                $item->delete();
+            }
+        }
     
-    //         $this->updateData = true;
-    //         $this->item_id = $id;
-    //     }
-    // }
+        // Delete multiple selected items
+        if (!empty($this->item_selected_id) && count($this->item_selected_id) > 0) {
+            ModelsItem::whereIn('id', $this->item_selected_id)->delete();
+        }
+    
+        // Flash success message
+        session()->flash('message', 'Data berhasil dihapus!');
+    
+        // Clear item data (if there's a clear method in your component)
+        $this->dispatch('closeDeleteModal');
+        $this->clear();
+        $this->closeDeleteModal();
 
-    // public function delete()  
-    // {
-    //     if ($this->item_id != ''){
-    //         $id = $this->item_id;
-    //         ModelsItem::find($id)->delete();
-    //     }
-    //     if (count($this->item_selected_id)){
-    //         for($x=0;$x<count($this->item_selected_id);$x++){
-    //             ModelsItem::find($this->item_selected_id[$x])->delete();
-    //         }
-    //     }
+    }
+    
+    public function clear()
+    {
+        $this->name = '';
+        $this->merk = '';
+        $this->type = '';
+        $this->image = null;
+        $this->procurement_year = '';
+        $this->spesification = '';
+        $this->condition = '';
+        $this->location = '';
 
-    //     session()->flash('message', 'Data berhasil dihapus!');
+        $this->updateData = false;
+        $this->item_id = '';
+        $this->item_selected_id = [];
 
-    //     $this->clear();
-    // }
-
-    // public function delete_confirm($id)  
-    // {
-    //     if ($id != ''){
-    //         $this->item_id = $id;
-    //     }
-    // }
-
-    // public function clear()
-    // {
-    //     $this->name = '';
-    //     $this->merk = '';
-    //     $this->type = '';
-    //     $this->condition = '';
-    //     $this->location = '';
-
-    //     $this->updateData = false;
-    //     $this->item_id = '';
-    //     $this->item_selected_id = [];
-    // }
+    }
 }
