@@ -8,12 +8,12 @@
                         <p class="text-muted mb-0">
                             ©
                             <script> document.write(new Date().getFullYear()) </script>
-                            Rizz
+                            LPSE Provinsi Kalimantan
                             <span
                                 class="text-muted d-none d-sm-inline-block float-end">
                                 Crafted with
                                 <i class="iconoir-heart text-danger"></i>
-                                by Mannatthemes</span>
+                                by Politeknik Negeri Banjarmasin</span>
                         </p>
                     </div>
                 </div>

@@ -20,8 +20,8 @@
 
         <div class="page-content">
             <div class="container-xxl">
+                  @yield('content') 
 
-                @yield('content') 
                 {{ $slot ?? '' }}
                 
             </div>
@@ -43,3 +43,4 @@
 </body>
 
 </html>
+              
