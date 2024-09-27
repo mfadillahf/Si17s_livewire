@@ -737,10 +737,10 @@ sweetalert@^2.1.2:
     es6-object-assign "^1.1.0"
     promise-polyfill "^6.0.2"
 
-sweetalert2@^11.11.1:
-  version "11.12.4"
-  resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.12.4.tgz"
-  integrity sha512-ZSpyaLbAmn4b7xjnV9x9BFD1UOrCAhIzm1D8dZ443kGxtVKqbTIA5SgXs4xeEtmFfEXUyC3RBgpSlu1AXmCiHA==
+sweetalert2@^11.14.1:
+  version "11.14.1"
+  resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.14.1.tgz"
+  integrity sha512-xadhfcA4STGMh8nC5zHFFWURhRpWc4zyI3GdMDFH/m3hGWZeQQNWhX9xcG4lI9gZYsi/IlazKbwvvje3juL3Xg==
 
 ticky@1.0.1:
   version "1.0.1"

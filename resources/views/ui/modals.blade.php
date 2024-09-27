@@ -1,20 +1,22 @@
 @extends('layouts.vertical', ['title' => 'Rizz'])
 
+@section('css')
+    @vite(['node_modules/simple-datatables/dist/style.css'])
+    @endsection
+
 @section('content')
 
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <div class="row align-items-center">
-                    <div class="col">
+                
                         <h4 class="card-title">Optional Sizes</h4>
-                    </div><!--end col-->
-                </div> <!--end row-->
+                    <!--end row-->
             </div><!--end card-header-->
             <div class="card-body pt-0">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped mb-0">
+                    <table class="table mb-0" id="datatable_2">
                         <thead>
                             <tr>
                                 <th>Size</th>
@@ -743,7 +745,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header bg-dark">
-                                <h6 class="modal-title m-0 text-white" id="exampleModalDark1">Drak Modal</h6>
+                                <h6 class="modal-title m-0 text-white" id="exampleModalDark1">Dark Modal</h6>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div><!--end modal-header-->
                             <div class="modal-body">
@@ -774,5 +776,8 @@
         </div><!--end card-->
     </div> <!--end col-->
 </div><!--end row-->
+@endsection
 
+@section('script')
+@vite(['resources/js/pages/datatable.init.js'])
 @endsection

@@ -41,6 +41,17 @@ class BarangEdit extends Component
 
     public function update()
     {
+        $this->validate([
+            'name' => 'required|string|max:50',
+            'merk' => 'required|string|max:100',
+            'type' => 'required|string|max:100',
+            'condition' => 'required|string',
+            'location' => 'required|string',
+            'image' => 'nullable|image|max:1024',
+            'procurement_year' => 'required|integer|digits:4|min:2000|max:' . date('Y'),
+            'spesification' => 'required|string',
+        ]);
+
         if ($this->image instanceof TemporaryUploadedFile) {
             if ($this->item->image && Storage::exists('public/images/barang/' . $this->item->image)) {
                 Storage::delete('public/images/barang/' . $this->item->image);

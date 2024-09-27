@@ -23,6 +23,8 @@ class BarangList extends Component
     public $item_id;
     public $item_selected_id=[];
     public $updateData = false;
+    public $showDelete = false;
+    public $lastUpdatedDate;
 
     public function render()
     {
@@ -31,10 +33,25 @@ class BarangList extends Component
         ])->layout('layouts.vertical', ['title' => $this->title]);
     }
 
-    public function delete($id)
+    public function confirmDelete($id)
     {
+        $this->item_id = $id;
         $item = ModelsItem::find($id);
+        $this->lastUpdatedDate = $item->updated_at->format('d-m-Y');
+        $this->showDelete = true;
+    }
+
+    public function cancel()
+    {
+        $this->showDelete = false;
+        return $this->redirect('/barang');
+    }
+    public function delete()
+    {
+        $item = ModelsItem::find($this -> item_id);
         $item->delete();
+
+        $this->showDelete = false;
         session()->flash('message', 'Barang berhasil dihapus!');
         return $this->redirect('/barang');
     }
