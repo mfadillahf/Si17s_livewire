@@ -17,7 +17,7 @@
                     <table class="table  mb-0 table-centered">
                         <thead class="table-light">
                             <tr>
-                                <th>Compny</th>
+                                <th>Company</th>
                                 <th>Bill</th>
                                 <th>Average Bill</th>
                                 <th>Paid Bill</th>

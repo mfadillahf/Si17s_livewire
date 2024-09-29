@@ -21,18 +21,24 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <h4 class="card-title">Daftar Barang</h4>
+                                
                             </div>
                         </div>
                     </div>
                     <div  class="card-body pt-0">
-                        <div  class="mb-3 d-flex justify-content-end" style="padding-right: 10px">
-                            <a href="/barang/create" class="btn btn-primary" ><i class="fas fa-plus mr-1"></i>
-                                Tambah Barang   
+                        <div  class="mb-3 d-flex justify-content-end">
+                            <div>
+                                <input type="text" class="form-control " wire:model.live="keyword" placeholder="Cari Barang....">
+                            </div>
+                            <a href="/barang/create" class="btn btn-primary ms-2" >
+                                <img src="/images/barang/box.png" class="img-fluid"> Tambah Barang
                             </a>
                         </div>
+                    
+                        
                         <div  class="table-responsive">
-                        <table class="table mb-0" id="datatable_1"  >
-                                <thead>
+                        <table class="table table-striped sortable mb-0"  >
+                                <thead class="table-light">
                                     <tr>                                    
                                         <th>Nama</th>
                                         <th>Merk</th>
@@ -57,12 +63,7 @@
                                         <td>
                                             <a  href="/barang/{{$item->id}}" class="btn btn-sm btn-info"><i class="fas fa-info-circle" ></i></a>
                                             <a  href="/barang/{{$item->id}}/edit" class="btn btn-sm btn-warning"><i class="fas fa-pen-square"></i></a>
-                                            {{-- <button wire:click="delete({{ $item->id }})" 
-                                                    wire:confirm='Apakah anda ingin menghapus barang ini?'
-                                                    href="" class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-trash-alt"></i>
-                                            </button> --}}
-                                            
+        
                                             <button  href="#" wire:click.prevent="confirmDelete({{ $item->id }})" 
                                                 class="btn btn-sm btn-danger">
                                                 <i class="fas fa-trash-alt"></i>

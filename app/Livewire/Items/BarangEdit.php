@@ -42,14 +42,14 @@ class BarangEdit extends Component
     public function update()
     {
         $this->validate([
-            'name' => 'required|string|max:50',
-            'merk' => 'required|string|max:100',
-            'type' => 'required|string|max:100',
+            'name' => 'required|string',
+            'merk' => 'required|string',
+            'type' => 'required|string',
             'condition' => 'required|string',
             'location' => 'required|string',
             'image' => 'nullable|image|max:1024',
-            'procurement_year' => 'required|integer|digits:4|min:2000|max:' . date('Y'),
-            'spesification' => 'required|string',
+            'procurement_year' => 'required|integer|digits:4|max:' . date('Y'),
+            'spsification' => 'required|string',
         ]);
 
         if ($this->image instanceof TemporaryUploadedFile) {
