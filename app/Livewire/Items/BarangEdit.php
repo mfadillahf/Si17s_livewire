@@ -49,7 +49,7 @@ class BarangEdit extends Component
             'location' => 'required|string',
             'image' => 'nullable|image|max:1024',
             'procurement_year' => 'required|integer|digits:4|max:' . date('Y'),
-            'spsification' => 'required|string',
+            'spesification' => 'required|string',
         ]);
 
         if ($this->image instanceof TemporaryUploadedFile) {

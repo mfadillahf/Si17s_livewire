@@ -1,10 +1,4 @@
-<div>
-
-    @section('css')
-    @vite(['node_modules/simple-datatables/dist/style.css'])
-    @endsection
-
-    
+<div>    
     
     <div>
         @if (session()->has('message'))
@@ -109,15 +103,11 @@
                 </div><!--end modal-content-->
             </div><!--end modal-dialog-->
         </div>
+
+        <div class="modal-backdrop fade show">
+            {{-- efek shadow --}}
+        </div>
         @endif
         
-
-        @if($showDelete)
-        <div class="modal-backdrop fade show"></div>
-        @endif
-
-    @section('script')
-    @vite(['resources/js/pages/datatable.init.js'])  
-    @endsection
     </div>
 </div>
