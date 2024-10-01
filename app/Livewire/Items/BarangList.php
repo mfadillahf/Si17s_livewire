@@ -7,6 +7,7 @@ use App\Models\Item as ModelsItem;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class BarangList extends Component
 {
@@ -21,13 +22,17 @@ class BarangList extends Component
     public $merk;
     public $type;
     public $image;
-    public $condition;
+    public $condition='';
     public $procurement_year;
     public $spesification;
     public $location;
     public $item_id;
     public $item_selected_id=[];
     public $updateData = false;
+    public $showCreate = false;
+    public $showDetail = false;
+
+    public $showEdit = false;
     public $showDelete = false;
     public $lastUpdatedDate;
     public $sortColumn = 'name';
@@ -43,7 +48,7 @@ class BarangList extends Component
     public function render()
     {
         if ($this->keyword != null) {
-            // If there is a keyword, filter the items based on the search term
+            
             $data = ModelsItem::where('name', 'like', '%' . $this->keyword . '%')
                 ->orWhere('merk', 'like', '%' . $this->keyword . '%')
                 ->orWhere('type', 'like', '%' . $this->keyword . '%')
@@ -54,7 +59,7 @@ class BarangList extends Component
                 ->orderBy($this->sortColumn, $this->sortDirection)
                 ->paginate(5);
         } else {
-            // If no keyword, simply paginate the data
+            
             $data = ModelsItem::orderBy($this->sortColumn, $this->sortDirection)
                 ->paginate(5);
         }
@@ -63,8 +68,167 @@ class BarangList extends Component
             'dataBarang' => $data,
         ])->layout('layouts.vertical', ['title' => $this->title]);
     }
+    // fungsi create
+    public function openCreate()
+    {
+        $this->showCreate = true;
+    }
 
-    public function confirmDelete($id)
+    public function closeCreate()
+    {
+        $this->resetForm();
+        $this->showCreate = false;
+    }
+
+    public function resetForm()
+    {
+        $this->name = '';
+        $this->merk = '';
+        $this->type = '';
+        $this->condition = '';
+        $this->procurement_year = '';
+        $this->spesification = '';
+        $this->location = '';
+        $this->image = null;
+        $this->resetValidation();
+    }
+
+    
+    public function create()
+    {
+        // dd($this->name, $this->merk, $this->type, $this->condition, $this->procurement_year, $this->spesification, $this->location, $this->image);
+        
+        $this->validate([
+            'name' => 'required|string',
+            'merk' => 'required|string',
+            'type' => 'required|string',
+            'condition' => 'required|string',
+            'location' => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp',
+            'procurement_year' => 'required|integer|digits:4|max:' . date('Y'),
+            'spesification' => 'required|string',
+        ]);
+    
+        $imagePath = null;
+    
+   
+        if ($this->image) {
+        
+            $imagePath = $this->image->storeAs('public/images/barang', $this->image->hashName());
+        }
+    
+     
+        ModelsItem::create([
+            'name' => $this->name,
+            'merk' => $this->merk,
+            'type' => $this->type,
+            'condition' => $this->condition,
+            'location' => $this->location,
+            'image' => $imagePath ? basename($imagePath) : null, 
+            'procurement_year' => $this->procurement_year,
+            'spesification' => $this->spesification,
+            
+        ]);
+        
+        session()->flash('message', 'Barang berhasil ditambahkan!');
+        $this->resetForm();
+        
+        $this->showCreate = false;
+    }
+
+
+
+
+    // fungsi show
+    public function detail($id)
+    {
+        $this->item = ModelsItem::find($id);
+        $this->name = $this->item->name;
+        $this->merk = $this->item->merk;
+        $this->type = $this->item->type;
+        $this->image = $this->item->image;
+        $this->condition = $this->item->condition;
+        $this->procurement_year = $this->item->procurement_year;
+        $this->spesification = $this->item->spesification;
+        $this->location = $this->item->location;
+
+        $this->showDetail = true;
+    }
+    
+    public function closeDetail()
+    {
+        $this->showDetail = false;
+    }
+
+
+    // fungsi edit
+    public function openEdit($id)
+    {
+        $this->item = ModelsItem::find($id);
+        $this->name = $this->item->name;
+        $this->merk = $this->item->merk;
+        $this->type = $this->item->type;
+        $this->image = $this->item->image;
+        $this->condition = $this->item->condition;
+        $this->procurement_year = $this->item->procurement_year;
+        $this->spesification = $this->item->spesification;
+        $this->location = $this->item->location;
+
+        $this->showEdit = true;
+    }
+
+    public function closeEdit()
+    {
+        $this->resetForm();
+        $this->showEdit = false;
+    }
+
+    public function update()
+    {
+        // dd($this->name, $this->merk, $this->type, $this->condition, $this->procurement_year, $this->spesification, $this->location, $this->image);
+        
+        $this->validate([
+            'name' => 'required|string',
+            'merk' => 'required|string',
+            'type' => 'required|string',
+            'condition' => 'required|string',
+            'location' => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp',
+            'procurement_year' => 'required|integer|digits:4|max:' . date('Y'),
+            'spesification' => 'required|string',
+        ]);
+
+        if ($this->image instanceof TemporaryUploadedFile) {
+            if ($this->item->image && Storage::exists('public/images/barang/' . $this->item->image)) {
+                Storage::delete('public/images/barang/' . $this->item->image);
+            }
+
+            $imagePath = $this->image->storeAs('public/images/barang', $this->image->hashName());
+            $this->item->image = basename($imagePath);
+        }
+
+        $this->item->update([
+            'name' => $this->name,
+            'merk' => $this->merk,
+            'type' => $this->type,
+            'condition' => $this->condition,
+            'procurement_year' => $this->procurement_year,
+            'spesification' => $this->spesification,
+            'location' => $this->location,
+        ]);
+
+
+        session()->flash('message', 'Barang berhasil diupdate!');
+        $this->resetForm();
+        
+        $this->showEdit = false;
+    }
+
+
+
+
+    // Fungsi delete
+    public function openDelete($id)
     {
         $this->item_id = $id;
         $item = ModelsItem::find($id);
@@ -72,7 +236,7 @@ class BarangList extends Component
         $this->showDelete = true;
     }
 
-    public function cancel()
+    public function closeDelete()
     {
         $this->showDelete = false;
     }

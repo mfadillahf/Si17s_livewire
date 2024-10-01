@@ -1,5 +1,9 @@
 <div>    
     
+    @section('css')
+    @vite(['node_modules/mobius1-selectr/dist/selectr.min.css', 'node_modules/huebee/dist/huebee.min.css', 'node_modules/vanillajs-datepicker/dist/css/datepicker.min.css'])
+    @endsection
+
     <div>
         @if (session()->has('message'))
         <div id="alert-message" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -24,14 +28,15 @@
                             <div>
                                 <input type="text" class="form-control " wire:model.live="keyword" placeholder="Cari Barang....">
                             </div>
-                            <a href="/barang/create" class="btn btn-primary ms-2" >
+                            {{-- modal --}}
+                            <button href="#" wire:click.prevent="openCreate" class="btn btn-primary ms-2" >
                                 <img src="/images/barang/box.png" class="img-fluid"> Tambah Barang
-                            </a>
+                            </button>
                         </div>
                     
                         
                         <div  class="table-responsive">
-                        <table class="table table-striped sortable mb-0"  >
+                        <table class="table table-striped sortable mb-0">
                                 <thead class="table-light">
                                     <tr>                                    
                                         <th>Nama</th>
@@ -55,13 +60,18 @@
                                         <td>{{ $item->location }}</td>
                                         <td>{{ $item->updated_at->format('d-m-Y') }}</td>
                                         <td>
-                                            <a  href="/barang/{{$item->id}}" class="btn btn-sm btn-info"><i class="fas fa-info-circle" ></i></a>
-                                            <a  href="/barang/{{$item->id}}/edit" class="btn btn-sm btn-warning"><i class="fas fa-pen-square"></i></a>
+                                            
+                                            <button href="#" wire:click.prevent="detail({{ $item->id }})" class="btn btn-sm btn-info">
+                                                <i class="fas fa-info-circle"></i>
+                                            </button>
+                                            
+                                            <button  href="#" wire:click.prevent="openEdit({{ $item->id }})" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-pen-square"></i>
+                                            </button>
         
-                                            <button  href="#" wire:click.prevent="confirmDelete({{ $item->id }})" 
-                                                class="btn btn-sm btn-danger">
+                                            <button  href="#" wire:click.prevent="openDelete({{ $item->id }})" class="btn btn-sm btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
-                                        </button>
+                                            </button>
                                         </td>
                                     </tr>
                                     @endforeach 
@@ -74,13 +84,231 @@
             </div>
         </div>
 
+        
+
+
+        {{-- modal Create --}}
+        @if($showCreate)
+        <div wire:ignore.self class="modal fade show" id="create" style="display: block;" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title">Tambah Barang Baru</h5>
+                        <button type="button" class="btn-close" wire:click="closeCreate" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form wire:submit.prevent='create'>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Nama Barang</label>
+                                    <input type="text" id="nama" wire:model="name" class="form-control @error('name') is-invalid @enderror" placeholder="Nama Barang">
+                                    @error('name') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="merk" class="form-label">Merk</label>
+                                    <input type="text" id="merk" wire:model="merk" class="form-control @error('merk') is-invalid @enderror" placeholder="Merk Barang">
+                                    @error('merk') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="type" class="form-label">Jenis</label>
+                                    <input type="text" id="jenis" wire:model="type" class="form-control @error('type') is-invalid @enderror" placeholder="Jenis Barang">
+                                    @error('type') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                </div>  
+                                <div class="col-md-6">
+                                    <label for="image" class="form-label">Foto Barang</label>
+                                    <input type="file" id="foto" wire:model="image" class="form-control @error('image') is-invalid @enderror">
+                                    @error('image') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="tahun_pengadaan">Tahun Pengadaan</label>
+                                    <input type="text" id="tahun_pengadaan" wire:model.defer="procurement_year" class="form-control @error('procurement_year') is-invalid @enderror"  placeholder="20xx">
+                                    @error('procurement_year') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="spesifikasi">Spesifikasi</label>
+                                    <textarea id="spesifikasi" wire:model.defer="spesification" class="form-control @error('spesification') is-invalid @enderror" placeholder="Spesifikasi"></textarea>
+                                    @error('spesification') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="kondisi">Kondisi</label>
+                                    <select class="form-select" id="default" wire:model.defer="condition" class="form-control @error('condition') is-invalid @enderror">
+                                        <option value="" disabled selected>Pilih Kondisi</option>
+                                        <option value="baru">Baru</option>
+                                        <option value="bekas">Bekas</option>
+                                    </select>
+                                    @error('condition') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                            
+                                <div class="col-md-6">
+                                    <label for="location" class="form-label">Lokasi/Pemegang</label>
+                                    <input type="text" id="lokasi" wire:model="location" class="form-control @error('location') is-invalid @enderror" placeholder="Lokasi Barang">
+                                    @error('location') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary float-end" wire:click="closeCreate">Close</button>
+                                <button type="submit" class="btn btn-primary float-end" id="success">
+                                    <i class="fas fa-save mr-1"></i> Simpan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+        @endif
+
+        
+
+
+        {{-- modal Edit --}}
+        @if($showEdit)
+        <div wire:ignore.self class="modal fade show" id="edit" style="display: block;" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                        <h5 class="modal-title">Edit Barang</h5>
+                        <button type="button" class="btn-close" wire:click="closeEdit" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form wire:submit.prevent='update'>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Nama Barang</label>
+                                    <input type="text" id="nama" wire:model="name" class="form-control @error('name') is-invalid @enderror" placeholder="Nama Barang">
+                                    @error('name') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="merk" class="form-label">Merk</label>
+                                    <input type="text" id="merk" wire:model="merk" class="form-control @error('merk') is-invalid @enderror" placeholder="Merk Barang">
+                                    @error('merk') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="type" class="form-label">Jenis</label>
+                                    <input type="text" id="jenis" wire:model="type" class="form-control @error('type') is-invalid @enderror" placeholder="Jenis Barang">
+                                    @error('type') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                </div>  
+                                <div class="col-md-6">
+                                    <label for="image" class="form-label">Foto Barang</label>
+                                    <input type="file" id="foto" wire:model="image" class="form-control @error('image') is-invalid @enderror">
+                                    @error('image') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="tahun_pengadaan">Tahun Pengadaan</label>
+                                    <input type="text" id="tahun_pengadaan" wire:model.defer="procurement_year" class="form-control @error('procurement_year') is-invalid @enderror"  placeholder="20xx">
+                                    @error('procurement_year') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="spesifikasi">Spesifikasi</label>
+                                    <textarea id="spesifikasi" wire:model.defer="spesification" class="form-control @error('spesification') is-invalid @enderror" placeholder="Spesifikasi"></textarea>
+                                    @error('spesification') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="kondisi">Kondisi</label>
+                                    <select class="form-select" id="default" wire:model.defer="condition" class="form-control @error('condition') is-invalid @enderror">
+                                        <option value="" disabled selected>Pilih Kondisi</option>
+                                        <option value="baru">Baru</option>
+                                        <option value="bekas">Bekas</option>
+                                    </select>
+                                    @error('condition') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                            
+                                <div class="col-md-6">
+                                    <label for="location" class="form-label">Lokasi/Pemegang</label>
+                                    <input type="text" id="lokasi" wire:model="location" class="form-control @error('location') is-invalid @enderror" placeholder="Lokasi Barang">
+                                    @error('location') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary float-end" wire:click="closeEdit">Close</button>
+                                <button type="submit" class="btn btn-warning float-end" id="success">
+                                    <i class="fas fa-pen-square mr-1"></i> Update
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+        @endif
+
+
+        
+
+
+        <!-- Modal Detail Barang -->
+        @if($showDetail)
+        <div wire:ignore.self class="modal fade show" id="exampleModalCenter" style="display: block;" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title">Detail Barang</h5>
+                        <button type="button" class="btn-close" wire:click="closeDetail" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 order-md-2">
+                                <h6>Terakhir Diupdate:</h6>
+                                <p>{{ $item->updated_at->format('d-m-Y') }}</p>
+                                <h6>Foto Barang: </h6>
+                                @if ($image)
+                                    <img src="{{ Storage::url('images/barang/' .  $image) }}" 
+                                    alt="Item Image" class="img-fluid rounded" 
+                                    style="max-height: 300px; max-width: 100%;">
+                                @else
+                                    <p>Foto tidak tersedia</p>
+                                @endif
+                            </div>
+                            <div class="col-md-5 order-md-1">
+                                <h6>Nama Barang:</h6>
+                                <p>{{ $name }}</p>
+                                <h6>Merk:</h6>
+                                <p>{{ $merk }}</p>
+                                <h6>Jenis:</h6>
+                                <p>{{ $type }}</p>
+                                <h6>Kondisi:</h6>
+                                <p>{{ $condition }}</p>
+                                <h6>Lokasi/Pemegang:</h6>
+                                <p>{{ $location }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary float-end" wire:click="closeDetail">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+        @endif
+
+
+        
+
+        {{-- modal delete --}}
         @if($showDelete)
         <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header bg-danger">
                         <h6 class="modal-title m-0 text-white" id="exampleModalDanger1">Konfirmasi</h6>
-                        <button type="button" class="btn-close" wire:click="cancel" aria-label="Close"></button>
+                        <button type="button" class="btn-close" wire:click="closeDelete" aria-label="Close"></button>
                     </div><!--end modal-header-->
                     <div class="modal-body">
                         <div class="row">
@@ -97,7 +325,7 @@
                         </div><!--end row-->
                     </div><!--end modal-body-->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" wire:click="cancel">Cancel</button>
+                        <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDelete">Cancel</button>
                         <button type="button" class="btn btn-danger btn-sm" wire:click="delete">Delete</button>
                     </div><!--end modal-footer-->
                 </div><!--end modal-content-->
@@ -110,4 +338,7 @@
         @endif
         
     </div>
+    @section('script')
+    @vite(['resources/js/pages/forms-advanced.js'])
+    @endsection
 </div>

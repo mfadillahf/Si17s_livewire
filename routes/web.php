@@ -1,14 +1,10 @@
 <?php
 
-use App\Livewire\Item;
 use App\Livewire\Agenda;
 use App\Livewire\AgendaCalendar;
 use App\Livewire\Dashboard;
 use App\Livewire\ItemMaintenance;
 use App\Livewire\Items\BarangList;
-use App\Livewire\Items\BarangCreate;
-use App\Livewire\Items\BarangEdit;
-use App\Livewire\Items\BarangShow;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
 
@@ -29,9 +25,6 @@ require __DIR__ . '/auth.php';
 Route::get('/dashboard', Dashboard::class);
 
 Route::get('/barang', BarangList::class);
-Route::get('/barang/create', BarangCreate::class);
-Route::get('/barang/{id}/edit', BarangEdit::class);
-Route::get('/barang/{id}', BarangShow::class);
 
 Route::get('/maintenance-barang', ItemMaintenance::class);
 
