@@ -3,8 +3,8 @@
 use App\Livewire\Agenda;
 use App\Livewire\AgendaCalendar;
 use App\Livewire\Dashboard;
-use App\Livewire\ItemMaintenance;
 use App\Livewire\Items\BarangList;
+use App\Livewire\Items\BarangMaintenance;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
 
@@ -26,7 +26,7 @@ Route::get('/dashboard', Dashboard::class);
 
 Route::get('/barang', BarangList::class);
 
-Route::get('/maintenance-barang', ItemMaintenance::class);
+Route::get('/maintenance-barang', BarangMaintenance::class);
 
 Route::get('/agenda', Agenda::class);
 

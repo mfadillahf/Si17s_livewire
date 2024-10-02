@@ -255,48 +255,65 @@
         <!-- Modal Detail Barang -->
         @if($showDetail)
         <div wire:ignore.self class="modal fade show" id="exampleModalCenter" style="display: block;" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-info">
+                    <div class="modal-header bg-info text-white">
                         <h5 class="modal-title">Detail Barang</h5>
                         <button type="button" class="btn-close" wire:click="closeDetail" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6 order-md-2">
-                                <h6>Terakhir Diupdate:</h6>
-                                <p>{{ $item->updated_at->format('d-m-Y') }}</p>
-                                <h6>Foto Barang: </h6>
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <table class="table table-striped ">
+                                    <tr>
+                                        <th>Tanggal </th>
+                                        <td>{{ $item->updated_at->format('d F Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nama Barang</th>
+                                        <td>{{ $name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Merk</th>
+                                        <td>{{ $merk }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Jenis</th>
+                                        <td>{{ $type }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Kondisi</th>
+                                        <td>{{ $condition }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Lokasi/Pemegang</th>
+                                        <td>{{ $location }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- Right Column with Image -->
+                            <div class="col-md-6 text-center">
+                                <h6>Foto Barang:</h6>
                                 @if ($image)
                                     <img src="{{ Storage::url('images/barang/' .  $image) }}" 
-                                    alt="Item Image" class="img-fluid rounded" 
-                                    style="max-height: 300px; max-width: 100%;">
+                                    alt="Item Image" class="img-thumbnail" 
+                                    style="max-height: 250px; max-width: 100%;">
                                 @else
                                     <p>Foto tidak tersedia</p>
                                 @endif
                             </div>
-                            <div class="col-md-5 order-md-1">
-                                <h6>Nama Barang:</h6>
-                                <p>{{ $name }}</p>
-                                <h6>Merk:</h6>
-                                <p>{{ $merk }}</p>
-                                <h6>Jenis:</h6>
-                                <p>{{ $type }}</p>
-                                <h6>Kondisi:</h6>
-                                <p>{{ $condition }}</p>
-                                <h6>Lokasi/Pemegang:</h6>
-                                <p>{{ $location }}</p>
-                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary float-end" wire:click="closeDetail">Tutup</button>
+                        <button type="button" class="btn btn-secondary" wire:click="closeDetail">Tutup</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-backdrop fade show"></div>
         @endif
+
 
 
         

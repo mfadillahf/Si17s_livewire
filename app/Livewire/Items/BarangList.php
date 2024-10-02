@@ -31,7 +31,6 @@ class BarangList extends Component
     public $updateData = false;
     public $showCreate = false;
     public $showDetail = false;
-
     public $showEdit = false;
     public $showDelete = false;
     public $lastUpdatedDate;
@@ -47,6 +46,7 @@ class BarangList extends Component
 
     public function render()
     {
+        
         if ($this->keyword != null) {
             
             $data = ModelsItem::where('name', 'like', '%' . $this->keyword . '%')
@@ -64,10 +64,12 @@ class BarangList extends Component
                 ->paginate(5);
         }
 
+
         return view('livewire.items.barang-list', [
             'dataBarang' => $data,
         ])->layout('layouts.vertical', ['title' => $this->title]);
     }
+
     // fungsi create
     public function openCreate()
     {
@@ -93,7 +95,6 @@ class BarangList extends Component
         $this->resetValidation();
     }
 
-    
     public function create()
     {
         // dd($this->name, $this->merk, $this->type, $this->condition, $this->procurement_year, $this->spesification, $this->location, $this->image);
@@ -136,9 +137,6 @@ class BarangList extends Component
         $this->showCreate = false;
     }
 
-
-
-
     // fungsi show
     public function detail($id)
     {
@@ -159,7 +157,6 @@ class BarangList extends Component
     {
         $this->showDetail = false;
     }
-
 
     // fungsi edit
     public function openEdit($id)
@@ -223,9 +220,6 @@ class BarangList extends Component
         
         $this->showEdit = false;
     }
-
-
-
 
     // Fungsi delete
     public function openDelete($id)
