@@ -1,7 +1,8 @@
 <div>    
     
     @section('css')
-    @vite(['node_modules/mobius1-selectr/dist/selectr.min.css', 'node_modules/huebee/dist/huebee.min.css', 'node_modules/vanillajs-datepicker/dist/css/datepicker.min.css'])
+    @vite(['node_modules/sweetalert2/dist/sweetalert2.min.css', 'node_modules/animate.css/animate.min.css'])
+    @vite(['resources/js/pages/sweet-alert.init.js'])
     @endsection
 
     <div>
@@ -356,6 +357,5 @@
         
     </div>
     @section('script')
-    @vite(['resources/js/pages/forms-advanced.js'])
     @endsection
 </div>
