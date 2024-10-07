@@ -1,8 +1,8 @@
 <div>    
-    
+
     @section('css')
     @vite(['node_modules/sweetalert2/dist/sweetalert2.min.css', 'node_modules/animate.css/animate.min.css'])
-    @vite(['resources/js/pages/sweet-alert.init.js'])
+    
     @endsection
 
     <div>
@@ -12,7 +12,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
-    
+
+        
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="card">
@@ -85,9 +86,6 @@
             </div>
         </div>
 
-        
-
-
         {{-- modal Create --}}
         @if($showCreate)
         <div wire:ignore.self class="modal fade show" id="create" style="display: block;" tabindex="-1" role="dialog">
@@ -95,6 +93,7 @@
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
                         <h5 class="modal-title">Tambah Barang Baru</h5>
+                        
                         <button type="button" class="btn-close" wire:click="closeCreate" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -158,6 +157,7 @@
                                 <button type="submit" class="btn btn-primary float-end" id="success">
                                     <i class="fas fa-save mr-1"></i> Simpan
                                 </button>
+                                
                             </div>
                         </form>
                     </div>
@@ -237,7 +237,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary float-end" wire:click="closeEdit">Close</button>
-                                <button type="submit" class="btn btn-warning float-end" id="success">
+                                <button type="submit" class="btn btn-warning float-end" id="edit">
                                     <i class="fas fa-pen-square mr-1"></i> Update
                                 </button>
                             </div>
@@ -344,18 +344,20 @@
                     </div><!--end modal-body-->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDelete">Cancel</button>
-                        <button type="button" class="btn btn-danger btn-sm" wire:click="delete">Delete</button>
+                        <button id="warningConfirm" type="button" class="btn btn-danger btn-sm" wire:click="delete" id="warning">Delete</button>
                     </div><!--end modal-footer-->
                 </div><!--end modal-content-->
             </div><!--end modal-dialog-->
         </div>
 
         <div class="modal-backdrop fade show">
-            {{-- efek shadow --}}
         </div>
         @endif
         
+
+        @section('script')
+        @vite(['resources/js/pages/sweet-alert.init.js'])
+        @endsection
+        
     </div>
-    @section('script')
-    @endsection
 </div>

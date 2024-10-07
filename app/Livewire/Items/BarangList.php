@@ -131,10 +131,12 @@ class BarangList extends Component
             
         ]);
         
-        session()->flash('message', 'Barang berhasil ditambahkan!');
         $this->resetForm();
         
         $this->showCreate = false;
+        
+        $this->dispatch('swal:success');
+        
     }
 
     // fungsi show
@@ -155,6 +157,7 @@ class BarangList extends Component
     
     public function closeDetail()
     {
+        $this->resetForm();
         $this->showDetail = false;
     }
 
@@ -202,7 +205,7 @@ class BarangList extends Component
 
             $imagePath = $this->image->storeAs('public/images/barang', $this->image->hashName());
             $this->item->image = basename($imagePath);
-        }
+        } 
 
         $this->item->update([
             'name' => $this->name,
@@ -214,11 +217,11 @@ class BarangList extends Component
             'location' => $this->location,
         ]);
 
-
-        session()->flash('message', 'Barang berhasil diupdate!');
         $this->resetForm();
         
         $this->showEdit = false;
+
+        $this->dispatch('swal:edit');
     }
 
     // Fungsi delete
@@ -241,6 +244,7 @@ class BarangList extends Component
         $item->delete();
 
         $this->showDelete = false;
-        session()->flash('message', 'Barang berhasil dihapus!');
+
+        $this->dispatch('swal:warning');
     }
 }

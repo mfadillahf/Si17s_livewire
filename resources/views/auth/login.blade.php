@@ -52,21 +52,6 @@
                     </div><!--end col-->
                 </div> <!--end form-group-->
             </form><!--end form-->
-            <div class="text-center  mb-2">
-                <p class="text-muted">Don't have an account ? <a href="{{ route('second', ['auth', 'register'])}}" class="text-primary ms-2">Free Resister</a></p>
-                <h6 class="px-3 d-inline-block">Or Login With</h6>
-            </div>
-            <div class="d-flex justify-content-center">
-                <a href="" class="d-flex justify-content-center align-items-center thumb-md bg-blue-subtle text-blue rounded-circle me-2">
-                    <i class="fab fa-facebook align-self-center"></i>
-                </a>
-                <a href="" class="d-flex justify-content-center align-items-center thumb-md bg-info-subtle text-info rounded-circle me-2">
-                    <i class="fab fa-twitter align-self-center"></i>
-                </a>
-                <a href="" class="d-flex justify-content-center align-items-center thumb-md bg-danger-subtle text-danger rounded-circle">
-                    <i class="fab fa-google align-self-center"></i>
-                </a>
-            </div>
         </div><!--end card-body-->
     </div><!--end card-->
 </div><!--end col-->
