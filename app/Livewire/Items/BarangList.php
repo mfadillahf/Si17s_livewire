@@ -132,9 +132,7 @@ class BarangList extends Component
         ]);
         
         $this->resetForm();
-        
         $this->showCreate = false;
-        
         $this->dispatch('swal:success');
         
     }
@@ -218,9 +216,7 @@ class BarangList extends Component
         ]);
 
         $this->resetForm();
-        
         $this->showEdit = false;
-
         $this->dispatch('swal:edit');
     }
 
@@ -245,6 +241,6 @@ class BarangList extends Component
 
         $this->showDelete = false;
 
-        $this->dispatch('swal:warning');
+        $this->dispatch('swal:delete');
     }
 }

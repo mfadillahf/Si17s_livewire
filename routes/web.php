@@ -1,7 +1,7 @@
 <?php
 
-use App\Livewire\Agenda;
-use App\Livewire\AgendaCalendar;
+use App\Livewire\Agendas\Agenda;
+use App\Livewire\Agendas\AgendaCalendar;
 use App\Livewire\Dashboard;
 use App\Livewire\Items\BarangList;
 use App\Livewire\Items\BarangMaintenance;

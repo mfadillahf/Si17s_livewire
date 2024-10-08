@@ -2,7 +2,6 @@
 
     @section('css')
     @vite(['node_modules/sweetalert2/dist/sweetalert2.min.css', 'node_modules/animate.css/animate.min.css'])
-    
     @endsection
 
     <div>
@@ -92,7 +91,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
-                        <h5 class="modal-title">Tambah Barang Baru</h5>
+                        <h5 class="modal-title">Tambah Data Barang Baru</h5>
                         
                         <button type="button" class="btn-close" wire:click="closeCreate" aria-label="Close"></button>
                     </div>
@@ -141,7 +140,7 @@
                                     <select class="form-select" id="default" wire:model.defer="condition" class="form-control @error('condition') is-invalid @enderror">
                                         <option value="" disabled selected>Pilih Kondisi</option>
                                         <option value="baru">Baru</option>
-                                        <option value="bekas">Bekas</option>
+                                        <option value="bekas">Bekas</option> 
                                     </select>
                                     @error('condition') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
@@ -176,7 +175,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
                 <div class="modal-content">
                     <div class="modal-header bg-warning">
-                        <h5 class="modal-title">Edit Barang</h5>
+                        <h5 class="modal-title">Edit Data Barang</h5>
                         <button type="button" class="btn-close" wire:click="closeEdit" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -259,7 +258,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header bg-info text-white">
-                        <h5 class="modal-title">Detail Barang</h5>
+                        <h5 class="modal-title">Detail Data Barang</h5>
                         <button type="button" class="btn-close" wire:click="closeDetail" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -334,7 +333,7 @@
                                 <img src="/images/extra/card/litter.png" alt="Warning" class="img-fluid">
                             </div><!--end col-->
                             <div class="col-lg-9">
-                                <h5>Anda yakin ingin menghapus barang ini?</h5>
+                                <h5>Anda yakin ingin menghapus data ini?</h5>
                                 <span class="badge bg-light text-dark">Terakhir diupdate: {{ $lastUpdatedDate }}</span>
                                 <div class="mt-3">
                                     <strong class="text-danger ms-1">*aksi tidak bisa dibatalkan setelah diproses</strong>

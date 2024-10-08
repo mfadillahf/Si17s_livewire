@@ -31,7 +31,7 @@ window.addEventListener('swal:edit', function () {
   })
 });
 
-window.addEventListener('swal:warning', function () {
+window.addEventListener('swal:delete', function () {
   Swal.fire({
     icon: 'success',
     title: 'Data telah berhasil dihapus',

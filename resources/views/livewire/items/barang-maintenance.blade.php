@@ -1,4 +1,11 @@
 <div>
+
+    @section('css')
+    @vite(['node_modules/mobius1-selectr/dist/selectr.min.css', 'node_modules/huebee/dist/huebee.min.css', 'node_modules/vanillajs-datepicker/dist/css/datepicker.min.css'])
+    @vite(['node_modules/sweetalert2/dist/sweetalert2.min.css', 'node_modules/animate.css/animate.min.css'])
+    @endsection
+
+
     <div>
         @if (session()->has('message'))
         <div id="alert-message" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -34,24 +41,25 @@
                             <table class="table table-striped sortable mb-0">
                                 <thead class="table-light">
                                     <tr>                                    
-                                        <th>Nama</th>
+                                        <th>Nama Barang</th>
                                         <th>Merk</th>
-                                        <th>Type</th>
+                                        <th>Jenis</th>
                                         <th>Tanggal Pemeliharaan</th>
-                                        <th>Status</th>
+                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dataBarang as $item)
+                                    @foreach ($dataMaintenance as $item)
                                     <tr wire:key="barang-{{ $item->id }}">
     
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->merk }}</td>
-                                        <td>{{ $item->type }}</td>
-                                        <td>{{ $item->condition }}</td>
-                                        <td>{{ $item->location }}</td>
-                                        <td>{{ $item->updated_at->format('d-m-Y') }}</td>
+    
+                                        <td>{{ $item->item->name }}</td>
+                                        <td>{{ $item->item->merk }}</td>
+                                        <td>{{ $item->item->type }}</td>
+                                        <td>{{ $item->date }}</td>
+                                        <td>{{ $item->description }}</td>
+                                        {{-- <td>{{ $item->updated_at->format('d-m-Y') }}</td> --}}
                                         <td>
                                             
                                             <button  href="#" wire:click.prevent="openEdit({{ $item->id }})" class="btn btn-sm btn-warning">
@@ -66,6 +74,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $dataMaintenance->links() }}
                         </div>
                     </div>
                 </div>
@@ -78,13 +87,13 @@
 
 
 
-                        {{-- modal Create --}}
+        {{-- modal Create --}}
         @if($showCreate)
         <div wire:ignore.self class="modal fade show" id="create" style="display: block;" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
-                        <h5 class="modal-title">Tambah Barang Baru</h5>
+                        <h5 class="modal-title">Tambah Data Maintenance Baru</h5>
                         <button type="button" class="btn-close" wire:click="closeCreate" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -92,34 +101,26 @@
                             <div class="container-fluid">
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        {{-- <label for="name" class="form-label">Nama Barang</label>
-                                        <input type="text" id="nama" wire:model="name" class="form-control @error('name') is-invalid @enderror" placeholder="Nama Barang">
-                                        @error('name') <small class="invalid-feedback">{{ $message }}</small> @enderror --}}
-                                        <label for="example-date-input" class="form-label">Nama Barang</label>
-                                        <select class="select2"
-                                            data-dropdown-css-class="select2-blue" style="width: 100%" name="items[]" >
+                                        <label for="example-date-input" class="form-label">Data Barang</label>
+                                        <select class="form-select" id="multiSelect" class="form-control" wire:model="selectedItemId">
                                             <option value="" disabled selected>Pilih Barang</option>
-                                            @foreach ($databarang as $item)
+                                            @foreach ($dataBarang as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }} | {{ $item->merk }} | {{ $item->type }} | {{ $item->location }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     
                                     <div class="col-md-6">
-                                            <label for="example-date-input" class="form-label">Tahun Pemeliharaan</label>
-                                            <input class="form-control" type="date" value="" id="example-date-input">
-                                        
-                                        {{-- <label class="form-label" for="tahun_pengadaan">Tahun Pengadaan</label>
-                                        <input type="text" id="tahun_pengadaan" wire:model.defer="procurement_year" class="form-control @error('procurement_year') is-invalid @enderror" placeholder="20xx">
-                                        @error('procurement_year') <small class="invalid-feedback">{{ $message }}</small> @enderror --}}
+                                            <label for="tanggal_pemeliharaan" class="form-label">Tahun Pemeliharaan</label>
+                                            <input class="form-control" type="date" value="" id="example-date-input"  wire:model="date">
                                     </div>
                                 </div>
             
                                 <div class="row mb-3">
                                     <div class="col-md-12">
-                                        <label class="form-label" for="spesifikasi">Spesifikasi</label>
-                                        <textarea id="spesifikasi" wire:model.defer="spesificaotin" class="form-control @error('spesification') is-invalid @enderror" placeholder="Spesifikasi"></textarea>
-                                        @error('spesification') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                        <label class="form-label"  for="deskripsi">Keterangan</label>
+                                        <textarea id="spesifikasi" wire:model="description" class="form-control @error('description') is-invalid @enderror" placeholder="Deskripsi"></textarea>
+                                        @error('description') <small class="invalid-feedback">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
                             </div>
@@ -143,76 +144,93 @@
 
         {{-- modal Edit --}}
         {{-- @if($showEdit)
-        <div wire:ignore.self class="modal fade show" id="edit" style="display: block;" tabindex="-1" role="dialog">
+        <div wire:ignore.self class="modal fade show" id="update" style="display: block;" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
                 <div class="modal-content">
                     <div class="modal-header bg-warning">
-                        <h5 class="modal-title">Edit Barang</h5>
+                        <h5 class="modal-title">Edit Data Maintenance</h5>
                         <button type="button" class="btn-close" wire:click="closeEdit" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form wire:submit.prevent='update'>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="name" class="form-label">Data Barang</label>
-                                    <input type="text" id="nama" wire:model="name" class="form-control @error('name') is-invalid @enderror" placeholder="Nama Barang">
-                                    @error('name') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                        <form wire:submit.prevent="update">
+                            <div class="container-fluid">
+                                <div class="row mb-3">
+                                    @foreach ($dataMaintenance as $maintenance)
+                                    <div class="col-md-6">
+                                        <label for="example-date-input" class="form-label">Data Barang</label>
+                                        <input type="text" class="form-control text-sm" disabled value="{{ $maintenance->item->name }}">
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                            <label for="tanggal_pemeliharaan" class="form-label">Tahun Pemeliharaan</label>
+                                            <input type="date" class="form-control text-sm" name="date" placeholder="Tanggal Pemeliharaan"
+                                            value="{{ $maintenance->date }}">
+                                    </div>
                                 </div>
+            
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label class="form-label"  for="deskripsi">Keterangan</label>
+                                        <textarea id="description" wire:model="description" class="form-control" name="description">{{ $maintenance->description }}</textarea>
+                                    </div>
+                                </div>
+                                @endforeach
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="type" class="form-label">Jenis</label>
-                                    <input type="text" id="jenis" wire:model="type" class="form-control @error('type') is-invalid @enderror" placeholder="Jenis Barang">
-                                    @error('type') <small class="invalid-feedback">{{ $message }}</small> @enderror
-                                </div>  
-                                <div class="col-md-6">
-                                    <label for="image" class="form-label">Foto Barang</label>
-                                    <input type="file" id="foto" wire:model="image" class="form-control @error('image') is-invalid @enderror">
-                                    @error('image') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label" for="tahun_pengadaan">Tahun Pengadaan</label>
-                                    <input type="text" id="tahun_pengadaan" wire:model.defer="procurement_year" class="form-control @error('procurement_year') is-invalid @enderror"  placeholder="20xx">
-                                    @error('procurement_year') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label" for="spesifikasi">Spesifikasi</label>
-                                    <textarea id="spesifikasi" wire:model.defer="spesification" class="form-control @error('spesification') is-invalid @enderror" placeholder="Spesifikasi"></textarea>
-                                    @error('spesification') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label" for="kondisi">Kondisi</label>
-                                    <select class="form-select" id="default" wire:model.defer="condition" class="form-control @error('condition') is-invalid @enderror">
-                                        <option value="" disabled selected>Pilih Kondisi</option>
-                                        <option value="baru">Baru</option>
-                                        <option value="bekas">Bekas</option>
-                                    </select>
-                                    @error('condition') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
                             
-                                <div class="col-md-6">
-                                    <label for="location" class="form-label">Lokasi/Pemegang</label>
-                                    <input type="text" id="lokasi" wire:model="location" class="form-control @error('location') is-invalid @enderror" placeholder="Lokasi Barang">
-                                    @error('location') <small class="invalid-feedback">{{ $message }}</small> @enderror
-                                </div>
-                            </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary float-end" wire:click="closeEdit">Close</button>
-                                <button type="submit" class="btn btn-warning float-end" >
-                                    <i class="fas fa-pen-square mr-1"></i> Update
+                                <button type="button" class="btn btn-secondary" wire:click="closeEdit">Close</button>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-save mr-1"></i> Update
                                 </button>
                             </div>
                         </form>
+                        {{ $dataMaintenance->links() }}
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-backdrop fade show"></div>
         @endif --}}
-        
+
+
+
+        {{-- modal delete --}}
+        @if($showDelete)
+        <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h6 class="modal-title m-0 text-white" id="exampleModalDanger1">Konfirmasi</h6>
+                        <button type="button" class="btn-close" wire:click="closeDelete" aria-label="Close"></button>
+                    </div><!--end modal-header-->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-3 text-center align-self-center">
+                                <img src="/images/extra/card/litter.png" alt="Warning" class="img-fluid">
+                            </div><!--end col-->
+                            <div class="col-lg-9">
+                                <h5>Anda yakin ingin menghapus data ini?</h5>
+                                <span class="badge bg-light text-dark">Terakhir diupdate: {{ $lastUpdatedDate }}</span>
+                                <div class="mt-3">
+                                    <strong class="text-danger ms-1">*aksi tidak bisa dibatalkan setelah diproses</strong>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end modal-body-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDelete">Cancel</button>
+                        <button id="warningConfirm" type="button" class="btn btn-danger btn-sm" wire:click="delete" id="warning">Delete</button>
+                    </div><!--end modal-footer-->
+                </div><!--end modal-content-->
+            </div><!--end modal-dialog-->
+        </div>
+
+        <div class="modal-backdrop fade show">
+        </div>
+        @endif
+
+        @section('script')
+        @vite(['resources/js/pages/forms-advanced.js'])
+        @vite(['resources/js/pages/sweet-alert.init.js'])
+        @endsection
 </div>
