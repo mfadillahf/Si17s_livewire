@@ -143,7 +143,7 @@
 
 
         {{-- modal Edit --}}
-        {{-- @if($showEdit)
+        @if($showEdit)
         <div wire:ignore.self class="modal fade show" id="update" style="display: block;" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
                 <div class="modal-content">
@@ -155,26 +155,23 @@
                         <form wire:submit.prevent="update">
                             <div class="container-fluid">
                                 <div class="row mb-3">
-                                    @foreach ($dataMaintenance as $maintenance)
                                     <div class="col-md-6">
                                         <label for="example-date-input" class="form-label">Data Barang</label>
-                                        <input type="text" class="form-control text-sm" disabled value="{{ $maintenance->item->name }}">
+                                        <input type="text" class="form-control text-sm" readonly  style="background-color: #f0f0f0; color: #6c757d;" value="{{ $selectedItemId->item->name ?? '' }}">
                                     </div>
                                     
                                     <div class="col-md-6">
                                             <label for="tanggal_pemeliharaan" class="form-label">Tahun Pemeliharaan</label>
-                                            <input type="date" class="form-control text-sm" name="date" placeholder="Tanggal Pemeliharaan"
-                                            value="{{ $maintenance->date }}">
+                                            <input type="date" class="form-control text-sm" wire:model="date" name="date">
                                     </div>
                                 </div>
             
                                 <div class="row mb-3">
                                     <div class="col-md-12">
                                         <label class="form-label"  for="deskripsi">Keterangan</label>
-                                        <textarea id="description" wire:model="description" class="form-control" name="description">{{ $maintenance->description }}</textarea>
+                                        <textarea id="description" wire:model="description" class="form-control" name="description"></textarea>
                                     </div>
                                 </div>
-                                @endforeach
                             </div>
                             
                             <div class="modal-footer">
@@ -184,14 +181,12 @@
                                 </button>
                             </div>
                         </form>
-                        {{ $dataMaintenance->links() }}
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-backdrop fade show"></div>
-        @endif --}}
-
+        @endif
 
 
         {{-- modal delete --}}

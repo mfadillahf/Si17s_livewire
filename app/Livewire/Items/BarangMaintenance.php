@@ -70,9 +70,10 @@ class BarangMaintenance extends Component
 
     public function openEdit($id)
     {
+        $this->selectedItemId = ModelsItemMaintenance::find($id);
         $this->item = ModelsItemMaintenance::find($id);
         $this->date = $this->item->date;
-        $this->date = $this->item->description;
+        $this->description = $this->item->description;
 
         $this->showEdit = true;
     }
@@ -91,7 +92,6 @@ class BarangMaintenance extends Component
             'description' => 'nullable|string', 
             // 'updated_at' => 'date_format:d-m-Y',
         ]);
-
 
         $this->item->update([
             'date' => $this->date,
