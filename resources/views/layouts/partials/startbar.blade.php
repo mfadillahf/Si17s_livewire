@@ -37,14 +37,14 @@
                                         <a class="nav-link" wire::navigate href="barang">Data Barang</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" wire::navigate href="maintenance-barang">Data Pemeliharaan Barang</a>
+                                        <a class="nav-link" href="maintenance-barang">Data Pemeliharaan Barang</a>
                                     </li>
                                     <!--end nav-item-->
                                 </ul><!--end nav-->
                             </div>
                             {{-- Kegiatan LPSE --}}
                             <li class="nav-item">
-                                <a class="nav-link" wire::navigate href="agenda">
+                                <a class="nav-link" href="agenda">
                                     <i class="iconoir-calendar menu-icon"></i>
                                     <span>Kegiatan LPSE</span>
                                 </a>

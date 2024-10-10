@@ -116,25 +116,25 @@ window.addEventListener('swal:delete', function () {
 //   })
 // });
 
-document.getElementById('warningConfirm').addEventListener("click", function () {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!',
-  }).then(function (result) {
-    if (result.isConfirmed) {
-      Swal.fire(
-        'Deleted!',
-        'Your file has been deleted.',
-        'success'
-      )
-    }
-  })
-});
+// document.getElementById('warningConfirm').addEventListener("click", function () {
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: "You won't be able to revert this!",
+//     icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#3085d6',
+//     cancelButtonColor: '#d33',
+//     confirmButtonText: 'Yes, delete it!',
+//   }).then(function (result) {
+//     if (result.isConfirmed) {
+//       Swal.fire(
+//         'Deleted!',
+//         'Your file has been deleted.',
+//         'success'
+//       )
+//     }
+//   })
+// });
 
 // document.getElementById('handleDismiss').addEventListener("click", function () {
 //   let swalWithBootstrapButtons = Swal.mixin({
@@ -312,21 +312,21 @@ document.getElementById('warningConfirm').addEventListener("click", function () 
 //   })
 // });
 
-document.getElementById('error').addEventListener("click", function () {
-  Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'Something went wrong!',
-  })
-});
+// document.getElementById('error').addEventListener("click", function () {
+//   Swal.fire({
+//     icon: 'error',
+//     title: 'Oops...',
+//     text: 'Something went wrong!',
+//   })
+// });
 
-document.getElementById('warning').addEventListener("click", function () {
-  Swal.fire({
-    icon: 'warning',
-    title: 'Oops...',
-    text: 'Icon warning!',
-  })
-});
+// document.getElementById('warning').addEventListener("click", function () {
+//   Swal.fire({
+//     icon: 'warning',
+//     title: 'Oops...',
+//     text: 'Icon warning!',
+//   })
+// });
 
 // document.getElementById('info').addEventListener("click", function () {
 //   Swal.fire({

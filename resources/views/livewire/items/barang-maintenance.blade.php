@@ -52,8 +52,6 @@
                                 <tbody>
                                     @foreach ($dataMaintenance as $item)
                                     <tr wire:key="barang-{{ $item->id }}">
-    
-    
                                         <td>{{ $item->item->name }}</td>
                                         <td>{{ $item->item->merk }}</td>
                                         <td>{{ $item->item->type }}</td>
@@ -102,7 +100,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="example-date-input" class="form-label">Data Barang</label>
-                                        <select class="form-select" id="multiSelect" class="form-control" wire:model="selectedItemId">
+                                        <select class="form-select" id="default" class="form-control" wire:model="selectedItemId">
                                             <option value="" disabled selected>Pilih Barang</option>
                                             @foreach ($dataBarang as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }} | {{ $item->merk }} | {{ $item->type }} | {{ $item->location }}</option>
@@ -130,6 +128,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-save mr-1"></i> Simpan
                                 </button>
+                                
                             </div>
                         </form>
                     </div>
@@ -157,7 +156,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="example-date-input" class="form-label">Data Barang</label>
-                                        <input type="text" class="form-control text-sm" readonly  style="background-color: #f0f0f0; color: #6c757d;" value="{{ $selectedItemId->item->name ?? '' }}">
+                                        <input type="text" class="form-control text-sm" disabled value="{{ $selectedItemId->item->name ?? '' }}">
                                     </div>
                                     
                                     <div class="col-md-6">
@@ -224,8 +223,11 @@
         </div>
         @endif
 
+        {{-- testing --}}
+        
+
         @section('script')
-        @vite(['resources/js/pages/forms-advanced.js'])
+        {{-- @vite(['resources/js/pages/forms-advanced.js']) --}}
         @vite(['resources/js/pages/sweet-alert.init.js'])
         @endsection
 </div>

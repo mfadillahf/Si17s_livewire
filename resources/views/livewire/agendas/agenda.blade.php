@@ -11,7 +11,7 @@
                     <div class="card-body pt-0">
                         <ul class="nav nav-pills" id="custom-tabs-one-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="pill" wire::navigate href="agenda">Daftar Kegiatan</a>
+                                <a class="nav-link active" data-toggle="pill" wire::navigate href="agenda">Daftar Kegiatan</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="pill" wire::navigate href="agenda-kalender">Kalender</a>
@@ -21,21 +21,16 @@
                     <div class="card-body pt-0">
                         <div class="table-responsive">
                             <table class="table table-striped sortable mb-0">
-                                <thead>
+                                <thead class="table-light">
                                     <tr>
-                                        <th style="width: 20px;">
-                                            <div class="form-check mb-0 ms-n1">
-                                                <input type="checkbox" class="form-check-input" wire:model="selectAll" id="select-all">
-                                            </div>
-                                        </th>
-                                        <th>Nama Kegiatan</th>
+                                        <th style="width:65%">Nama Kegiatan</th>
                                         <th>Tanggal Mulai</th>
                                         <th>Tanggal Selesai</th>
                                         <th>Aksi</th>
                                     </tr>
                                     
                                 </thead>
-                                <tbody>
+                                <tbody></tbody>
                                     {{-- @foreach ($dataBarang as $item) --}}
                                     {{-- <tr wire:key="barang-{{ $item->id }}">
     

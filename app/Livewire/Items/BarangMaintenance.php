@@ -13,6 +13,7 @@ class BarangMaintenance extends Component
     protected $paginationTheme = 'bootstrap';
     public $title = 'Pemeliharaan Barang';
     public $item;
+    public $keyword;
     public $item_id;
     public $showCreate = false;
     public $showEdit = false;
@@ -21,13 +22,19 @@ class BarangMaintenance extends Component
     public $date;
     public $description;
     public $lastUpdatedDate;
+    public $sortColumn = 'name';
+    public $sortDirection = 'asc';
+
+    public function sort($columnName){
+        $this->sortColumn = $columnName;
+        $this->sortDirection = $this->sortDirection == 'asc'?'desc':'asc';
+    }
 
     public function openCreate()
     {
         $this->showCreate =true;
 
     }
-
 
     public function closeCreate()
     {
@@ -128,9 +135,27 @@ class BarangMaintenance extends Component
 
     public function render()
     {
+        if ($this->keyword != null) {
+            $data = ModelsItemMaintenance::join('items', 'item_maintenances.item_id', '=', 'items.id')
+                ->where('items.name', 'like', '%' . $this->keyword . '%')
+                ->orWhere('items.merk', 'like', '%' . $this->keyword . '%')
+                ->orWhere('items.type', 'like', '%' . $this->keyword . '%')
+                ->orWhere('item_maintenances.date', 'like', '%' . $this->keyword . '%')
+                ->orWhere('item_maintenances.description', 'like', '%' . $this->keyword . '%')
+                ->orderBy('items.' . $this->sortColumn, $this->sortDirection)
+                ->select('item_maintenances.*') 
+                ->paginate(5);
+        } else {
+            $data = ModelsItemMaintenance::join('items', 'item_maintenances.item_id', '=', 'items.id')
+                ->orderBy('items.' . $this->sortColumn, $this->sortDirection)
+                ->select('item_maintenances.*')
+                ->paginate(5);
+        }
+
         return view('livewire.items.barang-maintenance', [
-            'dataMaintenance' => ModelsItemMaintenance::paginate(5),
+            'dataMaintenance' => $data,
             'dataBarang' => Item::all(),
         ])->layout('layouts.vertical', ['title' => $this->title]);
     }
+    
 }

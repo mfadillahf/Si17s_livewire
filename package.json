@@ -40,6 +40,7 @@
         "quill": "^2.0.2",
         "raphael": "^2.3.0",
         "sass": "^1.77.4",
+        "select2": "^4.1.0-rc.0",
         "simple-datatables": "^9.0.3",
         "simplebar": "^6.2.6",
         "starability": "^2.4.0",

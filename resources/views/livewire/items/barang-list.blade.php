@@ -11,7 +11,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
-
+        
         
         <div class="row justify-content-center">
             <div class="col-12">
@@ -42,7 +42,7 @@
                                     <tr>                                    
                                         <th>Nama</th>
                                         <th>Merk</th>
-                                        <th>Type</th>
+                                        <th>Jenis</th>
                                         <th>Kondisi</th>
                                         <th>Lokasi/pemegang</th>
                                         <th>Tanggal update</th>
