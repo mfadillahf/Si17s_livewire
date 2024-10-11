@@ -1,7 +1,7 @@
 @extends('layouts.vertical', ['title' => 'Si17s'])
 
 @section('css')
-@vite(['node_modules/jsvectormap/dist/css/jsvectormap.min.css'])
+@vite(['node_modules/jsvectormap/dist/jsvectormap.min.css'])
 @endsection
 
 @section('content')
