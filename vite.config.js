@@ -7,7 +7,7 @@ export default defineConfig({
             input: [
                 'resources/scss/app.scss',
                 'resources/scss/icons.scss',
-                'node_modules/jsvectormap/dist/css/jsvectormap.min.css',
+                'node_modules/jsvectormap/dist/jsvectormap.min.css',
                 'node_modules/simple-datatables/dist/style.css',
                 'node_modules/tobii/dist/css/tobii.min.css',
                 'node_modules/leaflet/dist/leaflet.css',
