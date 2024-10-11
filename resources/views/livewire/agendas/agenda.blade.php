@@ -11,10 +11,10 @@
                     <div class="card-body pt-0">
                         <ul class="nav nav-pills" id="custom-tabs-one-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="pill" wire:navigate href="agenda">Daftar Kegiatan</a>
+                                <a class="nav-link active" data-toggle="pill" wire::navigate href="{{ route('agenda') }}">Daftar Kegiatan</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="pill" wire:navigate href="agenda-kalender">Kalender</a>
+                                <a class="nav-link" data-toggle="pill" wire::navigate href="agenda-kalender">Kalender</a>
                             </li>
                         </ul>
                     </div>

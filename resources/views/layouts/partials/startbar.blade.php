@@ -51,7 +51,7 @@
                             </li>
                             {{-- DocumentArchive --}}
                             <li class="nav-item">
-                                <a class="nav-link" wire::navigate href="livewire.document-archive"> 
+                                <a class="nav-link" href="{{ route('arsip') }}"> 
                                     <i class="iconoir-archive menu-icon"></i>
                                     <span>Arsip Dokumen</span>
                                 </a>

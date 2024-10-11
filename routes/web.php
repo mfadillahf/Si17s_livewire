@@ -7,6 +7,7 @@ use App\Livewire\Items\BarangList;
 use App\Livewire\Items\BarangMaintenance;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoutingController;
+use App\Livewire\Arsip\DocumentArchive;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,9 +29,10 @@ Route::get('/barang', BarangList::class);
 
 Route::get('/maintenance-barang', BarangMaintenance::class);
 
-Route::get('/agenda', Agenda::class);
+Route::get('/agenda', Agenda::class)->name('agenda');
 
 Route::get('/agenda-kalender', AgendaCalendar::class);
+Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
 
 
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
