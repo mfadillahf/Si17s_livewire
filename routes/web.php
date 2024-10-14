@@ -23,15 +23,15 @@ use App\Livewire\Arsip\DocumentArchive;
 // template
 require __DIR__ . '/auth.php';
 // administrasi
-Route::get('/dashboard', Dashboard::class);
+Route::get('/dashboard', Dashboard::class)->name('home');
 
-Route::get('/barang', BarangList::class);
+Route::get('/barang', BarangList::class)->name('barang');
 
-Route::get('/maintenance-barang', BarangMaintenance::class);
+Route::get('/maintenance-barang', BarangMaintenance::class)->name('maintenance');
 
 Route::get('/agenda', Agenda::class)->name('agenda');
 
-Route::get('/agenda-kalender', AgendaCalendar::class);
+Route::get('/agenda-kalender', AgendaCalendar::class)->name('kalender');
 Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
 
 

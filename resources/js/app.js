@@ -10,6 +10,7 @@ import 'simplebar'
 import { Popover } from 'bootstrap/dist/js/bootstrap'
 import 'prismjs/prism'
 
+
 try {
     // Dropdown stop
     var dropdownMenus = document.querySelectorAll('.dropdown-menu.stop');
@@ -79,7 +80,7 @@ try {
     })
 
     changeSidebarSize();
-
+    
 } catch (err) {
 }
 
