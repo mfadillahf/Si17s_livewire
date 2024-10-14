@@ -7,6 +7,7 @@ import bootstrap from 'bootstrap/dist/js/bootstrap'
 window.bootstrap = bootstrap
 
 import 'simplebar'
+import 'simplebar/dist/simplebar.css';
 import { Popover } from 'bootstrap/dist/js/bootstrap'
 import 'prismjs/prism'
 
@@ -39,6 +40,7 @@ try {
             } else {
                 document.documentElement.setAttribute('data-bs-theme', 'light');
             }
+            
         });
     }
 } catch (err) { }
@@ -80,7 +82,11 @@ try {
     })
 
     changeSidebarSize();
+
+
     
+
+
 } catch (err) {
 }
 

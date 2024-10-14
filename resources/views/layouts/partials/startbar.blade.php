@@ -2,7 +2,7 @@
 <div class="startbar d-print-none">
     <!--start brand-->
     <div class="brand">
-        <a wire:navigate href="{{ route('any', 'home')}}" class="logo">
+        <a href="{{ route('any', 'home')}}" class="logo">
             <span>
                 <img src="/images/logo-lpse.png" alt="logo-small" class="logo-sm">
             </span>
@@ -14,7 +14,7 @@
     </div>
     <!--end brand-->
     <!--start startbar-menu-->
-    <div class="startbar-menu" >
+    <div class="startbar-menu">
         <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
             <div class="d-flex align-items-start flex-column w-100">
                 <ul class="navbar-nav mb-auto w-100">
@@ -34,24 +34,24 @@
                             <div class="collapse " id="sidebarDashboards">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" wire:navigate href="{{ route('barang') }}">Data Barang</a>
+                                        <a class="nav-link" href="{{ route('barang') }}">Data Barang</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" wire:navigate href="{{ route('maintenance') }}">Data Pemeliharaan Barang</a>
+                                        <a class="nav-link" href="{{ route('maintenance') }}">Data Pemeliharaan Barang</a>
                                     </li>
                                     <!--end nav-item-->
                                 </ul><!--end nav-->
                             </div>
                             {{-- Kegiatan LPSE --}}
                             <li class="nav-item">
-                                <a class="nav-link" wire:navigate href="{{ route('agenda') }}">
+                                <a class="nav-link" href="{{ route('agenda') }}">
                                     <i class="iconoir-calendar menu-icon"></i>
                                     <span>Kegiatan LPSE</span>
                                 </a>
                             </li>
                             {{-- DocumentArchive --}}
                             <li class="nav-item">
-                                <a class="nav-link" wire:navigate href="{{ route('arsip') }}"> 
+                                <a class="nav-link" href="{{ route('arsip') }}"> 
                                     <i class="iconoir-archive menu-icon"></i>
                                     <span>Arsip Dokumen</span>
                                 </a>
