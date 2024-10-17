@@ -39,6 +39,14 @@ window.addEventListener('swal:delete', function () {
   })
 });
 
+window.addEventListener('swal:cancel', function () {
+  Swal.fire({
+    icon: 'error',
+    title: 'Aksi dibatalkan',
+    timer: 1500
+  })
+});
+
 
 // document.getElementById('titleText').addEventListener("click", function () {
 //   Swal.fire(
@@ -46,15 +54,6 @@ window.addEventListener('swal:delete', function () {
 //     'That thing is still around?',
 //     'question'
 //   )
-// });
-
-// document.getElementById('errorType').addEventListener("click", function () {
-//   Swal.fire({
-//     icon: 'error',
-//     title: 'Oops...',
-//     text: 'Something went wrong!',
-//     footer: '<a href>Why do I have this issue?</a>'
-//   })
 // });
 
 // document.getElementById('customHtml').addEventListener("click", function () {

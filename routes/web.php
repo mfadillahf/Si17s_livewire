@@ -1,13 +1,19 @@
 <?php
 
+use App\Livewire\Dashboard;
+
+use App\Livewire\Items\BarangList;
+use App\Models\ItemImage;
+
+use App\Livewire\Items\BarangMaintenance;
+
 use App\Livewire\Agendas\Agenda;
 use App\Livewire\Agendas\AgendaCalendar;
-use App\Livewire\Dashboard;
-use App\Livewire\Items\BarangList;
-use App\Livewire\Items\BarangMaintenance;
+use App\Models\AgendaImage;
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoutingController;
 use App\Livewire\Arsip\DocumentArchive;
+use App\Http\Controllers\RoutingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +29,15 @@ use App\Livewire\Arsip\DocumentArchive;
 // template
 require __DIR__ . '/auth.php';
 // administrasi
-Route::get('/dashboard', Dashboard::class)->name('home');
+Route::get('/dashboard', Dashboard::class);
 
 Route::get('/barang', BarangList::class)->name('barang');
+Route::resource('foto-barang',ItemImage::class);
 
 Route::get('/maintenance-barang', BarangMaintenance::class)->name('maintenance');
 
 Route::get('/agenda', Agenda::class)->name('agenda');
+Route::resource('foto-kegiatan',AgendaImage::class);
 
 Route::get('/agenda-kalender', AgendaCalendar::class)->name('kalender');
 Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');

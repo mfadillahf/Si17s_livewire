@@ -54,6 +54,7 @@ export default defineConfig({
                 'resources/js/pages/ui-slider.js',
                 'resources/js/pages/sweet-alert.init.js',
                 'resources/js/pages/toast.init.js',
+                'resources/js/pages/selectr.js',
                 'resources/js/pages/calendar.init.js',
                 'resources/js/pages/toast-ui.init.js',
                 'resources/js/pages/pages-gallery.js'

@@ -1,7 +1,7 @@
 <div>
 
     @section('css')
-    @vite(['node_modules/mobius1-selectr/dist/selectr.min.css', 'node_modules/huebee/dist/huebee.min.css', 'node_modules/vanillajs-datepicker/dist/css/datepicker.min.css'])
+    @vite(['node_modules/mobius1-selectr/dist/selectr.min.css'])
     @vite(['node_modules/sweetalert2/dist/sweetalert2.min.css', 'node_modules/animate.css/animate.min.css'])
     @endsection
 
@@ -13,7 +13,11 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
+
     
+    
+
+        {{--page--}}
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="card">
@@ -50,6 +54,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if ($dataMaintenance->isEmpty())
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <p class="text-muted">data kosong</p>
+                                        </td>
+                                    </tr>
+                                    @else
                                     @foreach ($dataMaintenance as $item)
                                     <tr wire:key="barang-{{ $item->id }}">
                                         <td>{{ $item->item->name }}</td>
@@ -70,6 +81,7 @@
                                         </td>
                                     </tr>
                                     @endforeach
+                                @endif
                                 </tbody>
                             </table>
                             {{ $dataMaintenance->links() }}
@@ -98,22 +110,24 @@
                         <form wire:submit.prevent="create">
                             <div class="container-fluid">
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        
                                         <label for="example-date-input" class="form-label">Data Barang</label>
-                                        <select class="form-select" id="default" class="form-control" wire:model="selectedItemId">
-                                            <option value="" disabled selected>Pilih Barang</option>
+                                        <select class="form-select" id="multiSelect" class="form-control" wire:model="selectedItemId" multiple>
                                             @foreach ($dataBarang as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }} | {{ $item->merk }} | {{ $item->type }} | {{ $item->location }}</option>
-                                            @endforeach
+                                            @endforeach 
                                         </select>
                                     </div>
-                                    
-                                    <div class="col-md-6">
-                                            <label for="tanggal_pemeliharaan" class="form-label">Tahun Pemeliharaan</label>
-                                            <input class="form-control" type="date" value="" id="example-date-input"  wire:model="date">
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="tanggal_pemeliharaan" class="form-label">Tahun Pemeliharaan</label>
+                                        <input class="form-control" type="date" value="" id="example-date-input"  wire:model="date">
                                     </div>
                                 </div>
-            
+                                
                                 <div class="row mb-3">
                                     <div class="col-md-12">
                                         <label class="form-label"  for="deskripsi">Keterangan</label>
@@ -222,12 +236,24 @@
         <div class="modal-backdrop fade show">
         </div>
         @endif
-
-        {{-- testing --}}
-        
-
-        @section('script')
+        {{-- multi script --}}
+        @push('scripts')
         {{-- @vite(['resources/js/pages/forms-advanced.js']) --}}
+        @vite(['resources/js/app.js'])
+        @vite(['resources/js/pages/selectr.js'])
         @vite(['resources/js/pages/sweet-alert.init.js'])
-        @endsection
+        @endpush
+
+        @script
+        <script>
+            $wire.on('open', () => {
+                setTimeout(function() {
+    
+        new Selectr('#multiSelect',{
+            multiple: true
+            });
+        }, 100); // 5000 milidetik = 5 detik
+            });
+        </script>
+        @endscript
 </div>

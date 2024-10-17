@@ -51,6 +51,13 @@
                                     
                                 </thead>
                                 <tbody>
+                                    @if ($dataBarang->isEmpty())
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <p class="text-muted">data kosong</p>
+                                        </td>
+                                    </tr>
+                                    @else
                                     @foreach ($dataBarang as $item)
                                     <tr wire:key="barang-{{ $item->id }}">
     
@@ -75,7 +82,8 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    @endforeach 
+                                    @endforeach
+                                @endif
                                 </tbody>
                             </table>
                             {{ $dataBarang->links() }}
@@ -116,9 +124,9 @@
                                     @error('type') <small class="invalid-feedback">{{ $message }}</small> @enderror
                                 </div>  
                                 <div class="col-md-6">
-                                    <label for="image" class="form-label">Foto Barang</label>
-                                    <input type="file" id="foto" wire:model="image" class="form-control @error('image') is-invalid @enderror">
-                                    @error('image') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <label for="itemImages" class="form-label">Foto Barang</label>
+                                    <input type="file" wire:model="itemImages" class="form-control @error('itemImages') is-invalid @enderror" multiple>
+                                    @error('itemImages') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -199,9 +207,9 @@
                                     @error('type') <small class="invalid-feedback">{{ $message }}</small> @enderror
                                 </div>  
                                 <div class="col-md-6">
-                                    <label for="image" class="form-label">Foto Barang</label>
-                                    <input type="file" id="foto" wire:model="image" class="form-control @error('image') is-invalid @enderror">
-                                    @error('image') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <label for="itemImages" class="form-label">Foto Barang</label>
+                                    <input type="file" wire:model="itemImages" class="form-control @error('itemImages') is-invalid @enderror" multiple>
+                                    @error('itemImages') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -267,7 +275,7 @@
                             <div class="col-md-6">
                                 <table class="table table-striped ">
                                     <tr>
-                                        <th>Tanggal </th>
+                                        <th>Tanggal</th>
                                         <td>{{ $item->updated_at->format('d F Y') }}</td>
                                     </tr>
                                     <tr>
@@ -295,12 +303,19 @@
                             <!-- Right Column with Image -->
                             <div class="col-md-6 text-center">
                                 <h6>Foto Barang:</h6>
-                                @if ($image)
-                                    <img src="{{ Storage::url('images/barang/' .  $image) }}" 
-                                    alt="Item Image" class="img-thumbnail" 
-                                    style="max-height: 250px; max-width: 100%;">
-                                @else
-                                    <p>Foto tidak tersedia</p>
+                                @if ($item->images->isNotEmpty()) <!-- Pastikan ada gambar -->
+                                    <div class="d-flex flex-wrap justify-content-center">
+                                        @foreach ($item->images as $image) <!-- Mengakses relasi images -->
+                                            <div class="p-2">
+                                            <p> src="{{ Storage::url($image->image) }}"</p> 
+                                            <img src="{{ Storage::url($image->image) }}" 
+                                                alt="Item Image" class="img-thumbnail" 
+                                                style="max-height: 150px; max-width: 150px;">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @else
+                                        <p>Foto tidak tersedia</p>
                                 @endif
                             </div>
                         </div>

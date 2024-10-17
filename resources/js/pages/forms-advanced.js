@@ -39,6 +39,9 @@ new Datepicker(elem, {
 
 elem = document.getElementById('DateRange');
 new DateRangePicker(elem, {
+  format: 'yyyy-mm-dd', // Contoh format tanggal
+  language: 'en',       // Atur bahasa sesuai kebutuhan
+  minDate: new Date(),  // Contoh batasan tanggal, mulai dari hari ini
   // ...options
 }); 
 

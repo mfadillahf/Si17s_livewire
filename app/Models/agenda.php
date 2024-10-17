@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class agenda extends Model
+class Agenda extends Model
 {
     use HasFactory;
     
@@ -18,11 +18,17 @@ class agenda extends Model
     ];
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
-
+    
+    
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
+    public function images()
+{
+    return $this->hasMany(AgendaImage::class);
+}
 
 
     /**

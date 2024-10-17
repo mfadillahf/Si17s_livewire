@@ -18,7 +18,7 @@ class BarangMaintenance extends Component
     public $showCreate = false;
     public $showEdit = false;
     public $showDelete = false;
-    public $selectedItemId='';
+    public $selectedItemId=[];
     public $date;
     public $description;
     public $lastUpdatedDate;
@@ -30,9 +30,37 @@ class BarangMaintenance extends Component
         $this->sortDirection = $this->sortDirection == 'asc'?'desc':'asc';
     }
 
+    public function render()
+    {
+        if ($this->keyword != null) {
+            $data = ModelsItemMaintenance::join('items', 'item_maintenances.item_id', '=', 'items.id')
+                ->where('items.name', 'like', '%' . $this->keyword . '%')
+                ->orWhere('items.merk', 'like', '%' . $this->keyword . '%')
+                ->orWhere('items.type', 'like', '%' . $this->keyword . '%')
+                ->orWhere('item_maintenances.date', 'like', '%' . $this->keyword . '%')
+                ->orWhere('item_maintenances.description', 'like', '%' . $this->keyword . '%')
+                ->orderBy('items.' . $this->sortColumn, $this->sortDirection)
+                ->select('item_maintenances.*') 
+                ->paginate(5);
+        } else {
+            $data = ModelsItemMaintenance::join('items', 'item_maintenances.item_id', '=', 'items.id')
+                ->orderBy('items.' . $this->sortColumn, $this->sortDirection)
+                ->select('item_maintenances.*')
+                ->paginate(5);
+        }
+
+        return view('livewire.items.barang-maintenance', [
+            'dataMaintenance' => $data,
+            'dataBarang' => Item::all(),
+        ])->layout('layouts.vertical', ['title' => $this->title]);
+    }
+
+
+    // fungsi create
     public function openCreate()
     {
         $this->showCreate =true;
+        $this->dispatch('open');
 
     }
 
@@ -49,11 +77,15 @@ class BarangMaintenance extends Component
         $this->validate([
             'date' => 'required|date', 
             'description' => 'nullable|string', 
+            'selectedItemId' => 'required|array|min:1',
             // 'updated_at' => 'date_format:d-m-Y',
         ]);
         
+        foreach ($this->selectedItemId as $itemId) {
+            $selectedItem = Item::find($itemId);
+
         ModelsItemMaintenance::create([
-            'item_id' => $this->selectedItemId,
+            'item_id' => $itemId,
             'name' => $selectedItem->name,
             'merk' => $selectedItem->merk,
             'type' => $selectedItem->type,
@@ -61,7 +93,7 @@ class BarangMaintenance extends Component
             'description' => $this->description //(nullable)
             // 'updated_at' => now(),
         ]);
-        
+    }
         $this->resetForm();
         $this->showCreate = false;
         $this->dispatch('swal:success');
@@ -69,12 +101,14 @@ class BarangMaintenance extends Component
 
     public function resetForm()
     {
-        $this->selectedItemId = '';
+        $this->selectedItemId = [];
         $this->date = '';
         $this->description = '';
         $this->resetValidation();
     }
 
+
+    // fungsi edit
     public function openEdit($id)
     {
         $this->selectedItemId = ModelsItemMaintenance::find($id);
@@ -110,6 +144,8 @@ class BarangMaintenance extends Component
         $this->dispatch('swal:edit');
     }
 
+
+    // fungsi delete
     public function openDelete($id)
     {
         $this->item_id = $id;
@@ -121,7 +157,9 @@ class BarangMaintenance extends Component
     public function closeDelete()
     {
         $this->showDelete = false;
+        $this->dispatch('swal:cancel');
     }
+    
     
     public function delete()
     {
@@ -129,33 +167,7 @@ class BarangMaintenance extends Component
         $item->delete();
 
         $this->showDelete = false;
-
         $this->dispatch('swal:delete');
-    }
-
-    public function render()
-    {
-        if ($this->keyword != null) {
-            $data = ModelsItemMaintenance::join('items', 'item_maintenances.item_id', '=', 'items.id')
-                ->where('items.name', 'like', '%' . $this->keyword . '%')
-                ->orWhere('items.merk', 'like', '%' . $this->keyword . '%')
-                ->orWhere('items.type', 'like', '%' . $this->keyword . '%')
-                ->orWhere('item_maintenances.date', 'like', '%' . $this->keyword . '%')
-                ->orWhere('item_maintenances.description', 'like', '%' . $this->keyword . '%')
-                ->orderBy('items.' . $this->sortColumn, $this->sortDirection)
-                ->select('item_maintenances.*') 
-                ->paginate(5);
-        } else {
-            $data = ModelsItemMaintenance::join('items', 'item_maintenances.item_id', '=', 'items.id')
-                ->orderBy('items.' . $this->sortColumn, $this->sortDirection)
-                ->select('item_maintenances.*')
-                ->paginate(5);
-        }
-
-        return view('livewire.items.barang-maintenance', [
-            'dataMaintenance' => $data,
-            'dataBarang' => Item::all(),
-        ])->layout('layouts.vertical', ['title' => $this->title]);
     }
     
 }

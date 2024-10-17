@@ -3,10 +3,11 @@
 namespace App\Livewire\Items;
 
 use Livewire\Component;
+use App\Models\ItemImage;
+use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 use App\Models\Item as ModelsItem;
 use Illuminate\Support\Facades\Storage;
-use Livewire\WithFileUploads;
-use Livewire\WithPagination;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class BarangList extends Component
@@ -21,13 +22,14 @@ class BarangList extends Component
     public $name;
     public $merk;
     public $type;
-    public $image;
-    public $condition='';
+    public $itemImages = [];
+    public $condition ='';
     public $procurement_year;
     public $spesification;
     public $location;
     public $item_id;
     public $item_selected_id=[];
+
     public $updateData = false;
     public $showCreate = false;
     public $showDetail = false;
@@ -48,7 +50,6 @@ class BarangList extends Component
     {
         
         if ($this->keyword != null) {
-            
             $data = ModelsItem::where('name', 'like', '%' . $this->keyword . '%')
                 ->orWhere('merk', 'like', '%' . $this->keyword . '%')
                 ->orWhere('type', 'like', '%' . $this->keyword . '%')
@@ -91,13 +92,13 @@ class BarangList extends Component
         $this->procurement_year = '';
         $this->spesification = '';
         $this->location = '';
-        $this->image = null;
+        $this->itemImages = [];
         $this->resetValidation();
     }
 
     public function create()
     {
-        // dd($this->name, $this->merk, $this->type, $this->condition, $this->procurement_year, $this->spesification, $this->location, $this->image);
+        // dd($this->itemImages);
         
         $this->validate([
             'name' => 'required|string',
@@ -105,31 +106,33 @@ class BarangList extends Component
             'type' => 'required|string',
             'condition' => 'required|string',
             'location' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp',
+            'itemImages.*' => 'nullable|image|mimes:jpg,png,jpeg,webp',
             'procurement_year' => 'required|integer|digits:4|max:' . date('Y'),
             'spesification' => 'required|string',
         ]);
     
-        $imagePath = null;
-    
-   
-        if ($this->image) {
-        
-            $imagePath = $this->image->storeAs('public/images/barang', $this->image->hashName());
-        }
-    
-     
-        ModelsItem::create([
+
+        $item = ModelsItem::create([
             'name' => $this->name,
             'merk' => $this->merk,
             'type' => $this->type,
             'condition' => $this->condition,
             'location' => $this->location,
-            'image' => $imagePath ? basename($imagePath) : null, 
             'procurement_year' => $this->procurement_year,
             'spesification' => $this->spesification,
             
         ]);
+    
+        // if (!empty($this->itemImages)) {
+        //     foreach ($this->itemImages as $image) {
+        //         $itemImagesPath = $image->store('public/images/barang'); // Upload image to storage
+        //         ItemImage::create([
+        //             'item_id' => $item->id,
+        //             'image' => $itemImagesPath,
+        //         ]);
+        //     }
+        // }
+    
         
         $this->resetForm();
         $this->showCreate = false;
@@ -144,11 +147,13 @@ class BarangList extends Component
         $this->name = $this->item->name;
         $this->merk = $this->item->merk;
         $this->type = $this->item->type;
-        $this->image = $this->item->image;
         $this->condition = $this->item->condition;
         $this->procurement_year = $this->item->procurement_year;
         $this->spesification = $this->item->spesification;
         $this->location = $this->item->location;
+
+        $this->item = ModelsItem::with('itemImages')->find($id);
+        $this->itemImages = $this->item->itemImages;
 
         $this->showDetail = true;
     }
@@ -166,11 +171,13 @@ class BarangList extends Component
         $this->name = $this->item->name;
         $this->merk = $this->item->merk;
         $this->type = $this->item->type;
-        $this->image = $this->item->image;
         $this->condition = $this->item->condition;
         $this->procurement_year = $this->item->procurement_year;
         $this->spesification = $this->item->spesification;
         $this->location = $this->item->location;
+
+        // Load existing item images
+        $this->itemImages = $this->item->itemImages;
 
         $this->showEdit = true;
     }
@@ -182,43 +189,55 @@ class BarangList extends Component
     }
 
     public function update()
-    {
-        // dd($this->name, $this->merk, $this->type, $this->condition, $this->procurement_year, $this->spesification, $this->location, $this->image);
-        
-        $this->validate([
-            'name' => 'required|string',
-            'merk' => 'required|string',
-            'type' => 'required|string',
-            'condition' => 'required|string',
-            'location' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp',
-            'procurement_year' => 'required|integer|digits:4|max:' . date('Y'),
-            'spesification' => 'required|string',
-        ]);
+{
+    $this->validate([
+        'name' => 'required|string',
+        'merk' => 'required|string',
+        'type' => 'required|string',
+        'condition' => 'required|string',
+        'location' => 'required|string',
+        'itemImages.*' => 'nullable|image|mimes:jpg,png,jpeg,webp',
+        'procurement_year' => 'required|integer|digits:4|max:' . date('Y'),
+        'spesification' => 'required|string',
+    ]);
 
-        if ($this->image instanceof TemporaryUploadedFile) {
-            if ($this->item->image && Storage::exists('public/images/barang/' . $this->item->image)) {
-                Storage::delete('public/images/barang/' . $this->item->image);
-            }
+    // Update item details
+    $this->item->update([
+        'name' => $this->name,
+        'merk' => $this->merk,
+        'type' => $this->type,
+        'condition' => $this->condition,
+        'procurement_year' => $this->procurement_year,
+        'spesification' => $this->spesification,
+        'location' => $this->location,
+    ]);
 
-            $imagePath = $this->image->storeAs('public/images/barang', $this->image->hashName());
-            $this->item->image = basename($imagePath);
-        } 
+    // Handle image uploads
+    // if (!empty($this->itemImages)) {
+    //     foreach ($this->itemImages as $image) {
+    //         $itemImagesPath = $image->store('public/images/barang'); // Upload image to storage
+    //         ItemImage::create([
+    //             'item_id' => $this->item->id,
+    //             'image' => $itemImagesPath,
+    //         ]);
+    //     }
+    // }
 
-        $this->item->update([
-            'name' => $this->name,
-            'merk' => $this->merk,
-            'type' => $this->type,
-            'condition' => $this->condition,
-            'procurement_year' => $this->procurement_year,
-            'spesification' => $this->spesification,
-            'location' => $this->location,
-        ]);
-
-        $this->resetForm();
-        $this->showEdit = false;
-        $this->dispatch('swal:edit');
+    // Optionally, delete existing images if necessary
+    /*
+    foreach ($this->item->itemImages as $existingImage) {
+        if (!in_array($existingImage->image, array_column($this->itemImages, 'name'))) {
+            Storage::delete($existingImage->image);
+            $existingImage->delete();
+        }
     }
+    */
+
+    // Reset form and close edit modal
+    $this->resetForm();
+    $this->showEdit = false;
+    $this->dispatch('swal:edit');
+}
 
     // Fungsi delete
     public function openDelete($id)
@@ -232,6 +251,7 @@ class BarangList extends Component
     public function closeDelete()
     {
         $this->showDelete = false;
+        $this->dispatch('swal:cancel');
     }
     
     public function delete()
