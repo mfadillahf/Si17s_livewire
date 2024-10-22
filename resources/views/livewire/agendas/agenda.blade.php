@@ -54,13 +54,13 @@
                                         <td>{{ $agenda->started_at }}</td>
                                         <td>{{ $agenda->finished_at }}</td>
                                         <td>
-                                            <button href="#" wire:click.prevent="detail({{ $agenda->id }})" class="btn btn-sm btn-info">
+                                            <button  wire:click ="detail({{ $agenda->id }})" class="btn btn-sm btn-info">
                                                 <i class="fas fa-info-circle"></i>
                                             </button>
-                                            <button href="#" wire:click.prevent="openEdit({{ $agenda->id }})" class="btn btn-sm btn-warning">
+                                            <button wire:click ="openEdit({{ $agenda->id }})" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-pen-square"></i>
                                             </button>
-                                            <button href="#" wire:click.prevent="openDelete({{ $agenda->id }})" class="btn btn-sm btn-danger">
+                                            <button  wire:click ="openDelete({{ $agenda->id }})" class="btn btn-sm btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
@@ -319,7 +319,7 @@
                 </div><!--end modal-body-->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDelete">Cancel</button>
-                    <button id="warningConfirm" type="button" class="btn btn-danger btn-sm" wire:click="delete" id="warning">Delete</button>
+                    <button id="warningConfirm" type="button" class="btn btn-danger btn-sm" wire:click.prevent="delete" id="warning">Delete</button>
                 </div><!--end modal-footer-->
             </div><!--end modal-content-->
         </div><!--end modal-dialog-->

@@ -38,7 +38,7 @@ Route::resource('foto-barang',ItemImage::class);
 Route::get('/maintenance-barang', BarangMaintenance::class)->name('maintenance');
 
 Route::get('/agenda', Agenda::class)->name('agenda');
-Route::resource('foto-kegiatan',AgendaImage::class);
+Route::resource('foto-kegiatan',Agenda::class);
 
 Route::get('/agenda-kalender', AgendaCalendar::class)->name('kalender');
 Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');

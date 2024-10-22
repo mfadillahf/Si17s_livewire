@@ -355,7 +355,7 @@
                     </div><!--end modal-body-->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDelete">Cancel</button>
-                        <button id="warningConfirm" type="button" class="btn btn-danger btn-sm" wire:click="delete" id="warning">Delete</button>
+                        <button id="warningConfirm" type="button" class="btn btn-danger btn-sm" wire:click.prevent="delete" id="warning">Delete</button>
                     </div><!--end modal-footer-->
                 </div><!--end modal-content-->
             </div><!--end modal-dialog-->
