@@ -60,7 +60,7 @@
                                             <button wire:click ="openEdit({{ $agenda->id }})" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-pen-square"></i>
                                             </button>
-                                            <button  wire:click ="openDelete({{ $agenda->id }})" class="btn btn-sm btn-danger">
+                                            <button  wire:click.prevent ="openDelete({{ $agenda->id }})" class="btn btn-sm btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>

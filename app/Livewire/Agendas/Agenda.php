@@ -187,8 +187,8 @@ class Agenda extends Component
     
     public function delete()
     {
-        $item = ModelsAgenda::find($this -> agenda_id);
-        $item->delete();
+        $agenda = ModelsAgenda::find($this -> agenda_id);
+        $agenda->delete();
 
         $this->showDelete = false;
 
