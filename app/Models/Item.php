@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Helpers\DateHelper;
-use App\Livewire\Items\BarangMaintenance;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,16 +13,16 @@ class Item extends Model
 {
     use HasFactory;
 
-    // protected $fillable = [
-    //     'name',
-    //     'merk',
-    //     'type',
-    //     'image',
-    //     'procurement_year',
-    //     'spesification',
-    //     'condition',
-    //     'location',
-    // ];
+    protected $fillable = [
+        'name',
+        'merk',
+        'type',
+        'image',
+        'procurement_year',
+        'spesification',
+        'condition',
+        'location',
+    ];
 
     protected $appends = [
         'date_convert',
@@ -38,7 +37,7 @@ class Item extends Model
 
     public function itemMaintenances(): HasMany
     {
-        return $this->hasMany(BarangMaintenance::class);
+        return $this->hasMany(ItemMaintenance::class);
     }
 
     public function itemImages(): HasMany

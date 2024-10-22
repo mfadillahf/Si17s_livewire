@@ -14,6 +14,7 @@
                     <div class="col-9">
                         <p class="text-dark mb-0 fw-semibold fs-14">Jumlah Barang</p>
                         <h3 class="mt-2 mb-0 fw-bold">24k</h3>
+                        
                     </div>
                     <!--end col-->
                     <div class="col-3 align-self-center">

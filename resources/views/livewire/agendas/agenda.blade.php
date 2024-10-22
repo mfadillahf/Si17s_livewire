@@ -261,15 +261,15 @@
                                 </tr>
                             </table>
                         </div>
-                        <!-- Right Column with Images -->
+                        
                         <div class="col-md-6 text-center">
                             <h6>Foto Kegiatan:</h6>
-                            @if ($agenda->images->isNotEmpty()) <!-- Pastikan ada gambar -->
+                        @if ($agenda) 
                             <div class="d-flex flex-wrap justify-content-center">
                                 @foreach ($agenda->images as $image) <!-- Mengakses relasi images -->
                                     <div class="p-2">
                                         <img src="{{ Storage::url($image->file) }}" 
-                                            alt="Item Image" class="img-thumbnail" 
+                                            alt="Image" class="img-thumbnail" 
                                             style="max-height: 150px; max-width: 150px;">
                                     </div>
                                 @endforeach

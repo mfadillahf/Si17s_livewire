@@ -124,9 +124,9 @@
                                     @error('type') <small class="invalid-feedback">{{ $message }}</small> @enderror
                                 </div>  
                                 <div class="col-md-6">
-                                    <label for="itemImages" class="form-label">Foto Barang</label>
-                                    <input type="file" wire:model="itemImages" class="form-control @error('itemImages') is-invalid @enderror" multiple>
-                                    @error('itemImages') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <label for="image" class="form-label">Foto Barang</label>
+                                    <input type="file" id="foto" wire:model="image" class="form-control @error('image') is-invalid @enderror">
+                                    @error('image') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -207,9 +207,9 @@
                                     @error('type') <small class="invalid-feedback">{{ $message }}</small> @enderror
                                 </div>  
                                 <div class="col-md-6">
-                                    <label for="itemImages" class="form-label">Foto Barang</label>
-                                    <input type="file" wire:model="itemImages" class="form-control @error('itemImages') is-invalid @enderror" multiple>
-                                    @error('itemImages') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <label for="image" class="form-label">Foto Barang</label>
+                                    <input type="file" wire:model="image" class="form-control @error('image') is-invalid @enderror">
+                                    @error('image') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -303,19 +303,16 @@
                             <!-- Right Column with Image -->
                             <div class="col-md-6 text-center">
                                 <h6>Foto Barang:</h6>
-                                @if ($item->images->isNotEmpty()) <!-- Pastikan ada gambar -->
+                                @if ($image) <!-- Pastikan ada gambar -->
                                     <div class="d-flex flex-wrap justify-content-center">
-                                        @foreach ($item->images as $image) <!-- Mengakses relasi images -->
                                             <div class="p-2">
-                                            <p> src="{{ Storage::url($image->image) }}"</p> 
-                                            <img src="{{ Storage::url($image->image) }}" 
+                                            <img src="{{ Storage::url('images/barang/' .  $image) }}"
                                                 alt="Item Image" class="img-thumbnail" 
-                                                style="max-height: 150px; max-width: 150px;">
+                                                style="max-height: 250px; max-width: 100%;">
                                             </div>
-                                        @endforeach
                                     </div>
-                                    @else
-                                        <p>Foto tidak tersedia</p>
+                                @else
+                                    <p>Foto tidak tersedia</p>
                                 @endif
                             </div>
                         </div>

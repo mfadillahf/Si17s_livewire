@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Arsip\DocumentArchive;
 use App\Http\Controllers\RoutingController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
