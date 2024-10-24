@@ -8,7 +8,6 @@ use App\Models\ItemImage;
 use App\Livewire\Items\BarangMaintenance;
 
 use App\Livewire\Agendas\Agenda;
-use App\Livewire\Agendas\AgendaCalendar;
 use App\Models\AgendaImage;
 
 use App\Livewire\Arsip\DocumentArchive;
@@ -44,9 +43,6 @@ Route::get('/maintenance-barang', BarangMaintenance::class)->name('maintenance')
 
 Route::get('/agenda', Agenda::class)->name('agenda');
 Route::resource('foto-kegiatan',Agenda::class);
-
-Route::get('/agenda-kalender', AgendaCalendar::class)->name('kalender');
-
 
 Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
 Route::get('/arsip/create', ArchiveCreate::class)->name('arsip-tambah');
