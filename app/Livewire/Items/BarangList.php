@@ -27,8 +27,6 @@ class BarangList extends Component
     public $spesification;
     public $location;
     public $item_id;
-    public $item_selected_id=[];
-    public $updateData = false;
     public $showCreate = false;
     public $showDetail = false;
     public $showEdit = false;
@@ -72,6 +70,7 @@ class BarangList extends Component
     // fungsi create
     public function openCreate()
     {
+        $this->resetForm();
         $this->showCreate = true;
     }
 
@@ -83,6 +82,7 @@ class BarangList extends Component
 
     public function resetForm()
     {
+        $this->item = '';
         $this->name = '';
         $this->merk = '';
         $this->type = '';
@@ -92,6 +92,11 @@ class BarangList extends Component
         $this->location = '';
         $this->image = null;
         $this->resetValidation();
+
+        $this->showCreate = false;
+        $this->showDetail = false;
+        $this->showEdit = false;
+        $this->showDelete = false;
     }
 
     public function create()
@@ -105,7 +110,7 @@ class BarangList extends Component
             'type' => 'required|string',
             'condition' => 'required|string',
             'location' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp|max:2048',
             'procurement_year' => 'required|integer|digits:4|max:' . date('Y'),
             'spesification' => 'required|string',
         ]);
@@ -191,7 +196,7 @@ class BarangList extends Component
             'type' => 'required|string',
             'condition' => 'required|string',
             'location' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,webp|max:2048',
             'procurement_year' => 'required|integer|digits:4|max:' . date('Y'),
             'spesification' => 'required|string',
         ]);
@@ -224,8 +229,8 @@ class BarangList extends Component
     public function openDelete($id)
     {
         $this->item_id = $id;
-        $item = ModelsItem::find($id);
-        $this->lastUpdatedDate = $item->updated_at->format('d-m-Y');
+        $i = ModelsItem::find($id);
+        $this->lastUpdatedDate = $i->updated_at->format('d-m-Y');
         $this->showDelete = true;
     }
 
@@ -236,8 +241,8 @@ class BarangList extends Component
     
     public function delete()
     {
-        $item = ModelsItem::find($this -> item_id);
-        $item->delete();
+        $i = ModelsItem::find($this -> item_id);
+        $i->delete();
 
         $this->showDelete = false;
 

@@ -3,6 +3,7 @@
 namespace App\Livewire\Agendas;
 
 use Livewire\Component;
+use App\Models\Agenda;
 use Livewire\Attributes\Title;
 
 class AgendaCalendar extends Component

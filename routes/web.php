@@ -11,8 +11,13 @@ use App\Livewire\Agendas\Agenda;
 use App\Livewire\Agendas\AgendaCalendar;
 use App\Models\AgendaImage;
 
-use Illuminate\Support\Facades\Route;
 use App\Livewire\Arsip\DocumentArchive;
+use App\Livewire\Arsip\ArchiveCreate;
+use App\Livewire\Arsip\ArchiveEdit;
+
+
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\RoutingController;
 
 
@@ -33,7 +38,7 @@ require __DIR__ . '/auth.php';
 Route::get('/dashboard', Dashboard::class);
 
 Route::get('/barang', BarangList::class)->name('barang');
-Route::resource('foto-barang',ItemImage::class);
+Route::resource('foto-barang',BarangList::class);
 
 Route::get('/maintenance-barang', BarangMaintenance::class)->name('maintenance');
 
@@ -41,7 +46,12 @@ Route::get('/agenda', Agenda::class)->name('agenda');
 Route::resource('foto-kegiatan',Agenda::class);
 
 Route::get('/agenda-kalender', AgendaCalendar::class)->name('kalender');
+
+
 Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
+Route::get('/arsip/create', ArchiveCreate::class)->name('arsip-tambah');
+Route::get('/arsip/{id}/edit', ArchiveEdit::class)->name('arsip-update');
+
 
 
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {

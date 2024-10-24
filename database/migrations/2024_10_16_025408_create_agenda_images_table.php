@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('agenda_id')
-                ->constrained()
+                ->constrained('agendas')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

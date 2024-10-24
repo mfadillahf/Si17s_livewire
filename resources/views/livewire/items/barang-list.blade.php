@@ -58,26 +58,26 @@
                                         </td>
                                     </tr>
                                     @else
-                                    @foreach ($dataBarang as $item)
-                                    <tr wire:key="barang-{{ $item->id }}">
+                                    @foreach ($dataBarang as $m)
+                                    <tr wire:key="barang-{{ $m->id }}">
     
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->merk }}</td>
-                                        <td>{{ $item->type }}</td>
-                                        <td>{{ $item->condition }}</td>
-                                        <td>{{ $item->location }}</td>
-                                        <td>{{ $item->updated_at->format('d-m-Y') }}</td>
+                                        <td>{{ $m->name }}</td>
+                                        <td>{{ $m->merk }}</td>
+                                        <td>{{ $m->type }}</td>
+                                        <td>{{ $m->condition }}</td>
+                                        <td>{{ $m->location }}</td>
+                                        <td>{{ $m->updated_at->format('d-m-Y') }}</td>
                                         <td>
                                             
-                                            <button href="#" wire:click.prevent="detail({{ $item->id }})" class="btn btn-sm btn-info">
+                                            <button href="#" wire:click.prevent="detail({{ $m->id }})" class="btn btn-sm btn-info">
                                                 <i class="fas fa-info-circle"></i>
                                             </button>
                                             
-                                            <button  href="#" wire:click.prevent="openEdit({{ $item->id }})" class="btn btn-sm btn-warning">
+                                            <button  href="#" wire:click.prevent="openEdit({{ $m->id }})" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-pen-square"></i>
                                             </button>
         
-                                            <button  href="#" wire:click.prevent="openDelete({{ $item->id }})" class="btn btn-sm btn-danger">
+                                            <button  href="#" wire:click.prevent="openDelete({{ $m->id }})" class="btn btn-sm btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
@@ -316,9 +316,6 @@
                                 @endif
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeDetail">Tutup</button>
                     </div>
                 </div>
             </div>

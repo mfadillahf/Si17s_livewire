@@ -61,21 +61,21 @@
                                         </td>
                                     </tr>
                                     @else
-                                    @foreach ($dataMaintenance as $item)
-                                    <tr wire:key="barang-{{ $item->id }}">
-                                        <td>{{ $item->item->name }}</td>
-                                        <td>{{ $item->item->merk }}</td>
-                                        <td>{{ $item->item->type }}</td>
-                                        <td>{{ $item->date }}</td>
-                                        <td>{{ $item->description }}</td>
-                                        {{-- <td>{{ $item->updated_at->format('d-m-Y') }}</td> --}}
+                                    @foreach ($dataMaintenance as $itemMain)
+                                    <tr wire:key="barang-{{ $itemMain->id }}">
+                                        <td>{{ $itemMain->item->name }}</td>
+                                        <td>{{ $itemMain->item->merk }}</td>
+                                        <td>{{ $itemMain->item->type }}</td>
+                                        <td>{{ $itemMain->date }}</td>
+                                        <td>{{ $itemMain->description }}</td>
+                                        {{-- <td>{{ $itemMain->updated_at->format('d-m-Y') }}</td> --}}
                                         <td>
                                             
-                                            <button  href="#" wire:click.prevent="openEdit({{ $item->id }})" class="btn btn-sm btn-warning">
+                                            <button  href="#" wire:click.prevent="openEdit({{ $itemMain->id }})" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-pen-square"></i>
                                             </button>
         
-                                            <button  href="#" wire:click.prevent="openDelete({{ $item->id }})" class="btn btn-sm btn-danger">
+                                            <button  href="#" wire:click.prevent="openDelete({{ $itemMain->id }})" class="btn btn-sm btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
@@ -114,8 +114,8 @@
                                         
                                         <label for="example-date-input" class="form-label">Data Barang</label>
                                         <select class="form-select" id="multiSelect" class="form-control" wire:model="selectedItemId" multiple>
-                                            @foreach ($dataBarang as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }} | {{ $item->merk }} | {{ $item->type }} | {{ $item->location }}</option>
+                                            @foreach ($dataBarang as $itemMain)
+                                            <option value="{{ $itemMain->id }}">{{ $itemMain->name }} | {{ $itemMain->merk }} | {{ $itemMain->type }} | {{ $itemMain->location }}</option>
                                             @endforeach 
                                         </select>
                                     </div>

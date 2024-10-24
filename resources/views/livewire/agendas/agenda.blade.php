@@ -4,7 +4,7 @@
     @vite(['node_modules/sweetalert2/dist/sweetalert2.min.css', 'node_modules/animate.css/animate.min.css'])
     @endsection
 
-    <div>
+    {{-- <div>
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="card">
@@ -48,19 +48,19 @@
                                         </td>
                                     </tr>
                                 @else
-                                    @foreach ($agendaKegiatan as $agenda)
-                                    <tr wire:key="agenda-{{ $agenda->id }}">
-                                        <td>{{ $agenda->name }}</td>
-                                        <td>{{ $agenda->started_at }}</td>
-                                        <td>{{ $agenda->finished_at }}</td>
+                                    @foreach ($agendaKegiatan as $ak)
+                                    <tr wire:key="agenda-{{ $ak->id }}">
+                                        <td>{{ $ak->name }}</td>
+                                        <td>{{ $ak->started_at }}</td>
+                                        <td>{{ $ak->finished_at }}</td>
                                         <td>
-                                            <button  wire:click ="detail({{ $agenda->id }})" class="btn btn-sm btn-info">
+                                            <button  wire:click ="detail({{ $ak->id }})" class="btn btn-sm btn-info">
                                                 <i class="fas fa-info-circle"></i>
                                             </button>
-                                            <button wire:click ="openEdit({{ $agenda->id }})" class="btn btn-sm btn-warning">
+                                            <button wire:click ="openEdit({{ $ak->id }})" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-pen-square"></i>
                                             </button>
-                                            <button  wire:click.prevent ="openDelete({{ $agenda->id }})" class="btn btn-sm btn-danger">
+                                            <button  wire:click.prevent ="openDelete({{ $ak->id }})" class="btn btn-sm btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
@@ -74,8 +74,115 @@
                     </div>
                 </div>
             </div>
+        </div> --}}
+
+
+        {{-- menggunakan tablist --}}
+        <div>
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Kegiatan LPSE</h4>
+                        </div>
+                        <div class="card-body pt-0">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-pills" id="custom-tabs-one-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ $tab === 'agenda' ? 'active' : '' }}" data-toggle="pill" wire:click="$set('tab', 'agenda')" href="#tab-agenda">Daftar Kegiatan</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ $tab === 'kalender' ? 'active' : '' }}" data-toggle="pill" wire:click="$set('tab', 'kalender')" href="#tab-kalender">Kalender</a>
+                                </li>
+                            </ul>
+        
+                            <!-- Search and Add Button -->
+                            @if($tab === 'agenda') <!-- Hanya tampil jika tab 'agenda' aktif -->
+                                <div class="mb-3 d-flex justify-content-end">
+                                    <div>
+                                        <input type="text" class="form-control" wire:model="keyword" placeholder="Cari Kegiatan...">
+                                    </div>
+                                    <button wire:click.prevent="openCreate" class="btn btn-primary ms-2">
+                                        <img src="/images/barang/box.png" class="img-fluid"> Tambah Kegiatan
+                                    </button>
+                                </div>
+                            @endif
+        
+                            <!-- Tab Content -->
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                                <!-- Daftar Kegiatan -->
+                                <div class="tab-pane fade {{ $tab === 'agenda' ? 'show active' : '' }}" id="tab-agenda" role="tabpanel">
+                                    @if($tab === 'agenda')
+                                        <div class="table-responsive">
+                                            <table class="table table-striped sortable mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th style="width:35%">Nama Kegiatan</th>
+                                                        <th>Tanggal Mulai</th>
+                                                        <th>Tanggal Selesai</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if ($agendaKegiatan->isEmpty())
+                                                        <tr>
+                                                            <td colspan="4" class="text-center">
+                                                                <p class="text-muted">Data kosong</p>
+                                                            </td>
+                                                        </tr>
+                                                    @else
+                                                        @foreach ($agendaKegiatan as $ak)
+                                                            <tr wire:key="agenda-{{ $ak->id }}">
+                                                                <td>{{ $ak->name }}</td>
+                                                                <td>{{ $ak->started_at }}</td>
+                                                                <td>{{ $ak->finished_at }}</td>
+                                                                <td>
+                                                                    <button wire:click="detail({{ $ak->id }})" class="btn btn-sm btn-info">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </button>
+                                                                    <button wire:click="openEdit({{ $ak->id }})" class="btn btn-sm btn-warning">
+                                                                        <i class="fas fa-pen-square"></i>
+                                                                    </button>
+                                                                    <button wire:click.prevent="openDelete({{ $ak->id }})" class="btn btn-sm btn-danger">
+                                                                        <i class="fas fa-trash-alt"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                            {{ $agendaKegiatan->links() }}
+                                        </div>
+                                    @endif
+                                </div>
+        
+                                <!-- Kalender -->
+                                <div class="tab-pane fade {{ $tab === 'kalender' ? 'show active' : '' }}" id="calendar" role="tabpanel">
+                                    @if($tab === 'kalender')
+                                        <!-- Konten Kalender -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <div class="card-body">
+                                                        <div id='calendar'></div>
+                                                        <div style='clear:both'></div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- end col -->
+                                        </div> <!-- end row -->
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+
+
+
+
 
     {{-- Modal Create --}}
     @if($showCreate)
@@ -109,15 +216,7 @@
                                     @error('finished_at') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <label>Foto Kegiatan</label>
-                                    <input type="file" class="form-control text-sm" wire:model="images" multiple>
-                                    @error('images') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-                            </div>
-                            
+                           
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label class="form-label" for="description">Deskripsi Kegiatan</label>
@@ -130,7 +229,15 @@
                                 <div class="col-md-12">
                                     <label class="form-label" for="tagging">Tagging Pegawai</label>
                                     <textarea id="tagging" wire:model.defer="employee_tagging" class="form-control @error('employee_tagging') is-invalid @enderror" placeholder="Tagging Pegawai"></textarea>
-                                    @error('tagging') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                    @error('employee_tagging') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="images" class="form-label">Foto Kegiatan</label>
+                                    <input type="file" class="form-control text-sm" wire:model="images" multiple>
+                                        @error('images') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>
 
@@ -147,22 +254,24 @@
         </div>
     </div>
     <div class="modal-backdrop fade show"></div>
-    @endif
+@endif
+
+
 
 
 
 
     {{-- edit --}}
-    {{-- @if($showEdit)
+    @if($showEdit)
     <div wire:ignore.self class="modal fade show" id="create" style="display: block;" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title">Tambah Kegiatan</h5>
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">Edit Kegiatan</h5>
                     <button type="button" class="btn-close" wire:click="closeCreate" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form wire:submit.prevent='create'>
+                    <form wire:submit.prevent='update'>
                         <div class="container-fluid">
                             <div class="row mb-3">
                                 <div class="col-md-12">
@@ -185,13 +294,6 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <label>Foto Kegiatan</label>
-                                    <input type="file" class="form-control text-sm" wire:model="images" multiple>
-                                    @error('images') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-                            </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-12">
@@ -204,15 +306,23 @@
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label class="form-label" for="tagging">Tagging Pegawai</label>
-                                    <textarea id="tagging" wire:model.defer="tagging" class="form-control @error('tagging') is-invalid @enderror" placeholder="Tagging Pegawai"></textarea>
+                                    <textarea id="tagging" wire:model.defer="employee_tagging" class="form-control @error('tagging') is-invalid @enderror" placeholder="Tagging Pegawai"></textarea>
                                     @error('tagging') <small class="invalid-feedback">{{ $message }}</small> @enderror
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label>Foto Kegiatan</label>
+                                    <input type="file" class="form-control text-sm" wire:model="images" multiple>
+                                    @error('images') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary float-end" wire:click="closeCreate">Close</button>
-                                <button type="submit" class="btn btn-primary float-end" id="success">
-                                    <i class="fas fa-save mr-1"></i> Simpan
+                                <button type="button" class="btn btn-secondary float-end" wire:click="closeEdit">Close</button>
+                                <button type="submit" class="btn btn-warning float-end" id="success">
+                                    <i class="fas fa-save mr-1"></i> Update
                                 </button>
                             </div>
                         </div>
@@ -222,7 +332,7 @@
         </div>
     </div>
     <div class="modal-backdrop fade show"></div>
-    @endif --}}
+    @endif
 
 
     {{-- detail --}}
@@ -264,9 +374,9 @@
                         
                         <div class="col-md-6 text-center">
                             <h6>Foto Kegiatan:</h6>
-                        @if ($agenda) 
+                        @if ($images) 
                             <div class="d-flex flex-wrap justify-content-center">
-                                @foreach ($agenda->images as $image) <!-- Mengakses relasi images -->
+                                @foreach ($images as $image) <!-- Mengakses relasi images -->
                                     <div class="p-2">
                                         <img src="{{ Storage::url($image->file) }}" 
                                             alt="Image" class="img-thumbnail" 
@@ -279,9 +389,6 @@
                         @endif
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click="closeDetail">Tutup</button>
                 </div>
             </div>
         </div>
@@ -330,7 +437,9 @@
     @endif
 
     @section('script')
+    @vite(['resources/js/pages/calendar.init.js'])
     @vite(['resources/js/pages/forms-advanced.js'])
+    @vite(['resources/js/pages/file-upload.init.js'])
     @vite(['resources/js/pages/sweet-alert.init.js'])
     @endsection
 </div>

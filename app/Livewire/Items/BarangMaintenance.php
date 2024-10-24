@@ -149,8 +149,8 @@ class BarangMaintenance extends Component
     public function openDelete($id)
     {
         $this->item_id = $id;
-        $item = ModelsItemMaintenance::find($id);
-        $this->lastUpdatedDate = $item->updated_at->format('d-m-Y');
+        $last_at = ModelsItemMaintenance::find($id);
+        $this->lastUpdatedDate = $last_at->updated_at->format('d-m-Y');
         $this->showDelete = true;
     }
 
@@ -163,8 +163,8 @@ class BarangMaintenance extends Component
     
     public function delete()
     {
-        $item = ModelsItemMaintenance::find($this -> item_id);
-        $item->delete();
+        $delete_itemMain = ModelsItemMaintenance::find($this -> item_id);
+        $delete_itemMain->delete();
 
         $this->showDelete = false;
         $this->dispatch('swal:delete');
