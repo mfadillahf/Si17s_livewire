@@ -45,14 +45,20 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse($suratMasuk as $sM)
+                                            @forelse($srtmsk as $sM)
                                                 <tr>
                                                     <td>{{ $sM->date }}</td>
                                                     <td>{{ $sM->number }}</td>
                                                     <td>{{ $sM->subject }}</td>
                                                     <td>
-                                                        <button wire:click="edit({{ $sM->id }})" class="btn btn-warning btn-sm">Edit</button>
-                                                        <button wire:click="delete({{ $sM->id }})" class="btn btn-danger btn-sm">Hapus</button>
+                                                        <button  wire:click ="detail({{ $sM->id }})" class="btn btn-sm btn-info">
+                                                            <i class="fas fa-info-circle"></i>
+                                                        </button>
+                                                        <a href="/arsip/edit/{{$sM->id}}" class="btn btn-warning btn-sm">
+                                                            <i class="fas fa-pen-square"></i></a>
+                                                        <button wire:click="openDelete({{ $sM->id }})" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @empty
@@ -62,7 +68,7 @@
                                             @endforelse
                                         </tbody>
                                     </table>
-                                    {{ $suratMasuk->links() }}
+                                    {{ $srtmsk->links() }}
                                 </div>
                         </div>
     
@@ -79,14 +85,20 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse($suratKeluar as $sK)
+                                            @forelse($srtklr as $sK)
                                                 <tr>
                                                     <td>{{ $sK->date }}</td>
                                                     <td>{{ $sK->number }}</td>
                                                     <td>{{ $sK->subject }}</td>
                                                     <td>
-                                                        <button wire:click="edit({{ $sK->id }})" class="btn btn-warning btn-sm">Edit</button>
-                                                        <button wire:click="delete({{ $sK->id }})" class="btn btn-danger btn-sm">Hapus</button>
+                                                        <button  wire:click ="detail({{ $sK->id }})" class="btn btn-sm btn-info">
+                                                            <i class="fas fa-info-circle"></i>
+                                                        </button>
+                                                        <a href="/arsip/edit/{{$sK->id}}"  class="btn btn-warning btn-sm">
+                                                            <i class="fas fa-pen-square"></i></a>
+                                                        <button wire:click="openDelete({{ $sK->id }})" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @empty
@@ -96,7 +108,7 @@
                                             @endforelse
                                         </tbody>
                                     </table>
-                                    {{ $suratKeluar->links() }}
+                                    {{ $srtklr->links() }}
                                 </div>
                         </div>
                     </div>
@@ -104,4 +116,125 @@
             </div>
         </div>
     </div>
+
+
+
+{{-- detail --}}
+{{-- @if($showDetail)
+<div wire:ignore.self class="modal fade show" id="documentDetailModal" style="display: block;" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">Detail Dokumen</h5>
+                <button type="button" class="btn-close" wire:click="closeDetail" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Perihal</th>
+                                <td>{{ $selectedDocument->subject }}</td>
+                            </tr>
+                            <tr>
+                                <th>No. Surat</th>
+                                <td>{{ $selectedDocument->number }}</td>
+                            </tr>
+                           
+                            {{-- Conditional fields based on document type --}}
+                            {{-- @if($documentType == 'masuk')
+                                <tr>
+                                    <th>Pengirim</th>
+                                    <td>{{ $selectedDocument->objective }}</td> <!-- Field for Surat Masuk -->
+                                </tr>
+                            @elseif($documentType == 'keluar')
+                                <tr>
+                                    <th>Tujuan</th>
+                                    <td>{{ $selectedDocument->objective }}</td> <!-- Field for Surat Keluar -->
+                                </tr>
+                            @endif
+
+                            <tr>
+                                <th>Tanggal Surat</th>
+                                <td>{{ $selectedDocument->date }}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th>Keterangan Surat</th>
+                                <td>{{ $selectedDocument->description }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-md-6 text-center">
+                        <h6>Berkas Surat </h6>
+                        @if ($selectedDocument->berkas)
+                            <div class="d-flex flex-wrap justify-content-center">
+                                @foreach ($selectedDocument->berkas as $file)
+                                    <div class="p-2">
+                                        <a href="{{ Storage::url($file->file) }}" target="_blank" class="btn btn-secondary btn-sm">Lihat Dokumen</a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p>Dokumen tidak tersedia</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show"></div>
+@endif --}} 
+
+
+
+{{-- delete --}}
+@if($showDelete)
+<div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h6 class="modal-title m-0 text-white" id="exampleModalDanger1">Konfirmasi</h6>
+                <button type="button" class="btn-close" wire:click="closeDelete" aria-label="Close"></button>
+            </div><!--end modal-header-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-3 text-center align-self-center">
+                        <img src="/images/extra/card/litter.png" alt="Warning" class="img-fluid">
+                    </div><!--end col-->
+                    <div class="col-lg-9">
+                        <h5>Anda yakin ingin menghapus data ini?</h5>
+                        <span class="badge bg-light text-dark">Terakhir diupdate: {{ $lastUpdatedDate }}</span>
+                        <div class="mt-3">
+                            <strong class="text-danger ms-1">*aksi tidak bisa dibatalkan setelah diproses</strong>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end modal-body-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDelete">Cancel</button>
+                <button id="warningConfirm" type="button" class="btn btn-danger btn-sm" wire:click.prevent="delete" id="warning">Delete</button>
+            </div><!--end modal-footer-->
+        </div><!--end modal-content-->
+    </div><!--end modal-dialog-->
+</div>
+
+<div class="modal-backdrop fade show">
+</div>
+@endif
+
+
+
+
+
+
+
+
+
+    @section('script')
+    @vite(['resources/js/pages/sweet-alert.init.js'])
+    @endsection
 </div>

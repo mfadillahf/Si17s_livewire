@@ -4,6 +4,7 @@ namespace App\Livewire\Arsip;
 
 use Livewire\Component;
 use App\Models\DocumentArchive as ModelsArchive;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentArchive extends Component
 {
@@ -14,14 +15,14 @@ class DocumentArchive extends Component
     public $date;
     public $number;
     public $subject;
+    public $archive_id;
     public $jenis = '';
     public $objective;
     public $description;
     public $berkas;
-    public $suratMasuk = [];
-    public $suratKeluar = [];
-    public $isOpen = false;
-    public $editMode = false;
+    public $showDetail = false;
+    public $showDelete = false;
+    public $lastUpdatedDate;
     public $sortColumn = 'number';
     public $sortDirection = 'asc';
 
@@ -65,12 +66,69 @@ class DocumentArchive extends Component
                 ->paginate(5);
         }
     
-        dd($suratMasuk, $suratKeluar); // Debugging dengan dump data
+
 
         // Kirimkan data ke view
         return view('livewire.arsip.document-archive', [
-            'suratMasuk' => $suratMasuk,
-            'suratKeluar' => $suratKeluar,
+            'srtmsk' => $suratMasuk,
+            'srtklr' => $suratKeluar,
         ])->layout('layouts.vertical', ['title' => $this->title]);
     }
+
+
+
+
+    // detail
+    public function detail($id)
+    {
+        $archive = ModelsArchive::find($id);
+
+        $this->name = $archive->name;
+        $this->description = $archive->description;
+        $this->started_at = $archive->started_at;
+        $this->finished_at = $archive->finished_at;
+        $this->employee_tagging = $archive->employee_tagging;
+
+
+        $this->showDetail = true;
+    }
+    
+    public function closeDetail()
+    {
+        $this->resetForm();
+        $this->showDetail = false;
+    }
+
+
+
+
+    // delete
+    public function openDelete($id)
+    {
+        $this -> archive_id = $id;
+        $a = ModelsArchive::find($id);
+        $this->lastUpdatedDate = $a->updated_at->format('d-m-Y');
+        $this->showDelete = true;
+    }
+
+    public function closeDelete()
+    {
+        $this->showDelete = false;
+        $this->dispatch('swal:cancel');
+    }
+    
+    
+    public function delete()
+    {
+        $a = ModelsArchive::find($this -> archive_id);
+        $a->delete();
+        
+        
+        $this->showDelete = false;
+        $this->dispatch('swal:delete');
+    }
+
+
+    
+
 }

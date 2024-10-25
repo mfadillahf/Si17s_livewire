@@ -354,6 +354,7 @@
     @section('script')
     @vite(['resources/js/pages/calendar.init.js'])
     @vite(['resources/js/pages/sweet-alert.init.js'])
+
     @endsection
 </div>
 

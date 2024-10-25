@@ -45,8 +45,8 @@ Route::get('/agenda', Agenda::class)->name('agenda');
 Route::resource('foto-kegiatan',Agenda::class);
 
 Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
-Route::get('/arsip/create', ArchiveCreate::class)->name('arsip-tambah');
-Route::get('/arsip/{id}/edit', ArchiveEdit::class)->name('arsip-update');
+Route::get('/arsip/create', ArchiveCreate::class)->name('arsip.create');
+Route::get('/arsip/edit/{id}', ArchiveEdit::class)->name('arsip.edit');
 
 
 

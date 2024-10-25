@@ -19,7 +19,7 @@ window.addEventListener('swal:success', function () {
   Swal.fire({
     icon: 'success',
     title: 'Data berhasil ditambahkan',
-    timer: 1500
+    timer: 1000
   })
 });
 
@@ -27,7 +27,7 @@ window.addEventListener('swal:edit', function () {
   Swal.fire({
     icon: 'success',
     title: 'Data berhasil diupdate',
-    timer: 1500
+    timer: 1000
   })
 });
 
@@ -35,7 +35,7 @@ window.addEventListener('swal:delete', function () {
   Swal.fire({
     icon: 'success',
     title: 'Data telah berhasil dihapus',
-    timer: 1500
+    timer: 1000
   })
 });
 
@@ -43,7 +43,7 @@ window.addEventListener('swal:cancel', function () {
   Swal.fire({
     icon: 'error',
     title: 'Aksi dibatalkan',
-    timer: 1500
+    timer: 1000
   })
 });
 

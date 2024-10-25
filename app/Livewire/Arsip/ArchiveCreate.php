@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Arsip;
 
+use App\Models\DocumentArchiveFile;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\DocumentArchive as ModelsArchive;
@@ -25,18 +26,18 @@ class ArchiveCreate extends Component
         
         $this->validate([
             'date' => 'nullable|date',
-            'number' => 'nullable|string',
+            'number' => 'required|string',
             'subject' => 'required|string',
             'jenis' => 'required',
             'objective' => $this->jenis == '1' ? 'required|string' : 'nullable|string',
             'description' => 'nullable|string',
-            'berkas' => 'required|file|mimes:pdf,doc,docx,xls,xlsx|max:2048',
+            'berkas' => 'required|file|mimes:pdf,doc,docx,xls,xlsx|max:10240',
         ]);
 
-        $filePath = $this->berkas->store('berkas_surat', 'public');
+        $filePath = $this->berkas->store('public/files/arsip');
         $documentId = ($this->jenis == '1') ? 1 : 2;
 
-        ModelsArchive::create([
+        $dai = ModelsArchive::create([
             'date' => $this->date,
             'number' => $this->number, 
             'subject' => $this->subject,
@@ -45,10 +46,15 @@ class ArchiveCreate extends Component
             'description' => $this->description, 
             'file' => $filePath,
             'document_id' => $documentId,
-            
         ]);
-
-        return redirect('/arsip-dokumen')->with('swal:success');
+            
+        DocumentArchiveFile::create([
+            'file' => $filePath,
+            'document_archive_id' => $dai -> id,    
+        ]);
+        
+        $this->dispatch('swal:success');
+        return redirect('/arsip-dokumen');
     } 
 
     public function render()
