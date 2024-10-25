@@ -15,8 +15,7 @@ class ArchiveCreate extends Component
     public $number;
     public $subject;
     public $jenis = '';
-    public $pengirim;
-    public $tujuan;
+    public $objective;
     public $description;
     public $berkas;
 
@@ -28,28 +27,28 @@ class ArchiveCreate extends Component
             'date' => 'nullable|date',
             'number' => 'nullable|string',
             'subject' => 'required|string',
-            'jenis' => 'required|in:masuk,keluar',
-            'pengirim' => $this->jenis == 'masuk' ? 'required|string' : 'nullable|string', 
-            'tujuan' => $this->jenis == 'keluar' ? 'required|string' : 'nullable|string', 
+            'jenis' => 'required',
+            'objective' => $this->jenis == '1' ? 'required|string' : 'nullable|string',
             'description' => 'nullable|string',
             'berkas' => 'required|file|mimes:pdf,doc,docx,xls,xlsx|max:2048',
         ]);
 
         $filePath = $this->berkas->store('berkas_surat', 'public');
+        $documentId = ($this->jenis == '1') ? 1 : 2;
 
         ModelsArchive::create([
             'date' => $this->date,
             'number' => $this->number, 
             'subject' => $this->subject,
             'jenis' => $this->jenis,
-            'pengirim' => $this->jenis == 'masuk' ? $this->pengirim : null,
-            'tujuan' => $this->jenis == 'keluar' ? $this->tujuan : null,
+            'objective' => $this->objective,
             'description' => $this->description, 
-            'berkas' => $filePath,
+            'file' => $filePath,
+            'document_id' => $documentId,
             
         ]);
 
-        return redirect('arsip');
+        return redirect('/arsip-dokumen')->with('swal:success');
     } 
 
     public function render()

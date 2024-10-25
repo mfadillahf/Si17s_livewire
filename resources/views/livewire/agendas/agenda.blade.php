@@ -4,7 +4,7 @@
     @vite(['node_modules/sweetalert2/dist/sweetalert2.min.css', 'node_modules/animate.css/animate.min.css'])
     @endsection
 
-    {{-- <div>
+    <div>
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="card">
@@ -12,12 +12,12 @@
                         <h4 class="card-title">Kegiatan LPSE</h4>
                     </div>
                     <div class="card-body pt-0">
-                        <ul class="nav nav-pills" id="custom-tabs-one-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="pill" wire:click href="{{ route('agenda') }}">Daftar Kegiatan</a>
+                        <ul class="nav nav-pills" role="tablist">
+                            <li class="nav-item waves-effect waves-light">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#kegiatan" role="tab" aria-selected="true">Kegiatan</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="pill" wire:click href="{{ route('kalender') }}">Kalender</a>
+                            <li class="nav-item waves-effect waves-light">
+                                <a class="nav-link" data-bs-toggle="tab" href="#Kalender" role="tab" aria-selected="false">Kalender</a>
                             </li>
                         </ul>
                         <div class="mb-3 d-flex justify-content-end">
@@ -29,17 +29,20 @@
                             </button>
                         </div>
                     </div>
-                    <div class="card-body pt-0">
-                        <div class="table-responsive">
-                            <table class="table table-striped sortable mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th style="width:35%">Nama Kegiatan</th>
-                                        <th>Tanggal Mulai</th>
-                                        <th>Tanggal Selesai</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
+
+                    {{-- tab --}}
+                    <div class="tab-content">
+                        <div class="tab-pane p-3 active" id="kegiatan" role="tabpanel">
+                            <div class="table-responsive">
+                                <table class="table table-striped sortable mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width:35%">Nama Kegiatan</th>
+                                            <th>Tanggal Mulai</th>
+                                            <th>Tanggal Selesai</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
                                 <tbody>
                                 @if ($agendaKegiatan->isEmpty())
                                     <tr>
@@ -72,113 +75,25 @@
                             {{ $agendaKegiatan->links() }}
                         </div>
                     </div>
-                </div>
-            </div>
-        </div> --}}
-
-
-        {{-- menggunakan tablist --}}
-        <div>
-            <div class="row justify-content-center">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Kegiatan LPSE</h4>
-                        </div>
-                        <div class="card-body pt-0">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-pills" id="custom-tabs-one-tab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link {{ $tab === 'agenda' ? 'active' : '' }}" data-toggle="pill" wire:click="$set('tab', 'agenda')" href="#tab-agenda">Daftar Kegiatan</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ $tab === 'kalender' ? 'active' : '' }}" data-toggle="pill" wire:click="$set('tab', 'kalender')" href="#tab-kalender">Kalender</a>
-                                </li>
-                            </ul>
-        
-                            <!-- Search and Add Button -->
-                            @if($tab === 'agenda') <!-- Hanya tampil jika tab 'agenda' aktif -->
-                                <div class="mb-3 d-flex justify-content-end">
-                                    <div>
-                                        <input type="text" class="form-control" wire:model="keyword" placeholder="Cari Kegiatan...">
-                                    </div>
-                                    <button wire:click.prevent="openCreate" class="btn btn-primary ms-2">
-                                        <img src="/images/barang/box.png" class="img-fluid"> Tambah Kegiatan
-                                    </button>
-                                </div>
-                            @endif
-        
-                            <!-- Tab Content -->
-                            <div class="tab-content" id="custom-tabs-one-tabContent">
-                                <!-- Daftar Kegiatan -->
-                                <div class="tab-pane fade {{ $tab === 'agenda' ? 'show active' : '' }}" id="tab-agenda" role="tabpanel">
-                                    @if($tab === 'agenda')
-                                        <div class="table-responsive">
-                                            <table class="table table-striped sortable mb-0">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th style="width:35%">Nama Kegiatan</th>
-                                                        <th>Tanggal Mulai</th>
-                                                        <th>Tanggal Selesai</th>
-                                                        <th>Aksi</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if ($agendaKegiatan->isEmpty())
-                                                        <tr>
-                                                            <td colspan="4" class="text-center">
-                                                                <p class="text-muted">Data kosong</p>
-                                                            </td>
-                                                        </tr>
-                                                    @else
-                                                        @foreach ($agendaKegiatan as $ak)
-                                                            <tr wire:key="agenda-{{ $ak->id }}">
-                                                                <td>{{ $ak->name }}</td>
-                                                                <td>{{ $ak->started_at }}</td>
-                                                                <td>{{ $ak->finished_at }}</td>
-                                                                <td>
-                                                                    <button wire:click="detail({{ $ak->id }})" class="btn btn-sm btn-info">
-                                                                        <i class="fas fa-info-circle"></i>
-                                                                    </button>
-                                                                    <button wire:click="openEdit({{ $ak->id }})" class="btn btn-sm btn-warning">
-                                                                        <i class="fas fa-pen-square"></i>
-                                                                    </button>
-                                                                    <button wire:click.prevent="openDelete({{ $ak->id }})" class="btn btn-sm btn-danger">
-                                                                        <i class="fas fa-trash-alt"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    @endif
-                                                </tbody>
-                                            </table>
-                                            {{ $agendaKegiatan->links() }}
+                        {{-- kalender --}}
+                        <div class="tab-pane p-3" id="kalender" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <div class="card-body">
+                                            <div id='calendar'></div>
+                                            <div style='clear:both'></div>
                                         </div>
-                                    @endif
-                                </div>
-        
-                                <!-- Kalender -->
-                                <div class="tab-pane fade {{ $tab === 'kalender' ? 'show active' : '' }}" id="calendar" role="tabpanel">
-                                    @if($tab === 'kalender')
-                                        <!-- Konten Kalender -->
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="mb-3">
-                                                    <div class="card-body">
-                                                        <div id='calendar'></div>
-                                                        <div style='clear:both'></div>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- end col -->
-                                        </div> <!-- end row -->
-                                    @endif
-                                </div>
+                                    </div>
+                                </div> <!-- end col -->
                             </div>
-                        </div>
+                        </div><!-- end row -->
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
 
 
 
@@ -438,8 +353,129 @@
 
     @section('script')
     @vite(['resources/js/pages/calendar.init.js'])
-    @vite(['resources/js/pages/forms-advanced.js'])
-    @vite(['resources/js/pages/file-upload.init.js'])
     @vite(['resources/js/pages/sweet-alert.init.js'])
     @endsection
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{-- menggunakan tablist --}}
+        {{-- <div>
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Kegiatan LPSE</h4>
+                        </div>
+                        <div class="card-body pt-0">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-pills" id="custom-tabs-one-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ $tab === 'agenda' ? 'active' : '' }}" data-toggle="pill" wire:click="$set('tab', 'agenda')" href="#tab-agenda">Daftar Kegiatan</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ $tab === 'kalender' ? 'active' : '' }}" data-toggle="pill" wire:click="$set('tab', 'kalender')" href="#tab-kalender">Kalender</a>
+                                </li>
+                            </ul>
+        
+                            <!-- Search and Add Button -->
+                            @if($tab === 'agenda') <!-- Hanya tampil jika tab 'agenda' aktif -->
+                                <div class="mb-3 d-flex justify-content-end">
+                                    <div>
+                                        <input type="text" class="form-control" wire:model="keyword" placeholder="Cari Kegiatan...">
+                                    </div>
+                                    <button wire:click.prevent="openCreate" class="btn btn-primary ms-2">
+                                        <img src="/images/barang/box.png" class="img-fluid"> Tambah Kegiatan
+                                    </button>
+                                </div>
+                            @endif
+        
+                            <!-- Tab Content -->
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                                <!-- Daftar Kegiatan -->
+                                <div class="tab-pane fade {{ $tab === 'agenda' ? 'show active' : '' }}" id="tab-agenda" role="tabpanel">
+                                    @if($tab === 'agenda')
+                                        <div class="table-responsive">
+                                            <table class="table table-striped sortable mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th style="width:35%">Nama Kegiatan</th>
+                                                        <th>Tanggal Mulai</th>
+                                                        <th>Tanggal Selesai</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if ($agendaKegiatan->isEmpty())
+                                                        <tr>
+                                                            <td colspan="4" class="text-center">
+                                                                <p class="text-muted">Data kosong</p>
+                                                            </td>
+                                                        </tr>
+                                                    @else
+                                                        @foreach ($agendaKegiatan as $ak)
+                                                            <tr wire:key="agenda-{{ $ak->id }}">
+                                                                <td>{{ $ak->name }}</td>
+                                                                <td>{{ $ak->started_at }}</td>
+                                                                <td>{{ $ak->finished_at }}</td>
+                                                                <td>
+                                                                    <button wire:click="detail({{ $ak->id }})" class="btn btn-sm btn-info">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </button>
+                                                                    <button wire:click="openEdit({{ $ak->id }})" class="btn btn-sm btn-warning">
+                                                                        <i class="fas fa-pen-square"></i>
+                                                                    </button>
+                                                                    <button wire:click.prevent="openDelete({{ $ak->id }})" class="btn btn-sm btn-danger">
+                                                                        <i class="fas fa-trash-alt"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                            {{ $agendaKegiatan->links() }}
+                                        </div>
+                                    @endif
+                                </div>
+        
+                                <!-- Kalender -->
+                                <div class="tab-pane fade {{ $tab === 'kalender' ? 'show active' : '' }}" id="calendar" role="tabpanel">
+                                    @if($tab === 'kalender')
+                                        <!-- Konten Kalender -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <div class="card-body">
+                                                        <div id='calendar'></div>
+                                                        <div style='clear:both'></div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- end col -->
+                                        </div> <!-- end row -->
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> --}}

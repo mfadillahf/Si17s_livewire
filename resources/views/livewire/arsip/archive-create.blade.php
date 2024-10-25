@@ -42,27 +42,27 @@
                                     <label class="form-label" for="jenis_surat">Jenis Surat</label>
                                     <select wire:model.live="jenis" class="form-select">
                                         <option value="" disabled selected>Pilih Jenis Surat</option>
-                                        <option value="masuk">Surat Masuk</option>
-                                        <option value="keluar">Surat Keluar</option>
+                                        <option value="1">Surat Masuk</option>
+                                        <option value="2">Surat Keluar</option>
                                     </select>
                                     @error('jenis') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>
         
                             <!-- Conditional Fields based on selected 'jenis' -->
-                            @if($jenis == 'masuk')
+                            @if($jenis == '1')
                                 <div class="row mb-3">
                                     <div class="col-12 form-group">
                                         <label class="form-label" for="pengirim">Pengirim</label>
-                                        <textarea wire:model.defer="pengirim" class="form-control" placeholder="Pengirim"></textarea>
+                                        <textarea wire:model.defer="objective" class="form-control" placeholder="Pengirim"></textarea>
                                         @error('pengirim') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
-                            @elseif($jenis == 'keluar')
+                            @elseif($jenis == '2')
                                 <div class="row mb-3">
                                     <div class="col-12 form-group">
                                         <label class="form-label" for="tujuan">Tujuan</label>
-                                        <textarea wire:model.defer="tujuan" class="form-control" placeholder="Tujuan"></textarea>
+                                        <textarea wire:model.defer="objective" class="form-control" placeholder="Tujuan"></textarea>
                                         @error('tujuan') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                 </div>

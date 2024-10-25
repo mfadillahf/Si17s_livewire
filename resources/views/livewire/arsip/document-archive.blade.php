@@ -12,11 +12,11 @@
                 <div class="card-body pt-0">
                     <!-- Nav tabs -->
                     <ul class="nav nav-pills" id="custom-tabs-one-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link {{ $tab === 'surat-masuk' ? 'active' : '' }}" data-toggle="pill" wire:click="$set('tab', 'surat-masuk')" href="#tab-surat-masuk">Surat Masuk</a>
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#surat-masuk" role="tab" aria-selected="true">Surat Masuk</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ $tab === 'surat-keluar' ? 'active' : '' }}" data-toggle="pill" wire:click="$set('tab', 'surat-keluar')" href="#tab-surat-keluar">Surat Keluar</a>
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link" data-bs-toggle="tab" href="#surat-keluar" role="tab" aria-selected="false">Surat Keluar</a>
                         </li>
                     </ul>
     
@@ -31,13 +31,12 @@
                     </div>
     
                     <!-- Tab Content -->
-                    <div class="tab-content" id="custom-tabs-one-tabContent">
-                        <!-- Surat Masuk -->
-                        <div class="tab-pane fade {{ $tab === 'surat-masuk' ? 'show active' : '' }}" id="tab-surat-masuk" role="tabpanel">
-                            @if($tab === 'surat-masuk')
+                    <div class="tab-content">
+                        {{-- surat masuk --}}
+                        <div class="tab-pane p-3 active" id="surat-masuk" role="tabpanel">
                                 <div class="table-responsive">
                                     <table class="table table-striped sortable mb-0">
-                                        <thead>
+                                        <thead class="table-light">
                                             <tr>
                                                 <th>Tanggal Surat</th>
                                                 <th>Nomor Surat</th>
@@ -48,9 +47,9 @@
                                         <tbody>
                                             @forelse($suratMasuk as $sM)
                                                 <tr>
-                                                    <td>{{ \Carbon\Carbon::parse($sM->Tanggal_Surat)->format('d F Y') }}</td>
-                                                    <td>{{ $sM->Nomor_Surat }}</td>
-                                                    <td>{{ $sM->Perihal }}</td>
+                                                    <td>{{ $sM->date }}</td>
+                                                    <td>{{ $sM->number }}</td>
+                                                    <td>{{ $sM->subject }}</td>
                                                     <td>
                                                         <button wire:click="edit({{ $sM->id }})" class="btn btn-warning btn-sm">Edit</button>
                                                         <button wire:click="delete({{ $sM->id }})" class="btn btn-danger btn-sm">Hapus</button>
@@ -63,16 +62,15 @@
                                             @endforelse
                                         </tbody>
                                     </table>
+                                    {{ $suratMasuk->links() }}
                                 </div>
-                            @endif
                         </div>
     
                         <!-- Surat Keluar -->
-                        <div class="tab-pane fade {{ $tab === 'surat-keluar' ? 'show active' : '' }}" id="tab-surat-keluar" role="tabpanel">
-                            @if($tab === 'surat-keluar')
+                        <div class="tab-pane p-3" id="surat-keluar" role="tabpanel">
                                 <div class="table-responsive">
                                     <table class="table table-striped sortable mb-0">
-                                        <thead>
+                                        <thead class="table-light">
                                             <tr>
                                                 <th>Tanggal Surat</th>
                                                 <th>Nomor Surat</th>
@@ -83,9 +81,9 @@
                                         <tbody>
                                             @forelse($suratKeluar as $sK)
                                                 <tr>
-                                                    <td>{{ \Carbon\Carbon::parse($sK->Tanggal_Surat)->format('d F Y') }}</td>
-                                                    <td>{{ $sK->Nomor_Surat }}</td>
-                                                    <td>{{ $sK->Perihal }}</td>
+                                                    <td>{{ $sK->date }}</td>
+                                                    <td>{{ $sK->number }}</td>
+                                                    <td>{{ $sK->subject }}</td>
                                                     <td>
                                                         <button wire:click="edit({{ $sK->id }})" class="btn btn-warning btn-sm">Edit</button>
                                                         <button wire:click="delete({{ $sK->id }})" class="btn btn-danger btn-sm">Hapus</button>
@@ -98,11 +96,10 @@
                                             @endforelse
                                         </tbody>
                                     </table>
+                                    {{ $suratKeluar->links() }}
                                 </div>
-                            @endif
                         </div>
                     </div>
-    
                 </div>
             </div>
         </div>

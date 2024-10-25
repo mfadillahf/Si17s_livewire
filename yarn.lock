@@ -15,17 +15,17 @@
   resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.21.5.tgz"
   integrity sha512-tQd/1efJuzPC6rCFwEvLtci/xNFcTZknmXs98FYDfGE4wP9ClFV98nyKrzJKVPMhdDnjzLhdUyMX4PsQAPjwIw==
 
-"@fullcalendar/core@~6.1.14":
-  version "6.1.14"
-  resolved "https://registry.npmjs.org/@fullcalendar/core/-/core-6.1.14.tgz"
-  integrity sha512-hIPRBevm0aMc2aHy1hRIJgXmI1QTvQM1neQa9oxtuqUmF1+ApYC3oAdwcQMTuI7lHHw3pKJDyJFkKLPPnL6HXA==
+"@fullcalendar/core@^6.1.15", "@fullcalendar/core@~6.1.14", "@fullcalendar/core@~6.1.15":
+  version "6.1.15"
+  resolved "https://registry.npmjs.org/@fullcalendar/core/-/core-6.1.15.tgz"
+  integrity sha512-BuX7o6ALpLb84cMw1FCB9/cSgF4JbVO894cjJZ6kP74jzbUZNjtwffwRdA+Id8rrLjT30d/7TrkW90k4zbXB5Q==
   dependencies:
     preact "~10.12.1"
 
-"@fullcalendar/daygrid@^6.1.14", "@fullcalendar/daygrid@~6.1.14":
-  version "6.1.14"
-  resolved "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-6.1.14.tgz"
-  integrity sha512-DSyjiA1dEM8k3bOCrZpZOmAOZu71KGtH02ze+4QKuhxkmn/zQghmmLRdfzpOrcyJg6xGKkoB4pBcO+2lXar8XQ==
+"@fullcalendar/daygrid@^6.1.15", "@fullcalendar/daygrid@~6.1.14", "@fullcalendar/daygrid@~6.1.15":
+  version "6.1.15"
+  resolved "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-6.1.15.tgz"
+  integrity sha512-j8tL0HhfiVsdtOCLfzK2J0RtSkiad3BYYemwQKq512cx6btz6ZZ2RNc/hVnIxluuWFyvx5sXZwoeTJsFSFTEFA==
 
 "@fullcalendar/interaction@~6.1.14":
   version "6.1.14"
@@ -44,12 +44,12 @@
   dependencies:
     "@fullcalendar/daygrid" "~6.1.14"
 
-"@fullcalendar/timegrid@^6.1.14", "@fullcalendar/timegrid@~6.1.14":
-  version "6.1.14"
-  resolved "https://registry.npmjs.org/@fullcalendar/timegrid/-/timegrid-6.1.14.tgz"
-  integrity sha512-ZByc3BVAtxWSVfyaNedROLlg/Tb2NQ43+MZZAfBSrVwVm2xyfQ+Bsx3pJyCXsRsUh2TFFTO07q7nMWe0jet3KQ==
+"@fullcalendar/timegrid@^6.1.15", "@fullcalendar/timegrid@~6.1.14":
+  version "6.1.15"
+  resolved "https://registry.npmjs.org/@fullcalendar/timegrid/-/timegrid-6.1.15.tgz"
+  integrity sha512-61ORr3A148RtxQ2FNG7JKvacyA/TEVZ7z6I+3E9Oeu3dqTf6M928bFcpehRTIK6zIA6Yifs7BeWHgOE9dFnpbw==
   dependencies:
-    "@fullcalendar/daygrid" "~6.1.14"
+    "@fullcalendar/daygrid" "~6.1.15"
 
 "@kurkle/color@^0.3.0":
   version "0.3.2"
