@@ -121,7 +121,7 @@
 
 {{-- detail --}}
 {{-- @if($showDetail)
-<div wire:ignore.self class="modal fade show" id="documentDetailModal" style="display: block;" tabindex="-1" role="dialog">
+<div wire:ignore.self class="modal fade show"  style="display: block;" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
@@ -141,7 +141,7 @@
                                 <th>No. Surat</th>
                                 <td>{{ $selectedDocument->number }}</td>
                             </tr>
-                           
+
                             {{-- Conditional fields based on document type --}}
                             {{-- @if($documentType == 'masuk')
                                 <tr>

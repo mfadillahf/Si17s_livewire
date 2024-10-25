@@ -21,7 +21,8 @@ class ArchiveEdit extends Component
     public $jenis;
     public $objective;
     public $description;
-    public $berkas; 
+    public $berkas;
+    public $fileLinks = [];
 
 
     public function mount($id)
@@ -34,6 +35,10 @@ class ArchiveEdit extends Component
             $this->objective = $this->archive->objective;
             $this->description = $this->archive->description;
             $this->berkas = $this->archive->berkas;
+
+            $this->file();
+
+            // dd($this->jenis); 
     }
 
     public function update()
@@ -47,31 +52,30 @@ class ArchiveEdit extends Component
             'berkas' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx|max:10240', // Allow for null if not uploading a new file
         ]);
 
-        if ($this->berkas) {
-            foreach ($this->berkas as $file) {
-                if ($file instanceof TemporaryUploadedFile) {
-                    // Store new file
-                    $filePath = $file->store('public/files/arsip');
-                    
-                    // Create a new record in the document_archive_files table
-                    DocumentArchiveFile::create([
-                        'file' => $filePath,
-                        'document_archive_id' => $this->archive->id,
-                    ]);
-                }
-            }
-        }
 
         $this->archive->update([
             'date' => $this->date,
             'number' => $this->number,
             'subject' => $this->subject,
+            'jenis' => $this->jenis,
             'objective' => $this->objective,
             'description' => $this->description,
         ]);
 
         $this->dispatch('swal:edit');
         return redirect('/arsip-dokumen');
+    }
+
+    public function file()
+    {
+        // Load all files associated with this archive
+        $this->fileLinks = $this->archive->documentArchiveFiles->map(function ($f) {
+            return [
+                'id' => $f->id,
+                'name' => pathinfo($f->file, PATHINFO_BASENAME),
+                'url' => Storage::url($f->file), // Generate the file URL
+            ];
+        });
     }
 
     public function render()

@@ -14,10 +14,10 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12 col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Tambah Dokumen</h4>
+                    <div class="card-header bg-primary" >
+                        <h4 class="card-title text-white">Tambah Dokumen</h4>
                     </div>
-                    <div class="card-body pt-0">
+                    <div class="card-body">
                         <form wire:submit.prevent='create'>
                             <div class="row mb-3">
                                 <div class="col-md-6 form-group">
