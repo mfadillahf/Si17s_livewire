@@ -130,7 +130,8 @@ class Agenda extends Component
         if (!empty($this->images)) {
             
             foreach ($this->images as $image) {
-                $path = $image->store('public/images/agenda'); // Upload gambar ke storage
+                $originalFileName = $image->getClientOriginalName();
+                $path = $image->storeAs('public/images/agenda', $originalFileName); // Upload gambar ke storage
                 
                 AgendaImage::create([
                     'agenda_id' => $create_agenda->id,

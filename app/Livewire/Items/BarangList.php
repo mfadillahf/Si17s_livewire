@@ -118,8 +118,8 @@ class BarangList extends Component
         $imagePath = null;
     
         if ($this->image) {
-        
-            $imagePath = $this->image->storeAs('public/images/barang', $this->image->hashName());
+            $originalFileName = $this->image->getClientOriginalName();
+            $imagePath = $this->image->storeAs('public/images/barang', $originalFileName);
         }
     
      
@@ -206,7 +206,8 @@ class BarangList extends Component
                 Storage::delete('public/images/barang/' . $this->item->image);
             }
 
-            $imagePath = $this->image->storeAs('public/images/barang', $this->image->hashName());
+            $originalFileName = $this->image->getClientOriginalName();
+            $imagePath = $this->image->storeAs('public/images/barang', $originalFileName);
             $this->item->image = basename($imagePath);
         } 
 

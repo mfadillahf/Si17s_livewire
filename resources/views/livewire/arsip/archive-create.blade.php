@@ -78,7 +78,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-12 form-group">
                                     <label class="form-label" for="berkas_surat">Berkas Surat</label>
-                                    <input type="file" wire:model.defer="berkas" class="form-control">
+                                    <input type="file" wire:model.live="berkas" class="form-control">
                                     @error('berkas') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>

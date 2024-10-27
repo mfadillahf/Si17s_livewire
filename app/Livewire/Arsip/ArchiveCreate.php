@@ -34,7 +34,8 @@ class ArchiveCreate extends Component
             'berkas' => 'required|file|mimes:pdf,doc,docx,xls,xlsx|max:10240',
         ]);
 
-        $filePath = $this->berkas->store('public/files/arsip');
+        $originalFileName = $this->berkas->getClientOriginalName();
+        $filePath = $this->berkas->storeAs('public/files/arsip', $originalFileName);
         $documentId = ($this->jenis == '1') ? 1 : 2;
 
         $dai = ModelsArchive::create([

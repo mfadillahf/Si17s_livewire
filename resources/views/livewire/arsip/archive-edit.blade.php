@@ -93,17 +93,23 @@
                     <div class="card-header">
                         <h5 class="card-title">Berkas Dokumen</h5>
                     </div>
-                    @if(count($fileLinks) > 0)
-                        <ul>
-                            @foreach ($fileLinks as $file)
-                                <li>
-                                    <a href="{{ $file['url'] }}" target="_blank">File {{ $file['name'] }}</a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <p>No files available.</p>
-                    @endif
+                        @if(count($fileLinks) > 0)
+                            <ul>
+                                @foreach ($fileLinks as $file)
+                                    <li style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <a href="{{ $file['url'] }}" target="_blank"> {{ $file['name'] }}</a>
+                                        {{-- icon hapus --}}
+                                        <button type="button" class="btn btn-danger btn-sm ms-2 d-inline-flex align-items-center" style="padding: 0.2rem 0.4rem;" wire:click="deleteFile('{{ $file['id'] }}')">
+                                            <i class="icofont-ui-close"></i>
+                                        </button>
+                                    </li>                                
+                                @endforeach
+                            </ul>
+                        @else
+                            <ul>
+                                <p>No files available.</p>
+                            </ul>
+                        @endif
                 </div>
             </div>
         </div>
@@ -113,20 +119,21 @@
             <div class="col-lg-10 col-md-12 col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Form Input Berkas</h5>
-                    </div>
-                    <div class="card-body">
+                        <h5 class="card-title mb-2">Form Input Berkas</h5>
                         <div class="row mb-3">
-                            <div class="col-12 form-group">
-                                <label class="form-label" for="berkas_surat">Upload Berkas Surat</label>
+                            <div class="col-12 md-12 form-group">
                                 <input type="file" wire:model.defer="berkas" class="form-control">
                                 @error('berkas') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                            <div class="col-12 text-end">
+                                <button type="button" class="btn btn-warning mt-2" wire:click="addFile">Tambah File</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
         
         
         

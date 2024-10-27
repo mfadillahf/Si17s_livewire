@@ -82,16 +82,16 @@ class DocumentArchive extends Component
     public function detail($id)
     {
         $archive = ModelsArchive::find($id);
-
-        $this->name = $archive->name;
+    
+        $this->date = $archive->date;
+        $this->number = $archive->number;
+        $this->subject = $archive->subject;
         $this->description = $archive->description;
-        $this->started_at = $archive->started_at;
-        $this->finished_at = $archive->finished_at;
-        $this->employee_tagging = $archive->employee_tagging;
-
-
+        $this->objective = $archive->objective;
+    
         $this->showDetail = true;
     }
+    
     
     public function closeDetail()
     {
