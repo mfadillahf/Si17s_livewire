@@ -64,8 +64,6 @@ class Agenda extends Component
                 ->paginate(5);
         }
 
-
-        
         return view('livewire.agendas.agenda', [
             'agendaKegiatan' => $data,
         ])->layout('layouts.vertical', ['title' => $this->title]);

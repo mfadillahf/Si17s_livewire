@@ -19,10 +19,10 @@
             <div class="d-flex align-items-start flex-column w-100">
                 <ul class="navbar-nav mb-auto w-100">
                     <li class="menu-label pt-0 mt-0">
-                            <!-- <small class="label-border">
+                            <small class="label-border">
                                 <div class="border_left hidden-xs"></div>
                                 <div class="border_right"></div>
-                            </small> -->
+                            </small>
                             <span>Administrasi</span>
                         </li>
                         <li class="nav-item">
@@ -42,6 +42,8 @@
                                     <!--end nav-item-->
                                 </ul><!--end nav-->
                             </div>
+                        </li> 
+                        
                             {{-- Kegiatan LPSE --}}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('agenda') }}">
@@ -49,6 +51,7 @@
                                     <span>Kegiatan LPSE</span>
                                 </a>
                             </li>
+
                             {{-- DocumentArchive --}}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('arsip') }}"> 
@@ -56,22 +59,68 @@
                                     <span>Arsip Dokumen</span>
                                 </a>
                             </li>
+                        
                     {{-- Layanan --}}
-                    {{--<li class="menu-label pt-0 mt-0">
-                        <!-- <small class="label-border">
+                    <li class="menu-label pt-0 mt-0">
+                        <small class="label-border">
                             <div class="border_left hidden-xs"></div>
                             <div class="border_right"></div>
-                        </small> -->
+                        </small> 
                         <span>Layanan</span>
-                    </li> --}}
+                    </li>
+
                     {{-- Provider --}}
-                    {{-- <li class="nav-item">
-                        <a class="nav-link"  wire::navigate href="livewire.provider">
-                            <i class="iconoir-user-badge-check menu-icon"></i>
+                    <li class="nav-item">
+                        <a class="nav-link"  href="{{ route('provider') }}">
+                            <i class="iconoir-user-star menu-icon"></i>
                             <span>Pencatatan Pendaftaran Penyedia</span>
                         </a>
-                    </li> --}}
+                    </li>
 
+                    {{-- user --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarApplications">
+                            <i class="iconoir-user menu-icon"></i>
+                            <span>User Aplikasi</span>
+                        </a>
+                        <div class="collapse " id="sidebarApplications">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('user') }}">Data User Aplikasi</a>
+                                </li><!--end nav-item-->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('user.Permintaan') }}">Data Permintaan User</a>
+                                </li>
+                                <!--end nav-item-->
+                            </ul><!--end nav-->
+                        </div>
+                    </li>
+                    
+                    {{-- laporan --}}
+                    <li class="nav-item">
+                        <a class="nav-link"  href="{{ route('provider') }}">
+                            <i class="iconoir-white-flag menu-icon"></i>
+                            <span>Pelaporan dan Konsultasi</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-label pt-0 mt-0">
+                        <small class="label-border">
+                            <div class="border_left hidden-xs"></div>
+                            <div class="border_right"></div>
+                        </small> 
+                        <span>Server,Perangkat,Jaringan</span>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"  href="{{ route('provider') }}">
+                            <i class="iconoir-user-star menu-icon"></i>
+                            <span>Pencatatan Troubleshooting</span>
+                        </a>
+                    </li>
+
+                </ul>
 
 
 

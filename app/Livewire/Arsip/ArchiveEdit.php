@@ -7,7 +7,6 @@ use Livewire\WithFileUploads;
 use App\Models\DocumentArchive as ModelsArchive;
 use App\Models\DocumentArchiveFile;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ArchiveEdit extends Component
 {
@@ -21,6 +20,7 @@ class ArchiveEdit extends Component
     public $jenis;
     public $objective;
     public $description;
+    public $document_id;
     public $berkas;
     public $fileLinks = [];
     public $toDelete = [];
@@ -35,47 +35,11 @@ class ArchiveEdit extends Component
             $this->subject = $this->archive->subject;
             $this->objective = $this->archive->objective;
             $this->description = $this->archive->description;
-            $this->berkas = $this->archive->berkas;
+
+            $this->document_id = $this->archive->document_id;
 
             $this->file();
     }
-
-    // original
-    // public function update()
-    // {
-    //     $this->validate([
-    //         'date' => 'nullable|date',
-    //         'number' => 'nullable|string',
-    //         'subject' => 'required|string',
-    //         'objective' => $this->jenis == '1' ? 'required|string' : 'nullable|string',
-    //         'description' => 'nullable|string',
-    //         'berkas' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx|max:10240',
-    //     ]);
-
-    //     $this->archive->update([
-    //         'date' => $this->date,
-    //         'number' => $this->number,
-    //         'subject' => $this->subject,
-    //         'objective' => $this->objective,
-    //         'description' => $this->description,
-    //     ]);
-
-    //     // Permanently delete files marked for deletion
-    //     foreach ($this->toDelete as $fileId) {
-    //         $file = DocumentArchiveFile::find($fileId);
-    //         if ($file && Storage::exists($file->file)) {
-    //             Storage::delete($file->file);
-    //         }
-    //         $file?->delete();
-    //     }
-
-    //     // Clear the toDelete array after deletion
-    //     $this->toDelete = [];
-
-    //     $this->dispatch('swal:edit');
-    //     return redirect('/arsip-dokumen');
-    // }
-
 
     // edited
     public function update()
@@ -85,9 +49,9 @@ class ArchiveEdit extends Component
             'date' => 'nullable|date',
             'number' => 'nullable|string',
             'subject' => 'required|string',
-            'objective' => $this->jenis == '1' ? 'required|string' : 'nullable|string',
+            'objective' => $this->document_id == '1' ? 'required|string' : ($this->document_id == '2' ? 'required|string' : 'nullable|string'),
             'description' => 'nullable|string',
-            // No need to validate 'berkas' here as it's for temporary files
+           
         ]);
 
         // Update archive details
@@ -102,7 +66,7 @@ class ArchiveEdit extends Component
         // Permanently delete files marked for deletion
         foreach ($this->toDelete as $fileId) {
             $file = DocumentArchiveFile::find($fileId);
-            if ($file && Storage::exists($file->file)) {
+            if ($file && $file->file && Storage::exists($file->file)) {
                 Storage::delete($file->file);
             }
             $file?->delete();
@@ -131,10 +95,6 @@ class ArchiveEdit extends Component
         return redirect('/arsip-dokumen');
     }
 
-
-
-
-
     public function file()
     {
         // Load all files associated with this archive
@@ -145,6 +105,9 @@ class ArchiveEdit extends Component
                 'url' => Storage::url($f->file), // Generate the file URL
             ];
         });
+
+        
+        // dd($this->fileLinks);
     }
 
 
@@ -156,43 +119,17 @@ class ArchiveEdit extends Component
         $this->toDelete[] = $fileId;
     
         // Use the reject method to remove the file from fileLinks
-        $this->fileLinks = $this->fileLinks->reject(function ($file) use ($fileId) {
+        $this->fileLinks = collect($this->fileLinks)->reject(function ($file) use ($fileId) {
             return $file['id'] == $fileId;
         });
+        
     }
     
-
-
-
-    // tambah file 
-    // public function addFile()
-    // {
-    //     $this->validate([
-    //         'berkas' => 'required|file|mimes:jpg,png,pdf,doc,docx|max:10240', 
-    //     ]);
-
-    //     $originalFileName = $this->berkas->getClientOriginalName();
-    //     $filePath = $this->berkas->storeAs('public/files/arsip', $originalFileName);
-
-    //     $nF =DocumentArchiveFile::create([
-    //         'document_archive_id' => $this->archive->id,
-    //         'file' => $filePath,
-    //     ]);
-
-    //     $this->fileLinks[] = [
-    //         'id' => $nF->id,
-    //         'url' => Storage::url($filePath),
-    //         'name' => $this->berkas->getClientOriginalName(),
-    //     ];
-
-    //     $this->reset('berkas');
-    // }
-
-    //testing
+    //edited
     public function addFile()
 {
     $this->validate([
-        'berkas' => 'required|file|mimes:jpg,png,pdf,doc,docx|max:10240',
+        'berkas' => 'required|file|mimes:jpg,png,pdf,doc,docx',
     ]);
 
     // Store the file temporarily and track it in newFiles
@@ -215,6 +152,8 @@ class ArchiveEdit extends Component
 
     public function render()
     {
+        // dd ($this->archive);
+
         return view('livewire.arsip.archive-edit', [
             ])->layout('layouts.vertical', ['title' => $this->title]);
     }

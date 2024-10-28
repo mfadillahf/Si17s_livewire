@@ -13,10 +13,10 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-pills" id="custom-tabs-one-tab" role="tablist">
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#surat-masuk" role="tab" aria-selected="true">Surat Masuk</a>
+                            <a class="nav-link {{ $activeTab == 'surat-masuk' ? 'active' : '' }}" wire:click="setActiveTab('surat-masuk')" data-bs-toggle="tab" href="#surat-masuk" role="tab" aria-selected="true">Surat Masuk</a>
                         </li>
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link" data-bs-toggle="tab" href="#surat-keluar" role="tab" aria-selected="false">Surat Keluar</a>
+                            <a class="nav-link {{ $activeTab == 'surat-keluar' ? 'active' : '' }}" wire:click="setActiveTab('surat-keluar')" data-bs-toggle="tab" href="#surat-keluar" role="tab" aria-selected="false">Surat Keluar</a>
                         </li>
                     </ul>
     
@@ -33,7 +33,7 @@
                     <!-- Tab Content -->
                     <div class="tab-content">
                         {{-- surat masuk --}}
-                        <div class="tab-pane p-3 active" id="surat-masuk" role="tabpanel">
+                       <div class="tab-pane p-3 {{ $activeTab == 'surat-masuk' ? 'active' : '' }}" id="surat-masuk" role="tabpanel">
                                 <div class="table-responsive">
                                     <table class="table table-striped sortable mb-0">
                                         <thead class="table-light">
@@ -51,7 +51,7 @@
                                                     <td>{{ $sM->number }}</td>
                                                     <td>{{ $sM->subject }}</td>
                                                     <td>
-                                                        <button  wire:click ="detail({{ $sM->id }})" class="btn btn-sm btn-info">
+                                                        <button wire:click ="detail({{ $sM->id }})" class="btn btn-sm btn-info">
                                                             <i class="fas fa-info-circle"></i>
                                                         </button>
                                                         <a href="/arsip/edit/{{$sM->id}}" class="btn btn-warning btn-sm">
@@ -73,7 +73,7 @@
                         </div>
     
                         <!-- Surat Keluar -->
-                        <div class="tab-pane p-3" id="surat-keluar" role="tabpanel">
+                        <div class="tab-pane p-3 {{ $activeTab == 'surat-keluar' ? 'active' : '' }}" id="surat-keluar" role="tabpanel">
                                 <div class="table-responsive">
                                     <table class="table table-striped sortable mb-0">
                                         <thead class="table-light">
@@ -120,7 +120,7 @@
 
 
 {{-- detail --}}
-{{-- @if($showDetail)
+@if($showDetail)
 <div wire:ignore.self class="modal fade show"  style="display: block;" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -135,50 +135,52 @@
                         <table class="table table-striped">
                             <tr>
                                 <th>Perihal</th>
-                                <td>{{ $selectedDocument->subject }}</td>
+                                <td>{{ $subject }}</td>
                             </tr>
                             <tr>
                                 <th>No. Surat</th>
-                                <td>{{ $selectedDocument->number }}</td>
+                                <td>{{ $number }}</td>
                             </tr>
 
                             {{-- Conditional fields based on document type --}}
-                            {{-- @if($documentType == 'masuk')
+                            @if($document_id == '1')
                                 <tr>
                                     <th>Pengirim</th>
-                                    <td>{{ $selectedDocument->objective }}</td> <!-- Field for Surat Masuk -->
+                                    <td>{{ $objective }}</td> <!-- Field for Surat Masuk -->
                                 </tr>
-                            @elseif($documentType == 'keluar')
+                            @elseif($document_id == '2')
                                 <tr>
                                     <th>Tujuan</th>
-                                    <td>{{ $selectedDocument->objective }}</td> <!-- Field for Surat Keluar -->
+                                    <td>{{ $objective }}</td> <!-- Field for Surat Keluar -->
                                 </tr>
                             @endif
 
                             <tr>
                                 <th>Tanggal Surat</th>
-                                <td>{{ $selectedDocument->date }}</td>
+                                <td>{{ $date ? $date->format('d F Y') : '-' }}</td>
                             </tr>
                             
                             <tr>
                                 <th>Keterangan Surat</th>
-                                <td>{{ $selectedDocument->description }}</td>
+                                <td>{{ $description }}</td>
                             </tr>
                         </table>
                     </div>
 
                     <div class="col-md-6 text-center">
                         <h6>Berkas Surat </h6>
-                        @if ($selectedDocument->berkas)
-                            <div class="d-flex flex-wrap justify-content-center">
-                                @foreach ($selectedDocument->berkas as $file)
-                                    <div class="p-2">
-                                        <a href="{{ Storage::url($file->file) }}" target="_blank" class="btn btn-secondary btn-sm">Lihat Dokumen</a>
-                                    </div>
+                        @if(count($fileLinks) > 0)
+                            <ul style="list-style: none; padding: 0; text-align: center;">
+                                @foreach ($fileLinks as $file)
+                                    <li style="margin-bottom: 8px;">
+                                        <a href="{{ $file['url'] }}" target="_blank"> {{ $file['name'] }}</a>
+                                    </li>                                
                                 @endforeach
-                            </div>
+                            </ul>
                         @else
-                            <p>Dokumen tidak tersedia</p>
+                            <ul>
+                                <p>File tidak Tersedia.</p>
+                            </ul>
                         @endif
                     </div>
                 </div>
@@ -187,7 +189,7 @@
     </div>
 </div>
 <div class="modal-backdrop fade show"></div>
-@endif --}} 
+@endif
 
 
 
@@ -225,14 +227,6 @@
 <div class="modal-backdrop fade show">
 </div>
 @endif
-
-
-
-
-
-
-
-
 
     @section('script')
     @vite(['resources/js/pages/sweet-alert.init.js'])

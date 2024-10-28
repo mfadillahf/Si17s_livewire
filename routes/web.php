@@ -14,6 +14,11 @@ use App\Livewire\Arsip\DocumentArchive;
 use App\Livewire\Arsip\ArchiveCreate;
 use App\Livewire\Arsip\ArchiveEdit;
 
+use App\Livewire\Layanan\Provider;
+use App\Livewire\Layanan\ProviderCreate;
+use App\Livewire\Layanan\ProviderEdit;
+
+use App\Livewire\User\UserAplikasi;
 
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +52,16 @@ Route::resource('foto-kegiatan',Agenda::class);
 Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
 Route::get('/arsip/create', ArchiveCreate::class)->name('arsip.create');
 Route::get('/arsip/edit/{id}', ArchiveEdit::class)->name('arsip.edit');
+
+Route::get('/layanan', Provider::class)->name('provider');
+Route::get('/layanan/create', ProviderCreate::class)->name('provider.create');
+Route::get('/layanan/edit/{id}', ProviderEdit::class)->name('provider.edit');
+
+Route::get('/user-aplikasi', UserAplikasi::class)->name('user');
+
+
+
+Route::get('/user-permintaan', UserAplikasi::class)->name('user.Permintaan');
 
 
 

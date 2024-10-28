@@ -4,6 +4,7 @@ namespace App\Livewire\Arsip;
 
 use Livewire\Component;
 use App\Models\DocumentArchive as ModelsArchive;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class DocumentArchive extends Component
@@ -11,6 +12,8 @@ class DocumentArchive extends Component
     
     public $title = 'Arsip Dokumen';
     public $tab = '';
+    public $activeTab = 'surat-masuk';
+    public $archive;
     public $keyword;
     public $date;
     public $number;
@@ -19,21 +22,44 @@ class DocumentArchive extends Component
     public $jenis = '';
     public $objective;
     public $description;
+    
+    public $document_id;
     public $berkas;
+    public $fileLinks = [];
     public $showDetail = false;
     public $showDelete = false;
     public $lastUpdatedDate;
     public $sortColumn = 'number';
     public $sortDirection = 'asc';
 
-
-
-
+    public function setActiveTab($tabId)
+{
+    $this->activeTab = $tabId;
+}
 
     public function sort($columnName){
         $this->sortColumn = $columnName;
         $this->sortDirection = $this->sortDirection == 'asc'?'desc':'asc';
     }
+
+
+
+    public function resetForm()
+    {
+        $this->date = '';
+        $this->number = '';
+        $this->subject = '';
+        $this->description = '';
+        $this->objective = '';
+        $this->document_id = '';
+        $this->berkas = [];
+        $this->resetValidation();
+
+        $this->showDetail = false;
+        $this->showDelete = false;
+    
+    }
+
     
     public function render()
     {
@@ -67,6 +93,7 @@ class DocumentArchive extends Component
         }
     
 
+        // dd($this->berkas);
 
         // Kirimkan data ke view
         return view('livewire.arsip.document-archive', [
@@ -81,13 +108,16 @@ class DocumentArchive extends Component
     // detail
     public function detail($id)
     {
-        $archive = ModelsArchive::find($id);
-    
-        $this->date = $archive->date;
-        $this->number = $archive->number;
-        $this->subject = $archive->subject;
-        $this->description = $archive->description;
-        $this->objective = $archive->objective;
+        $this->archive = ModelsArchive::with('documentArchiveFiles')->find($id);
+        $this->date = $this->archive->date ? Carbon::parse($this->archive->date) : null;
+        $this->number = $this->archive->number;
+        $this->subject = $this->archive->subject;
+        $this->description = $this->archive->description;
+        $this->objective = $this->archive->objective;
+
+        $this->document_id = $this->archive->document_id;
+
+        $this->file();
     
         $this->showDetail = true;
     }
@@ -99,8 +129,18 @@ class DocumentArchive extends Component
         $this->showDetail = false;
     }
 
-
-
+    public function file()
+    {
+        // Load all files associated with this archive
+        $this->fileLinks = $this->archive->documentArchiveFiles->map(function ($f) {
+            return [
+                'id' => $f->id,
+                'name' => pathinfo($f->file, PATHINFO_BASENAME),
+                'url' => Storage::url($f->file), // Generate the file URL
+            ];
+        });
+    }
+    
 
     // delete
     public function openDelete($id)

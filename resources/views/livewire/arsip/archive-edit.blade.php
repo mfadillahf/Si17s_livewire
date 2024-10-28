@@ -15,7 +15,7 @@
             <div class="col-lg-10 col-md-12 col-12">
                 <div class="card">
                     <div class="card-header bg-warning">
-                        <h6 class="card-title text-white">Form Update Arsip Dokumen</h6>
+                        <h6 class="card-title text-white">Update Arsip Dokumen</h6>
                     </div>
                     <div class="card-body">
                         <form wire:submit.prevent='update'>
@@ -38,35 +38,25 @@
                                     <input type="text" wire:model.defer="subject" class="form-control" placeholder="Perihal">
                                     @error('subject') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
-                                {{-- <div class="col-md-6 form-group">
-                                    <label class="form-label" for="jenis_surat">Jenis Surat</label>
-                                    <select wire:model="jenis" class="form-select" disabled>
-                                        <option value="1" {{ $jenis == '1' ? 'selected' : '' }}>Surat Masuk</option>
-                                        <option value="2" {{ $jenis == '2' ? 'selected' : '' }}>Surat Keluar</option>
-                                    </select>
-                                    @error('jenis') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div> --}}
+
+                                @if($document_id == '1')
+                                    <div class="col-md-6 form-group">
+                                        <label class="form-label" for="pengirim">Pengirim</label>
+                                        <textarea wire:model.live="objective" class="form-control" placeholder="Pengirim"></textarea>
+                                        @error('objective') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                               
+                                @elseif($document_id == '2')
+                                    <div class="col-md-6 form-group">
+                                        <label class="form-label" for="tujuan">Tujuan</label>
+                                        <textarea wire:model.live="objective" class="form-control" placeholder="Tujuan"></textarea>
+                                        @error('objective') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                @endif
                             </div>
         
-                            <!-- Conditional Fields based on selected 'jenis' -->
-                            {{-- @if($jenis == '1')
-                                <div class="row mb-3">
-                                    <div class="col-12 form-group">
-                                        <label class="form-label" for="pengirim">Pengirim</label>
-                                        <textarea wire:model.defer="objective" class="form-control" placeholder="Pengirim"></textarea>
-                                        @error('pengirim') <small class="text-danger">{{ $message }}</small> @enderror
-                                    </div>
-                                </div>
-                            @elseif($jenis == '2')
-                                <div class="row mb-3">
-                                    <div class="col-12 form-group">
-                                        <label class="form-label" for="tujuan">Tujuan</label>
-                                        <textarea wire:model.defer="objective" class="form-control" placeholder="Tujuan"></textarea>
-                                        @error('tujuan') <small class="text-danger">{{ $message }}</small> @enderror
-                                    </div>
-                                </div>
-                            @endif --}}
-
+                           
+                           
                             <div class="row mb-3">
                                 <div class="col-md-12 form-group">
                                     <label class="form-label" for="keterangan">Keterangan</label>
