@@ -122,7 +122,7 @@ class ProviderEdit extends Component
     public function addFile()
     {
         $this->validate([
-            'berkas' => 'required|file|mimes:jpg,png,pdf,doc,docx',
+            'berkas' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,jpg,png,jpeg,webp|max:10240',
         ]);
     
         // Store the file temporarily and track it in newFiles

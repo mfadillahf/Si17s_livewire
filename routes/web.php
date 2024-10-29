@@ -20,6 +20,10 @@ use App\Livewire\Layanan\ProviderEdit;
 
 use App\Livewire\User\UserAplikasi;
 
+use App\Livewire\Troubleshoots\Trouble;
+use App\Livewire\Troubleshoots\TroubleCreate;
+use App\Livewire\Troubleshoots\TroubleEdit;
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\RoutingController;
@@ -58,10 +62,13 @@ Route::get('/layanan/create', ProviderCreate::class)->name('provider.create');
 Route::get('/layanan/edit/{id}', ProviderEdit::class)->name('provider.edit');
 
 Route::get('/user-aplikasi', UserAplikasi::class)->name('user');
-
-
-
 Route::get('/user-permintaan', UserAplikasi::class)->name('user.Permintaan');
+
+Route::get('/troubleshooting', Trouble::class)->name('trouble');
+Route::get('/troubleshooting/create', TroubleCreate::class)->name('trouble.create');
+Route::get('/troubleshooting/edit/{id}', TroubleEdit::class)->name('trouble.edit');
+
+
 
 
 

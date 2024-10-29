@@ -83,6 +83,7 @@
                 </div>
             </div>
         </div>
+    </div>
         
         
         
@@ -91,3 +92,4 @@
     @vite(['resources/js/pages/sweet-alert.init.js'])
     @endsection
 </div>
+

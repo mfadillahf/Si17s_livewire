@@ -114,8 +114,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link"  href="{{ route('provider') }}">
-                            <i class="iconoir-user-star menu-icon"></i>
+                        <a class="nav-link"  href="{{ route('trouble') }}">
+                            <i class="iconoir-wifi menu-icon"></i>
                             <span>Pencatatan Troubleshooting</span>
                         </a>
                     </li>

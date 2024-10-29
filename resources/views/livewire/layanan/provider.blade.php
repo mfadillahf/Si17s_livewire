@@ -20,11 +20,8 @@
                             <img src="/images/barang/box.png" class="img-fluid">  Pendaftaran Penyedia/Perorangan
                         </a>
                     </div>
-                </div>
+                
             
-                {{-- tab --}}
-                <div class="tab-content">
-                    <div class="tab-pane p-3 active" id="kegiatan" role="tabpanel">
                         <div class="table-responsive">
                             <table class="table table-striped sortable mb-0">
                                 <thead class="table-light">
@@ -48,7 +45,7 @@
                                 </tr>
                             @else
                                 @foreach ($layanan as $ln)
-                                <tr wire:key="agenda-{{ $ln->id }}">
+                                <tr wire:key="provider-{{ $ln->id }}">
                                     <td>{{ $ln->date }}</td>
                                     <td>{{ $ln->npwp }}</td>
                                     <td>{{ $ln->company_name }}</td>
@@ -75,7 +72,6 @@
                         {{ $layanan->links() }}
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 

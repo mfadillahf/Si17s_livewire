@@ -97,7 +97,6 @@ class Provider extends Component
             $this->showDetail = true;
         }
         
-        
         public function closeDetail()
         {
             $this->resetForm();
@@ -116,7 +115,6 @@ class Provider extends Component
             });
         }
         
-    
         // delete
         public function openDelete($id)
         {

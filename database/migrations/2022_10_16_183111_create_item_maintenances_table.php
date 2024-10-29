@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('item_id')
-                ->constrained()
+                ->constrained('items')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
