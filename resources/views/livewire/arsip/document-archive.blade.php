@@ -23,7 +23,7 @@
                     <!-- Search and Add Document Button -->
                     <div class="mb-3 d-flex justify-content-end">
                         <div>
-                            <input type="text" class="form-control" wire:model="keyword" placeholder="Cari Dokumen...">
+                            <input type="text" class="form-control" wire:model.defer="keyword" placeholder="Cari Dokumen...">
                         </div>
                         <a href="/arsip/create" class="btn btn-primary ms-2" >
                             <img src="/images/barang/box.png" class="img-fluid"> Tambah Dokumen

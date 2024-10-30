@@ -21,24 +21,24 @@ return new class extends Migration
             $table->string('identity_type')->nullable();
             $table->string('user_type')->nullable();
             $table->string('app_type')->nullable();
-            $table->integer('is_auditor')->default(0)->nullable();
+            $table->integer('is_auditor')->default(0)->nullable(); //0 non-auditor, 1 auditor
             $table->timestamps();
 
             $table->foreignId('user_type_id')
                 ->nullable()
-                ->constrained()
+                ->constrained('user_types')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreignId('report_category_id')
                 ->nullable()
-                ->constrained()
+                ->constrained('report_categories')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreignId('user_id')
                 ->nullable()
-                ->constrained()
+                ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

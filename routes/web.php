@@ -19,6 +19,8 @@ use App\Livewire\Layanan\ProviderCreate;
 use App\Livewire\Layanan\ProviderEdit;
 
 use App\Livewire\User\UserAplikasi;
+use App\Livewire\User\UserCreate;
+use App\Livewire\User\UserEdit;
 
 use App\Livewire\Troubleshoots\Trouble;
 use App\Livewire\Troubleshoots\TroubleCreate;
@@ -62,7 +64,10 @@ Route::get('/layanan/create', ProviderCreate::class)->name('provider.create');
 Route::get('/layanan/edit/{id}', ProviderEdit::class)->name('provider.edit');
 
 Route::get('/user-aplikasi', UserAplikasi::class)->name('user');
-Route::get('/user-permintaan', UserAplikasi::class)->name('user.Permintaan');
+Route::get('/user-aplikasi/create', UserCreate::class)->name('user.create');
+Route::get('/user-aplikasi/edit/{id}', UserEdit::class)->name('user.edit');
+
+Route::get('/user-permintaan', UserCreate::class)->name('user.permintaan');
 
 Route::get('/troubleshooting', Trouble::class)->name('trouble');
 Route::get('/troubleshooting/create', TroubleCreate::class)->name('trouble.create');

@@ -90,7 +90,7 @@
                                     <a class="nav-link" href="{{ route('user') }}">Data User Aplikasi</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('user.Permintaan') }}">Data Permintaan User</a>
+                                    <a class="nav-link" href="{{ route('user.permintaan') }}">Data Permintaan User</a>
                                 </li>
                                 <!--end nav-item-->
                             </ul><!--end nav-->
