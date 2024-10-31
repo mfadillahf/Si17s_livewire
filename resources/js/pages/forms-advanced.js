@@ -8,14 +8,55 @@ import Huebee from 'huebee/dist/huebee.pkgd'
 import { Datepicker, DateRangePicker } from 'vanillajs-datepicker';
 import IMask from 'imask'
 
-new Selectr('#default');
-new Selectr('#multiSelect',{
-    multiple: true
-});
-new Selectr('#taggableSelect',{
-    taggable: true,
-    tagSeperators: [",", "|"]
-});
+// JS selectr edit
+let selectrInstances = {};
+
+function initializeSelectr() {
+    // Hancurkan instansi Selectr yang ada sebelum inisialisasi baru
+    if (selectrInstances.default) {
+        selectrInstances.default.destroy();
+    }
+    if (selectrInstances.multiSelect) {
+        selectrInstances.multiSelect.destroy();
+    }
+    if (selectrInstances.taggableSelect) {
+        selectrInstances.taggableSelect.destroy();
+    }
+
+    // Inisialisasi Selectr baru
+    if (document.querySelector('#default')) {
+        selectrInstances.default = new Selectr('#default');
+    }
+    if (document.querySelector('#multiSelect')) {
+        selectrInstances.multiSelect = new Selectr('#multiSelect', {
+            multiple: true
+        });
+    }
+    if (document.querySelector('#taggableSelect')) {
+        selectrInstances.taggableSelect = new Selectr('#taggableSelect', {
+            taggable: true,
+            tagSeperators: [",", "|"]
+        });
+    }
+}
+
+// Inisialisasi Selectr pertama kali saat halaman di-load
+document.addEventListener('DOMContentLoaded', initializeSelectr);
+
+// Inisialisasi ulang Selectr setiap kali Livewire melakukan render ulang
+document.addEventListener('livewire:load', initializeSelectr);
+document.addEventListener('livewire:rendered', initializeSelectr);
+
+
+// js selecrt original
+// new Selectr('#default');
+// new Selectr('#multiSelect',{
+//     multiple: true
+// });
+// new Selectr('#taggableSelect',{
+//     taggable: true,
+//     tagSeperators: [",", "|"]
+// });
  
 // color
 

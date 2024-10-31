@@ -26,6 +26,9 @@ use App\Livewire\Troubleshoots\Trouble;
 use App\Livewire\Troubleshoots\TroubleCreate;
 use App\Livewire\Troubleshoots\TroubleEdit;
 
+use App\Livewire\Pengaturan\DataUser;
+use App\Livewire\Pengaturan\DataCreate;
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\RoutingController;
@@ -44,39 +47,54 @@ use App\Http\Controllers\RoutingController;
 
 // template
 require __DIR__ . '/auth.php';
+
 // administrasi
 Route::get('/dashboard', Dashboard::class);
 
+// item
 Route::get('/barang', BarangList::class)->name('barang');
 Route::resource('foto-barang',BarangList::class);
-
 Route::get('/maintenance-barang', BarangMaintenance::class)->name('maintenance');
 
+// ageda
 Route::get('/agenda', Agenda::class)->name('agenda');
 Route::resource('foto-kegiatan',Agenda::class);
 
+// dokumen arsip
 Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
 Route::get('/arsip/create', ArchiveCreate::class)->name('arsip.create');
 Route::get('/arsip/edit/{id}', ArchiveEdit::class)->name('arsip.edit');
 
+// penyedia
 Route::get('/layanan', Provider::class)->name('provider');
 Route::get('/layanan/create', ProviderCreate::class)->name('provider.create');
 Route::get('/layanan/edit/{id}', ProviderEdit::class)->name('provider.edit');
 
+// user app
 Route::get('/user-aplikasi', UserAplikasi::class)->name('user');
 Route::get('/user-aplikasi/create', UserCreate::class)->name('user.create');
 Route::get('/user-aplikasi/edit/{id}', UserEdit::class)->name('user.edit');
 
+//user req
 Route::get('/user-permintaan', UserCreate::class)->name('user.permintaan');
 
+
+// troubleshooting
 Route::get('/troubleshooting', Trouble::class)->name('trouble');
 Route::get('/troubleshooting/create', TroubleCreate::class)->name('trouble.create');
 Route::get('/troubleshooting/edit/{id}', TroubleEdit::class)->name('trouble.edit');
 
 
+// Pengaturan
+Route::get('/data-user', DataUser::class)->name('datauser');
+Route::get('/data-user/create', DataCreate::class)->name('datauser.create');
 
 
 
+
+
+
+// template
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('', [RoutingController::class, 'index'])->name('root');
     Route::get('/home', fn() => view('livewire.dashboard'))->name('home');

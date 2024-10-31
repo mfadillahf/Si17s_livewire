@@ -105,6 +105,7 @@
                         </a>
                     </li>
 
+                    {{-- server --}}
                     <li class="menu-label pt-0 mt-0">
                         <small class="label-border">
                             <div class="border_left hidden-xs"></div>
@@ -120,6 +121,54 @@
                         </a>
                     </li>
 
+                    {{-- Kunjungan --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sidebarAnalytics" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarAnalytics">
+                            <i class="iconoir-community menu-icon"></i>
+                            <span>Kunjungan Ruang Server</span>
+                        </a>
+                        <div class="collapse " id="sidebarAnalytics">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('user') }}">Daftar Tamu Ruang Server</a>
+                                </li><!--end nav-item-->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('user.permintaan') }}">Daftar instansi Ruang Server</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('user.permintaan') }}">Daftar Kunjungan</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('user.permintaan') }}">Data Aset Ruang Server</a>
+                                </li>
+                                <!--end nav-item-->
+                            </ul><!--end nav-->
+                        </div>
+                    </li>
+
+                    {{-- Pengaturan --}}
+                    <li class="menu-label pt-0 mt-0">
+                        <small class="label-border">
+                            <div class="border_left hidden-xs"></div>
+                            <div class="border_right"></div>
+                        </small> 
+                        <span>Pengaturan</span>
+                    </li>
+                    {{-- datauser --}}
+                    <li class="nav-item">
+                        <a class="nav-link"  href="{{ route('datauser') }}">
+                            <i class="iconoir-user-circle menu-icon"></i>
+                            <span>User</span>
+                        </a>
+                    </li>
+                    {{-- reset password --}}
+                    <li class="nav-item">
+                        <a class="nav-link"  href="{{ route('provider') }}">
+                            <i class="iconoir-lock menu-icon"></i>
+                            <span>Change Password</span>
+                        </a>
+                    </li>
                 </ul>
 
 

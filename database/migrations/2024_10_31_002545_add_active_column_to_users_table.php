@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('active')->default(1); // Menambah kolom active dengan default 1
+            $table->integer('active')->default(1);
         });
     }
 

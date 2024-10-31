@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Daftar Arsip Dokumen</h4>
+                    <h4 class="card-title">Daftar User Aplikasi</h4>
                 </div>
                 <div class="card-body pt-0">
                     <!-- Nav tabs -->
