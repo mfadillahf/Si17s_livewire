@@ -28,6 +28,8 @@ use App\Livewire\Troubleshoots\TroubleEdit;
 
 use App\Livewire\Pengaturan\DataUser;
 use App\Livewire\Pengaturan\DataCreate;
+use App\Livewire\Pengaturan\DataEdit;
+use App\Livewire\Pengaturan\ChangePassword;
 
 use Illuminate\Support\Facades\Route;
 
@@ -88,8 +90,8 @@ Route::get('/troubleshooting/edit/{id}', TroubleEdit::class)->name('trouble.edit
 // Pengaturan
 Route::get('/data-user', DataUser::class)->name('datauser');
 Route::get('/data-user/create', DataCreate::class)->name('datauser.create');
-
-
+Route::get('/data-user/edit/{id}', DataEdit::class)->name('datauser.edit');
+Route::get('/change-password', ChangePassword::class)->name('pass');
 
 
 

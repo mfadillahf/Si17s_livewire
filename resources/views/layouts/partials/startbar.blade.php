@@ -164,7 +164,7 @@
                     </li>
                     {{-- reset password --}}
                     <li class="nav-item">
-                        <a class="nav-link"  href="{{ route('provider') }}">
+                        <a class="nav-link"  href="{{ route('pass') }}">
                             <i class="iconoir-lock menu-icon"></i>
                             <span>Change Password</span>
                         </a>

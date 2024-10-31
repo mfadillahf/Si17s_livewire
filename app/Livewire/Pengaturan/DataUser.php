@@ -10,12 +10,14 @@ class DataUser extends Component
 {
     public $title = 'Data User';
     public $user;
+    public $user_id;
     public $name;
     public $email;
     public $password;
     public $confirm;
     public $role;
     public $showDetail = false;
+    public $showGanti = false;
     public $showDelete = false;
     public $lastUpdatedDate;
     public $datauser_id;
@@ -64,8 +66,54 @@ class DataUser extends Component
     }
 
 
-    public function reset()
+    public function openPassword($id)
     {
+        $this -> user_id = $id;
+        $this->showGanti = true;
+    }
+
+    public function gantiPassword()
+    {
+        // Temukan user berdasarkan userId
+        $us = ModelsDataUser::find($this -> user_id);
+
+        // Ganti password ke '123456'
+        $us->password = bcrypt('123456');
+        $us->save();
+
+
+        $this->showGanti = false;
+        $this->dispatch('swal:reset');
+    }
+
+    public function closePassword()
+    {
+        $this->showGanti = false;
+        $this->dispatch('swal:cancel');
+    }
+
+    public function openDelete($id)
+    {
+        $this -> user_id = $id;
+        $a = ModelsDataUser::find($id);
+        $this->lastUpdatedDate = $a->updated_at->format('d-m-Y');
+        $this->showDelete = true;
+    }
+
+    public function closeDelete()
+    {
+        $this->showDelete = false;
+        $this->dispatch('swal:cancel');
+    }
+    
+    
+    public function delete()
+    {
+        $a = ModelsDataUser::find($this -> user_id);
+        $a->delete();
         
+        
+        $this->showDelete = false;
+        $this->dispatch('swal:delete');
     }
 }

@@ -47,31 +47,42 @@ window.addEventListener('swal:cancel', function () {
   })
 });
 
-
-window.addEventListener('swal:reset', function() {
+window.addEventListener('swal:reset', function () {
   Swal.fire({
-    icon: 'warning',
-    title: 'Are you sure?',
-    text: "This will reset the user's password to '123456'!",
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, reset it!',
-    cancelButtonText: 'Cancel'
-}).then((result) => {
-  if (result.isConfirmed) {
-    // Call the Livewire resetPassword method directly
-    Livewire.components.getComponent('dataUser').resetPassword(userId);
-    
-    // Optionally show success message after reset
-    Swal.fire(
-        'Reset!',
-        'The password has been reset to 123456.',
-        'success'
-    );
-  }
-  });
-})
+    icon: 'success',
+    title: 'Password berhasil direset',
+    timer: 1000
+  })
+});
+
+
+// window.addEventListener('swal:reset', function(event) {
+//   let userId = event.detail.userId; //
+  
+//   Swal.fire({
+//     icon: 'warning',
+//     title: 'Are you sure?',
+//     text: "This will reset the user's password to '123456'!",
+//     showCancelButton: true,
+//     confirmButtonColor: '#3085d6',
+//     cancelButtonColor: '#d33',
+//     confirmButtonText: 'Yes, reset it!',
+//     cancelButtonText: 'Cancel'
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       // Panggil method Livewire dengan dispatch
+//       window.livewire.dispatch('resetPassword', { userId: userId });
+      
+//       // Tampilkan pesan sukses setelah reset
+//       Swal.fire(
+//         'Reset!',
+//         'The password has been reset to 123456.',
+//         'success'
+//       );
+//     }
+//   });
+// });
+
 
 
 // document.getElementById('titleText').addEventListener("click", function () {

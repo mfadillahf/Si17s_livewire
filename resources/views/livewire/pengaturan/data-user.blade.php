@@ -37,12 +37,12 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $dU->name }}</td>
                                         <td>{{ $dU->email }}</td>
-                                        <td>{{ $dU->roles }}</td>
+                                        <td>{{ $dU->roles?->pluck('name')->implode(', ') }}</td>
                                         <td>
-                                            <button wire:click ="reset({{ $dU->id }})" class="btn btn-sm btn-info">
+                                            <button wire:click ="openPassword({{ $dU->id }})" class="btn btn-sm btn-info">
                                                 <i class="icofont-ui-reply"></i>
                                             </button>
-                                            <a href="/user-data/edit/{{$dU->id}}" class="btn btn-warning btn-sm">
+                                            <a href="/data-user/edit/{{$dU->id}}" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-pen-square"></i></a>
                                             <button wire:click="openDelete({{ $dU->id }})" class="btn btn-danger btn-sm">
                                                 <i class="fas fa-trash-alt"></i>
@@ -58,9 +58,36 @@
                         </table>
                         {{ $dataUser->links() }}
                     </div>
+                </div>
             </div>
+        </div>
     </div>
 
+
+    {{-- reset --}}
+    @if($showGanti)
+    <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h6 class="modal-title m-0">Konfirmasi</h6>
+                    <button type="button" class="btn-close" wire:click="closePassword" aria-label="Close"></button>
+                </div><!--end modal-header-->
+                <div class="modal-body text-center">
+                    <img src="/images/extra/card/infomax.png" alt="Warning" class="img-fluid mb-3" style="width: 80px;">
+                    <h5>Apakah kamu yakin?</h5>
+                    <p>*Setelah direset, kata sandi diperbaharui menjadi <strong class="text-danger">123456</strong></p>
+                </div><!--end modal-body-->
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closePassword">Cancel</button>
+                    <button id="warningConfirm" type="button" class="btn btn-info btn-sm" wire:click.prevent="gantiPassword">Reset</button>
+                </div><!--end modal-footer-->
+            </div><!--end modal-content-->
+        </div><!--end modal-dialog-->
+    </div>
+
+    <div class="modal-backdrop fade show"></div>
+@endif
 
 
 
@@ -68,7 +95,7 @@
 
 
 {{-- delete --}}
-{{-- @if($showDelete)
+@if($showDelete)
 <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -100,7 +127,7 @@
 
 <div class="modal-backdrop fade show">
 </div>
-@endif --}}
+@endif
 
     @section('script')
     @vite(['resources/js/pages/sweet-alert.init.js'])
