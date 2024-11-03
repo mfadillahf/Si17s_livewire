@@ -4,12 +4,11 @@ namespace App\Livewire\Agendas;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\Title;
 use App\Models\Agenda as ModelsAgenda;
 use App\Models\AgendaImage;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+
 
 use Livewire\Attributes\Validate;
 

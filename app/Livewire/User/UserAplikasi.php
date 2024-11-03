@@ -43,19 +43,19 @@ class UserAplikasi extends Component
     }
 
     public function resetForm()
-{
-    $this->is_auditor = null;
-    $this->user_identity = null;
-    $this->name = '';
-    $this->email = '';
-    $this->phone_number = '';
-    $this->identity_number = '';
-    $this->identity_type = '';
-    $this->user_type = '';
-    $this->app_type = '';
-    $this->user_type_id = null;
-    $this->report_category_id = null;
-}
+    {
+        $this->is_auditor = null;
+        $this->user_identity = null;
+        $this->name = '';
+        $this->email = '';
+        $this->phone_number = '';
+        $this->identity_number = '';
+        $this->identity_type = '';
+        $this->user_type = '';
+        $this->app_type = '';
+        $this->user_type_id = null;
+        $this->report_category_id = null;
+    }
 
 
     public function render()

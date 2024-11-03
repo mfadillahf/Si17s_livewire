@@ -24,13 +24,13 @@ return new class extends Migration
 
             $table->foreignId('institute_id')
                 ->nullable()
-                ->constrained()
+                ->constrained('institutes')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreignId('document_archive_id')
                 ->nullable()
-                ->constrained()
+                ->constrained('document_archives')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

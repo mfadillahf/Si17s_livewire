@@ -22,6 +22,10 @@ use App\Livewire\User\UserAplikasi;
 use App\Livewire\User\UserCreate;
 use App\Livewire\User\UserEdit;
 
+use App\Livewire\Request\UserRequest;
+use App\Livewire\Request\RequestCreate;
+use App\Livewire\Request\RequestEdit;
+
 use App\Livewire\Troubleshoots\Trouble;
 use App\Livewire\Troubleshoots\TroubleCreate;
 use App\Livewire\Troubleshoots\TroubleEdit;
@@ -34,7 +38,6 @@ use App\Livewire\Pengaturan\ChangePassword;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\RoutingController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +81,9 @@ Route::get('/user-aplikasi/create', UserCreate::class)->name('user.create');
 Route::get('/user-aplikasi/edit/{id}', UserEdit::class)->name('user.edit');
 
 //user req
-Route::get('/user-permintaan', UserCreate::class)->name('user.permintaan');
+Route::get('/user-permintaan', UserRequest::class)->name('user.permintaan');
+Route::get('/user-permintaan/create', RequestCreate::class)->name('permintaan.create');
+Route::get('/user-permintaan/edit{id}', RequestEdit::class)->name('permintaan.edit');
 
 
 // troubleshooting

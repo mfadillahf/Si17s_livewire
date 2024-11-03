@@ -37,13 +37,13 @@
                                     <div class="col-6 form-group">
                                         <label class="form-label" for="userid">User ID</label>
                                         <input type="text" wire:model.defer="user_identity" class="form-control" placeholder="User ID">
-                                        <small class="form-text text-muted">User ID di Aplikasi</small>
+                                        <small class="badge bg-info-subtle text-info">User ID di Aplikasi</small>
                                         @error('user_identity') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                     <div class="col-6 form-group">
                                         <label class="form-label" for="">NIP/NIK</label>
                                         <input type="text" wire:model.defer="identity_number" class="form-control" placeholder="No. Identitas">
-                                        <small class="form-text text-muted">Input No. Identitas (Pilih Salah Satu)</small>
+                                        <small class="badge bg-info-subtle text-info">Input No. Identitas (Pilih Salah Satu)</small>
                                         @error('identity_number') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
@@ -104,13 +104,13 @@
                                     <div class="col-6 form-group">
                                         <label class="form-label" for="userid">User ID</label>
                                         <input type="text" wire:model.defer="user_identity" class="form-control" placeholder="User ID">
-                                        <small class="form-text text-muted">User ID di Aplikasi</small>
+                                        <small class="badge bg-info-subtle text-info">User ID di Aplikasi</small>
                                         @error('user_identity') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                     <div class="col-6 form-group">
                                         <label class="form-label" for="">NIP/NRP</label>
                                         <input type="text" wire:model.defer="identity_number" class="form-control" placeholder="No. Identitas">
-                                        <small class="form-text text-muted">Input No. Identitas (Pilih Salah Satu)</small>
+                                        <small class="badge bg-info-subtle text-info">Input No. Identitas (Pilih Salah Satu)</small>
                                         @error('identity_number') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
