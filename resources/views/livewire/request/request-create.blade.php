@@ -57,7 +57,7 @@
                                         <label class="form-label" for="">Non-Auditor</label>
                                         <select id="multiSelect" wire:model.defer='is_auditor'class="form-select" multiple>
                                             <option value= null  disabled selected>Pilih Non-Auditor</option>
-                                            @foreach ($noa as $rN)
+                                            @foreach ($rnoa as $rN)
                                             <option value="{{ $rN->id }}">{{ $rN->name }} | {{ $rN->identity_number }}</option>
                                             @endforeach 
                                         </select>
@@ -123,7 +123,7 @@
                                         <label class="form-label" for="">Auditor</label>
                                         <select class="form-select" id="multiSelect" class="form-control" wire:model.defer='selected_auditor' multiple>
                                             <option value= null  disabled selected>Pilih Auditor</option>
-                                            @foreach ($au as $rN)
+                                            @foreach ($rau as $rN)
                                             <option value="{{ $rN->id }}">{{ $rN->name }} | {{ $rN->identity_number }}</option>
                                             @endforeach 
                                         </select>
