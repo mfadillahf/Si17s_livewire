@@ -55,8 +55,8 @@
                                 <div class="row mb-3">
                                     <div class="col-12 form-group">
                                         <label class="form-label" for="">Non-Auditor</label>
-                                        <select id="multiSelect" wire:model.defer='is_auditor'class="form-select" multiple>
-                                            <option value= null  disabled selected>Pilih Non-Auditor</option>
+                                        <select id="multiSelect" wire:model.defer='appUsers'class="form-select" multiple>
+                                            <option value=""  disabled selected>Pilih Non-Auditor</option>
                                             @foreach ($rnoa as $rN)
                                             <option value="{{ $rN->id }}">{{ $rN->name }} | {{ $rN->identity_number }}</option>
                                             @endforeach 
@@ -121,8 +121,8 @@
                                 <div class="row mb-3">
                                     <div class="col-12 form-group">
                                         <label class="form-label" for="">Auditor</label>
-                                        <select class="form-select" id="multiSelect" class="form-control" wire:model.defer='selected_auditor' multiple>
-                                            <option value= null  disabled selected>Pilih Auditor</option>
+                                        <select class="form-select" id="multiSelect" class="form-control" wire:model.defer='appUsers' multiple>
+                                            <option value=""  disabled selected>Pilih Auditor</option>
                                             @foreach ($rau as $rN)
                                             <option value="{{ $rN->id }}">{{ $rN->name }} | {{ $rN->identity_number }}</option>
                                             @endforeach 
@@ -233,4 +233,5 @@
     @vite(['resources/js/pages/forms-advanced.js'])
     @vite(['resources/js/pages/sweet-alert.init.js'])
     @endsection
+    
 </div>

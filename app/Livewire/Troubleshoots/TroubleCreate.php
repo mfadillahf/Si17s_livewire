@@ -30,7 +30,7 @@ class TroubleCreate extends Component
         ]);
 
         $originalFileName = $this->berkas->getClientOriginalName();
-        $filePath = $this->berkas->storeAs('public/files/troubleshooting', $originalFileName);
+        $filePath = $this->berkas->storeAs('public/files/consultations', $originalFileName);
 
         $tsr = ModelsTroubleshoot::create([
             'date' => $this->date,

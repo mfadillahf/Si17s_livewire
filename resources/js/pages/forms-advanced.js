@@ -12,28 +12,49 @@ import IMask from 'imask'
 let selectrInstances = {};
 
 function initializeSelectr() {
+    // Pastikan Selectr tersedia sebelum melanjutkan
+    if (typeof Selectr === 'undefined') {
+        console.warn("Selectr tidak ditemukan. Pastikan Selectr telah di-load.");
+        return;
+    }
+
     // Hancurkan instansi Selectr yang ada sebelum inisialisasi baru
     Object.keys(selectrInstances).forEach(key => {
         if (selectrInstances[key]) {
-            selectrInstances[key].destroy();
+            try {
+                selectrInstances[key].destroy();
+            } catch (error) {
+                console.error(`Gagal menghancurkan instansi Selectr: ${key}`, error);
+            }
         }
     });
 
-    // Inisialisasi Selectr baru
-    if (document.querySelector('#default')) {
-        selectrInstances.default = new Selectr('#default');
-    }
-    if (document.querySelector('#multiSelect')) {
-        selectrInstances.multiSelect = new Selectr('#multiSelect', {
-            multiple: true
-        });
-    }
-    if (document.querySelector('#taggableSelect')) {
-        selectrInstances.taggableSelect = new Selectr('#taggableSelect', {
-            taggable: true,
-            tagSeperators: [",", "|"]
-        });
-    }
+    // Inisialisasi Selectr baru dengan debounce
+    debounce(() => {
+        if (document.querySelector('#default')) {
+            selectrInstances.default = new Selectr('#default');
+        }
+        if (document.querySelector('#multiSelect')) {
+            selectrInstances.multiSelect = new Selectr('#multiSelect', {
+                multiple: true
+            });
+        }
+        if (document.querySelector('#taggableSelect')) {
+            selectrInstances.taggableSelect = new Selectr('#taggableSelect', {
+                taggable: true,
+                tagSeparators: [",", "|"]
+            });
+        }
+    }, 100)(); // Delay 100 ms untuk mencegah inisialisasi berlebihan
+}
+
+// Fungsi debounce
+function debounce(func, delay) {
+    let timer;
+    return function () {
+        clearTimeout(timer);
+        timer = setTimeout(func, delay);
+    };
 }
 
 // Inisialisasi Selectr pertama kali saat halaman di-load
@@ -41,6 +62,8 @@ document.addEventListener('DOMContentLoaded', initializeSelectr);
 
 // Inisialisasi ulang Selectr setiap kali Livewire melakukan render ulang
 document.addEventListener('livewire:rendered', initializeSelectr);
+
+
 
 
 // js selecrt original
@@ -61,25 +84,25 @@ document.addEventListener('livewire:rendered', initializeSelectr);
 //     saturations: 3,
 //   });
 
-// // Datepicker
+// Datepicker
 
-// var elem = document.querySelector('input[name="foo"]');
-// new Datepicker(elem, {
-// }); 
+var elem = document.querySelector('input[name="foo"]');
+new Datepicker(elem, {
+}); 
 
 
-// elem = document.getElementById('inline_calendar');
-// new Datepicker(elem, {
-//   // ...options
-// });
+elem = document.getElementById('inline_calendar');
+new Datepicker(elem, {
+  // ...options
+});
 
-// elem = document.getElementById('DateRange');
-// new DateRangePicker(elem, {
-//   format: 'yyyy-mm-dd', // Contoh format tanggal
-//   language: 'en',       // Atur bahasa sesuai kebutuhan
-//   minDate: new Date(),  // Contoh batasan tanggal, mulai dari hari ini
-//   // ...options
-// }); 
+elem = document.getElementById('DateRange');
+new DateRangePicker(elem, {
+  format: 'yyyy-mm-dd', // Contoh format tanggal
+  language: 'en',       // Atur bahasa sesuai kebutuhan
+  minDate: new Date(),  // Contoh batasan tanggal, mulai dari hari ini
+  // ...options
+}); 
 
 // // Imask
 

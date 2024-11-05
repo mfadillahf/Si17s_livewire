@@ -26,6 +26,10 @@ use App\Livewire\Request\UserRequest;
 use App\Livewire\Request\RequestCreate;
 use App\Livewire\Request\RequestEdit;
 
+use App\Livewire\Consultations\Konsultasi;
+use App\Livewire\Consultations\KonsultasiCreate;
+use App\Livewire\Consultations\KonsultasiEdit;
+
 use App\Livewire\Troubleshoots\Trouble;
 use App\Livewire\Troubleshoots\TroubleCreate;
 use App\Livewire\Troubleshoots\TroubleEdit;
@@ -85,12 +89,15 @@ Route::get('/user-permintaan', UserRequest::class)->name('user.permintaan');
 Route::get('/user-permintaan/create', RequestCreate::class)->name('permintaan.create');
 Route::get('/user-permintaan/edit{id}', RequestEdit::class)->name('permintaan.edit');
 
+// konsul
+Route::get('/konsultasi', Konsultasi::class)->name('konsultasi');
+Route::get('/konsultasi/create', KonsultasiCreate::class)->name('konsultasi.create');
+Route::get('/konsultasi/edit/{id}', KonsultasiEdit::class)->name('konsultasi.edit');
 
 // troubleshooting
 Route::get('/troubleshooting', Trouble::class)->name('trouble');
 Route::get('/troubleshooting/create', TroubleCreate::class)->name('trouble.create');
 Route::get('/troubleshooting/edit/{id}', TroubleEdit::class)->name('trouble.edit');
-
 
 // Pengaturan
 Route::get('/data-user', DataUser::class)->name('datauser');

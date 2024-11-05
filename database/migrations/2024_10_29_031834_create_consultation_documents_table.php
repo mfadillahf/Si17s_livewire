@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('consultation_report_id')
-                ->constrained()
+                ->constrained('consultation_reports')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

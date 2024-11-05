@@ -99,7 +99,7 @@
                     
                     {{-- laporan --}}
                     <li class="nav-item">
-                        <a class="nav-link"  href="{{ route('provider') }}">
+                        <a class="nav-link"  href="{{ route('konsultasi') }}">
                             <i class="iconoir-white-flag menu-icon"></i>
                             <span>Pelaporan dan Konsultasi</span>
                         </a>

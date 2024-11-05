@@ -28,16 +28,16 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('media_report_id')
-                ->constrained()
+                ->constrained('media_reports')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreignId('report_category_id')
-                ->constrained()
+                ->constrained('report_categories')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreignId('user_id')
                 ->nullable()
-                ->constrained()
+                ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 

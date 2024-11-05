@@ -21,7 +21,6 @@ class Trouble extends Component
     public $showDetail = false;
     public $showDelete = false;
     public $lastUpdatedDate;
-    
     public $trouble_id;
     public $keyword;
     public $sortColumn = 'description';

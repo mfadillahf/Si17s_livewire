@@ -48,7 +48,7 @@ class UserEdit extends Component
             'user_identity' => 'nullable|integer',
             'name' => 'required|string',
             'email' => 'nullable|email',
-            'phone_number' => 'nullable|string',
+            'phone_number' => 'nullable|string|max:15|regex:/^08\d{8,13}$/',
             'identity_number' => 'nullable|string',
             'identity_type' => 'nullable|string',
             'user_type' => 'nullable|string',

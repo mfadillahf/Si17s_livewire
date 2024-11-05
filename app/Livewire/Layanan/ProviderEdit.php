@@ -52,7 +52,7 @@ class ProviderEdit extends Component
             'directur_name' => 'nullable|string',
             'directur_identity_number' => 'nullable|string',
             'email' => 'nullable|email',
-            'phone_number' => 'nullable|string',
+            'phone_number' => 'nullable|string|max:15|regex:/^08\d{8,13}$/',
         ]);
 
         $this->provider->update([

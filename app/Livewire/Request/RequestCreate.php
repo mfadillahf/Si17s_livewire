@@ -21,7 +21,7 @@ class RequestCreate extends Component
     public $institute; 
     public $audited_packages; 
     public $institute_id; 
-    
+
     public $document_archive_id = null;
     public $showDetail = false;
 
@@ -33,11 +33,15 @@ class RequestCreate extends Component
     public $fileLinks = []; 
     public $document_id;
 
+    public $appUsers = [];
+     // Tambahkan properti untuk menyimpan pilihan Non-Auditor
+
+
+
     public function showDocumentDetails($id)
     {
         $this->document = DocumentArchive::with('documentArchiveFiles')->find($id);
         
-        // Set properties for modal
         $this->date = $this->document->date ? Carbon::parse($this->document->date) : null;
         $this->number = $this->document->number;
         $this->subject = $this->document->subject;
@@ -47,7 +51,6 @@ class RequestCreate extends Component
 
         $this->file();
 
-        // Show modal
         $this->showDetail = true;
     }
 
@@ -58,18 +61,15 @@ class RequestCreate extends Component
 
     public function file()
     {
-        // Load all files associated with this archive
         $this->fileLinks = $this->document->documentArchiveFiles->map(function ($f) {
             return [
                 'id' => $f->id,
                 'name' => pathinfo($f->file, PATHINFO_BASENAME),
-                'url' => Storage::url($f->file), // Generate the file URL
-
+                'url' => Storage::url($f->file),
             ];
         });
     }
     
-
     public function create()
     {
         $this->validate([
@@ -82,9 +82,10 @@ class RequestCreate extends Component
             'is_auditor' => 'required',
             'institute_id' => 'nullable|integer|exists:institutes,id',
             'document_archive_id' => 'required|integer|exists:document_archives,id',
+            'appUsers' => 'required|array|min:1', // Validasi pilihan Non-Auditor
         ]);
 
-        ModelsRequest::create([
+        $request = ModelsRequest::create([
             'document_number' => $this->document_number,
             'start_period' => $this->start_period,
             'end_period' => $this->end_period,
@@ -95,6 +96,9 @@ class RequestCreate extends Component
             'institute_id' => $this->institute_id,
             'document_archive_id' => $this->document_archive_id,
         ]);
+
+        // Simpan hubungan ke Non-Auditor yang dipilih (jika ada relasi many-to-many)
+        $request->appUsers()->attach($this->appUsers);
 
         $this->dispatch('swal:success');
         return redirect('/user-permintaan');
