@@ -14,11 +14,11 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12 col-12">
                 <div class="card">
-                    <div class="card-header bg-primary" >
+                    <div class="card-header bg-warning" >
                         <h4 class="card-title text-white">Edit Pelaporan dan Konsultasi</h4>
                     </div>
                     <div class="card-body">
-                        <form wire:submit.prevent='create'>
+                        <form wire:submit.prevent='update'>
                             <div class="row mb-3">
                                 <div class="col-md-6 form-group">
                                     <label class="form-label" for="perusahaan">Nama Pelapor*</label>
@@ -186,7 +186,7 @@
                                 @error('berkas') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
                             <div class="col-12 text-end">
-                                <button type="button" class="btn btn-warning mt-2" wire:click="addFile">Uploud Lampiran</button>
+                                <button type="button" class="btn btn-info mt-2" wire:click="addFile">Uploud Lampiran</button>
                             </div>
                         </div>
                     </div>

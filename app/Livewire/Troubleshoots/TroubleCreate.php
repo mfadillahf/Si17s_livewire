@@ -37,7 +37,6 @@ class TroubleCreate extends Component
             'description' => $this->description,
             'action' => $this->action,
             'troubleshoot_category_id' => $this->troubleshoot_category_id,
-            'file' => $filePath,
         ]);
 
         TroubleshootFile::create([

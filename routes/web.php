@@ -1,8 +1,14 @@
 <?php
 
+use App\Livewire\Auth\Login;
+
 use App\Livewire\Dashboard;
 
+use App\Livewire\Institutes\Instansi;
 use App\Livewire\Items\BarangList;
+use App\Livewire\ServerAssets\AsetServer;
+use App\Livewire\ServerVisitors\Kunjungan;
+use App\Livewire\Visitors\Tamu;
 use App\Models\ItemImage;
 
 use App\Livewire\Items\BarangMaintenance;
@@ -54,57 +60,83 @@ use App\Http\Controllers\RoutingController;
 |
 */
 
-// template
+
 require __DIR__ . '/auth.php';
+// Route::get('/dashboard', Dashboard::class)->middleware('auth')->name('dashboard');
 
-// administrasi
-Route::get('/dashboard', Dashboard::class);
 
+// Route::middleware(['auth'])->group(function () {
 // item
-Route::get('/barang', BarangList::class)->name('barang');
-Route::resource('foto-barang',BarangList::class);
-Route::get('/maintenance-barang', BarangMaintenance::class)->name('maintenance');
+    Route::get('/barang', BarangList::class)->name('barang');
+    Route::resource('foto-barang',BarangList::class);
+    Route::get('/maintenance-barang', BarangMaintenance::class)->name('maintenance');
 
-// ageda
-Route::get('/agenda', Agenda::class)->name('agenda');
-Route::resource('foto-kegiatan',Agenda::class);
+    // ageda
+    Route::get('/agenda', Agenda::class)->name('agenda');
+    Route::resource('foto-kegiatan',Agenda::class);
 
-// dokumen arsip
-Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
-Route::get('/arsip/create', ArchiveCreate::class)->name('arsip.create');
-Route::get('/arsip/edit/{id}', ArchiveEdit::class)->name('arsip.edit');
+    // dokumen arsip
+    Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
+    Route::get('/arsip/create', ArchiveCreate::class)->name('arsip.create');
+    Route::get('/arsip/edit/{id}', ArchiveEdit::class)->name('arsip.edit');
 
-// penyedia
-Route::get('/layanan', Provider::class)->name('provider');
-Route::get('/layanan/create', ProviderCreate::class)->name('provider.create');
-Route::get('/layanan/edit/{id}', ProviderEdit::class)->name('provider.edit');
+    // penyedia
+    Route::get('/layanan', Provider::class)->name('provider');
+    Route::get('/layanan/create', ProviderCreate::class)->name('provider.create');
+    Route::get('/layanan/edit/{id}', ProviderEdit::class)->name('provider.edit');
 
-// user app
-Route::get('/user-aplikasi', UserAplikasi::class)->name('user');
-Route::get('/user-aplikasi/create', UserCreate::class)->name('user.create');
-Route::get('/user-aplikasi/edit/{id}', UserEdit::class)->name('user.edit');
+    // user app
+    Route::get('/user-aplikasi', UserAplikasi::class)->name('user');
+    Route::get('/user-aplikasi/create', UserCreate::class)->name('user.create');
+    Route::get('/user-aplikasi/edit/{id}', UserEdit::class)->name('user.edit');
 
-//user req
-Route::get('/user-permintaan', UserRequest::class)->name('user.permintaan');
-Route::get('/user-permintaan/create', RequestCreate::class)->name('permintaan.create');
-Route::get('/user-permintaan/edit{id}', RequestEdit::class)->name('permintaan.edit');
+    //user req
+    Route::get('/user-permintaan', UserRequest::class)->name('user.permintaan');
+    Route::get('/user-permintaan/create', RequestCreate::class)->name('permintaan.create');
+    Route::get('/user-permintaan/edit{id}', RequestEdit::class)->name('permintaan.edit');
 
-// konsul
-Route::get('/konsultasi', Konsultasi::class)->name('konsultasi');
-Route::get('/konsultasi/create', KonsultasiCreate::class)->name('konsultasi.create');
-Route::get('/konsultasi/edit/{id}', KonsultasiEdit::class)->name('konsultasi.edit');
+    // konsul
+    Route::get('/konsultasi', Konsultasi::class)->name('konsultasi');
+    Route::get('/konsultasi/create', KonsultasiCreate::class)->name('konsultasi.create');
+    Route::get('/konsultasi/edit/{id}', KonsultasiEdit::class)->name('konsultasi.edit');
 
-// troubleshooting
-Route::get('/troubleshooting', Trouble::class)->name('trouble');
-Route::get('/troubleshooting/create', TroubleCreate::class)->name('trouble.create');
-Route::get('/troubleshooting/edit/{id}', TroubleEdit::class)->name('trouble.edit');
+    // troubleshooting
+    Route::get('/troubleshooting', Trouble::class)->name('trouble');
+    Route::get('/troubleshooting/create', TroubleCreate::class)->name('trouble.create');
+    Route::get('/troubleshooting/edit/{id}', TroubleEdit::class)->name('trouble.edit');
 
-// Pengaturan
-Route::get('/data-user', DataUser::class)->name('datauser');
-Route::get('/data-user/create', DataCreate::class)->name('datauser.create');
-Route::get('/data-user/edit/{id}', DataEdit::class)->name('datauser.edit');
-Route::get('/change-password', ChangePassword::class)->name('pass');
 
+    // Kunjungan Ruang Server
+    Route::get('/ruang-server/tamu', Tamu::class)->name('tamu');
+
+
+
+
+    Route::get('/ruang-server/instansi', Instansi::class)->name('instansi');
+
+
+
+
+    Route::get('/ruang-server/kunjungan', Kunjungan::class)->name('kunjungan');
+
+
+
+
+    Route::get('/ruang-server/aset', AsetServer::class)->name('aset');
+
+
+
+
+    // Pengaturan
+    Route::get('/data-user', DataUser::class)->name('datauser');
+    Route::get('/data-user/create', DataCreate::class)->name('datauser.create');
+    Route::get('/data-user/edit/{id}', DataEdit::class)->name('datauser.edit');
+    Route::get('/change-password', ChangePassword::class)->name('pass');
+
+// });
+
+// login
+// Route::get('/login', Login::class)->name('login');
 
 
 
@@ -116,5 +148,10 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('{first}/{second}', [RoutingController::class, 'secondLevel'])->name('second');
     Route::get('{any}', [RoutingController::class, 'root'])->name('any');
 });
+
+
+// Route::get('/dashboard', function () {
+//     return 'Dashboard';
+// })->middleware('auth');
 
 

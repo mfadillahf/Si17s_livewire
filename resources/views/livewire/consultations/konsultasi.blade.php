@@ -6,6 +6,13 @@
     @endsection
 
 
+    @if (session()->has('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+    @endif
+
+
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
@@ -48,8 +55,23 @@
                                 <tr wire:key="provider-{{ $kL->id }}">
                                     <td>{{ $kL->title }}</td>
                                     <td>{{ $kL->reportCategory->name}}</td>
-                                    <td>{{ $kL->ticket_number }}</td>
-                                    <td>{{ $kL->status }}</td>
+                                    <td>
+                                        <a href="https://lpse-support.lkpp.go.id/lacak-tiket/{{ $kL->ticket_number }}" target="_blank">
+                                            <i class="fas fa-link mr-1"></i>
+                                            {{ $kL->ticket_number }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @if($kL->status === 'Selesai')
+                                            <button class="btn btn-sm btn-primary" disabled>
+                                                <i class="fas fa-check-circle"></i> {{ $kL->status }}
+                                            </button>
+                                        @else
+                                            <button wire:click="updateStatus({{ $kL->id }})" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-hourglass-half"></i> {{ $kL->status }}
+                                            </button>
+                                        @endif
+                                    </td>
                                     <td>{{ $kL->started_at}}</td>
                                     <td>{{ $kL->finished_at }}</td>
                                     <td>
@@ -73,6 +95,9 @@
                 </div>
         </div>
     </div>
+
+
+
 
 
 
@@ -146,7 +171,12 @@
 
                             <tr>
                                 <th>No. Tiket</th>
-                                <td>{{ $ticket_number }}</td>
+                                <td>
+                                    <a href="https://lpse-support.lkpp.go.id/lacak-tiket/{{ $kL->ticket_number }}" target="_blank">
+                                        <i class="fas fa-link mr-1"></i>
+                                        {{ $kL->ticket_number }}
+                                    </a>
+                                </td>
                             </tr>
 
                             <tr>
@@ -161,22 +191,22 @@
 
                             <tr>
                                 <th>Penginput</th>
-                                <td>{{ $kL->user_id}}</td>
+                                <td>{{ $consultation->user ? $consultation->user->name : 'User tidak ditemukan'}}</td>
                             </tr>
 
                             <tr>
                                 <th>Berkas Pendukung</th>
-                                @if(count($fileLinks) > 0)
                                 <td>
-                                    @foreach ($fileLinks as $file)
-                                            <a href="{{ $file['url'] }}" target="_blank"> {{ $file['name'] }}</a>
-                                    @endforeach
+                                    @if(count($fileLinks) > 0)
+                                        <ul>
+                                            @foreach ($fileLinks as $file)
+                                                <li><a href="{{ $file['url'] }}" target="_blank">{{ $file['name'] }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <p>File tidak Tersedia.</p>
+                                    @endif
                                 </td>
-                                @else
-                                <td>
-                                    <p>File tidak Tersedia.</p>
-                                </td>
-                                @endif
                             </tr>
                         </table>
                     </div>

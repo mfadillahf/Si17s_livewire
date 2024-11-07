@@ -5,6 +5,7 @@ namespace App\Livewire\Consultations;
 use Livewire\Component;
 use App\Models\ConsultationReport as ModelsConsultation;
 use Illuminate\Support\Facades\Storage;
+use App\Models\ConsultationDocument;
 
 class Konsultasi extends Component
 {
@@ -95,7 +96,7 @@ class Konsultasi extends Component
 
     public function detail($id)
     {
-        $this->consultation = ModelsConsultation::with('reportCategory', 'mediaReport', 'consultationDocuments')->find($id);
+        $this->consultation = ModelsConsultation::with('reportCategory', 'mediaReport', 'consultationDocuments', 'user')->find($id);
         $this->identity_number = $this->consultation->identity_number;
         $this->name = $this->consultation->name;
         $this->phone_number = $this->consultation->phone_number;
@@ -149,13 +150,40 @@ class Konsultasi extends Component
 
     public function delete()
     {
-        $a = ModelsConsultation::find($this -> consultation_id);
-        $a->delete();
-        
+        $c = ModelsConsultation::find($this -> consultation_id);
+
+        if ($c) {
+            $cD = ConsultationDocument::where('consultation_report_id', $this->consultation_id)->first();
+            
+            if ($cD) {
+                Storage::delete('public/' . $cD->file);
+                
+                $cD->delete();
+            }
+
+        $c->delete();
+        }
         
         $this->showDelete = false;
         $this->dispatch('swal:delete');
     }
+
+
+
+    public function updateStatus($id)
+{
+    $consultation = ModelsConsultation::find($id);
+    
+    // Cek apakah statusnya "Proses" sebelum mengubah ke "Selesai"
+    if ($consultation->status === 'Proses') {
+        $consultation->status = 'Selesai';
+        $consultation->save();
+        
+        // Kirim notifikasi atau flash message jika diperlukan
+        session()->flash('message', 'Status berhasil diperbarui menjadi selesai.');
+    }
+}
+
 
     
 }

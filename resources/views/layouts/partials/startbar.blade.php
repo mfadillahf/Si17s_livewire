@@ -131,16 +131,16 @@
                         <div class="collapse " id="sidebarAnalytics">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('user') }}">Daftar Tamu Ruang Server</a>
+                                    <a class="nav-link" href="{{ route('tamu') }}">Daftar Tamu Ruang Server</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('user.permintaan') }}">Daftar instansi Ruang Server</a>
+                                    <a class="nav-link" href="{{ route('instansi') }}">Daftar instansi Ruang Server</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('user.permintaan') }}">Daftar Kunjungan</a>
+                                    <a class="nav-link" href="{{ route('kunjungan') }}">Daftar Kunjungan</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('user.permintaan') }}">Data Aset Ruang Server</a>
+                                    <a class="nav-link" href="{{ route('aset') }}">Data Aset Ruang Server</a>
                                 </li>
                                 <!--end nav-item-->
                             </ul><!--end nav-->

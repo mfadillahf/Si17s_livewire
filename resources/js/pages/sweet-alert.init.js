@@ -55,6 +55,48 @@ window.addEventListener('swal:reset', function () {
   })
 });
 
+// window.addEventListener('swal:berhasil', function (event) {
+//   Swal.fire({
+//       title: event.detail.title,
+//       text: event.detail.text,
+//       icon: 'success',
+//   });
+// });
+
+// window.addEventListener('swal:info', event => {
+//   Swal.fire({
+//       title: event.detail.title,
+//       text: event.detail.text,
+//       icon: 'info',
+//   });
+// });
+
+// window.addEventListener('swal:error', event => {
+//   Swal.fire({
+//       title: event.detail.title,
+//       text: event.detail.text,
+//       icon: 'error',
+//   });
+// });
+
+// window.addEventListener('confirmStatus', (event) => {
+//   const eventData = event.detail;
+
+//   Swal.fire({
+//       title: 'Are you sure?',
+//       text: "Do you want to change the status to 'Selesai'?",
+//       icon: 'warning',
+//       showCancelButton: true,
+//       confirmButtonColor: '#3085d6',
+//       cancelButtonColor: '#d33',
+//       confirmButtonText: 'Yes, change it!'
+//   }).then((result) => {
+//       if (result.isConfirmed) {
+//           window.Livewire.dispatch('updateStatus', { id: eventData.id });
+//       }
+//   });
+// });
+
 
 // window.addEventListener('swal:reset', function(event) {
 //   let userId = event.detail.userId; //
