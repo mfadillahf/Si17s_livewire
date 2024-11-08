@@ -62,6 +62,9 @@ use App\Http\Controllers\RoutingController;
 
 
 require __DIR__ . '/auth.php';
+// login
+// Route::get('/login', Login::class)->name('login');
+
 // Route::get('/dashboard', Dashboard::class)->middleware('auth')->name('dashboard');
 
 
@@ -135,8 +138,7 @@ require __DIR__ . '/auth.php';
 
 // });
 
-// login
-// Route::get('/login', Login::class)->name('login');
+
 
 
 
