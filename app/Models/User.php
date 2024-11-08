@@ -3,12 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -64,4 +65,50 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
+
+    public function hasRole(string $roleName): bool
+    {
+        foreach ($this->roles as $role)
+            if ($role->name === $roleName) return true;
+
+        return false;
+    }
+
+    public function isPpeAdmin(): bool
+    {
+        return $this->hasRole('Admin PPE');
+    }
+
+    public function isSystemAdmin(): bool
+    {
+        return $this->hasRole('Admin Sistem');
+    }
+
+    public function isFacilityInfrastructureManager(): bool
+    {
+        return $this->hasRole('Pengelola Sarana dan Prasarana');
+    }
+
+    public function isChief(): bool
+    {
+        return $this->hasRole('Pimpinan');
+    }
+
+    public function isHelpdesk(): bool
+    {
+        return $this->hasRole('Helpdesk');
+    }
+
+    public function isVerifier(): bool
+    {
+        return $this->hasRole('Verifikator');
+    }
+
 }
