@@ -14,6 +14,7 @@ use App\Models\ItemImage;
 use App\Livewire\Items\BarangMaintenance;
 
 use App\Livewire\Agendas\Agenda;
+use App\Livewire\Agendas\AgendaEdit;
 use App\Models\AgendaImage;
 
 use App\Livewire\Arsip\DocumentArchive;
@@ -62,13 +63,8 @@ use App\Http\Controllers\RoutingController;
 
 
 require __DIR__ . '/auth.php';
-// login
-// Route::get('/login', Login::class)->name('login');
 
-// Route::get('/dashboard', Dashboard::class)->middleware('auth')->name('dashboard');
-
-
-// Route::middleware(['auth'])->group(function () {
+// Route::middleware(['auth:sanctum'])->group(function () {
 // item
     Route::get('/barang', BarangList::class)->name('barang');
     Route::resource('foto-barang',BarangList::class);
@@ -76,6 +72,7 @@ require __DIR__ . '/auth.php';
 
     // ageda
     Route::get('/agenda', Agenda::class)->name('agenda');
+    // Route::get('/agenda/edit/{id}', AgendaEdit::class)->name('agenda.edit');
     Route::resource('foto-kegiatan',Agenda::class);
 
     // dokumen arsip
@@ -112,23 +109,11 @@ require __DIR__ . '/auth.php';
     // Kunjungan Ruang Server
     Route::get('/ruang-server/tamu', Tamu::class)->name('tamu');
 
-
-
-
     Route::get('/ruang-server/instansi', Instansi::class)->name('instansi');
-
-
-
 
     Route::get('/ruang-server/kunjungan', Kunjungan::class)->name('kunjungan');
 
-
-
-
     Route::get('/ruang-server/aset', AsetServer::class)->name('aset');
-
-
-
 
     // Pengaturan
     Route::get('/data-user', DataUser::class)->name('datauser');
@@ -145,15 +130,16 @@ require __DIR__ . '/auth.php';
 // template
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('', [RoutingController::class, 'index'])->name('root');
-    Route::get('/home', fn() => view('livewire.dashboard'))->name('home');
+    Route::get('/dashboard', fn() => view('livewire.dashboard'))->name('home');
     Route::get('{first}/{second}/{third}', [RoutingController::class, 'thirdLevel'])->name('third');
     Route::get('{first}/{second}', [RoutingController::class, 'secondLevel'])->name('second');
     Route::get('{any}', [RoutingController::class, 'root'])->name('any');
+    
 });
 
 
-// Route::get('/dashboard', function () {
-//     return 'Dashboard';
-// })->middleware('auth');
 
+ // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    //     return view('dashboard');
+    // })->name('dashboard');
 

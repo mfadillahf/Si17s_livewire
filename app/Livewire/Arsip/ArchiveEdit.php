@@ -127,27 +127,27 @@ class ArchiveEdit extends Component
     
     //edited
     public function addFile()
-{
-    $this->validate([
-        'berkas' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,jpg,png,jpeg,webp|max:10240',
-    ]);
+    {
+        $this->validate([
+            'berkas' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,jpg,png,jpeg,webp|max:10240',
+        ]);
 
-    // Store the file temporarily and track it in newFiles
-    $filePath = $this->berkas->store('temp');  // Store in a temporary directory
+        // Store the file temporarily and track it in newFiles
+        $filePath = $this->berkas->store('temp');  // Store in a temporary directory
 
-    $this->newFiles[] = [
-        'path' => $filePath,
-        'name' => $this->berkas->getClientOriginalName(),
-    ];
+        $this->newFiles[] = [
+            'path' => $filePath,
+            'name' => $this->berkas->getClientOriginalName(),
+        ];
 
-    $this->fileLinks[] = [
-        'id' => null,  // Not saved yet
-        'url' => Storage::url($filePath),
-        'name' => $this->berkas->getClientOriginalName(),
-    ];
+        $this->fileLinks[] = [
+            'id' => null,  // Not saved yet
+            'url' => Storage::url($filePath),
+            'name' => $this->berkas->getClientOriginalName(),
+        ];
 
-    $this->reset('berkas');
-} 
+        $this->reset('berkas');
+    } 
 
 
     public function render()

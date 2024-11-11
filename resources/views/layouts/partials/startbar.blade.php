@@ -2,7 +2,7 @@
 <div class="startbar d-print-none">
     <!--start brand-->
     <div class="brand">
-        <a href="{{ route('any', 'home')}}" class="logo">
+        <a href="{{ route('any', 'dashboard')}}" class="logo">
             <span>
                 <img src="/images/logo-lpse.png" alt="logo-small" class="logo-sm">
             </span>
