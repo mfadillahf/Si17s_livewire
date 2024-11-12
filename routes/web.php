@@ -64,7 +64,10 @@ use App\Http\Controllers\RoutingController;
 
 require __DIR__ . '/auth.php';
 
-// Route::middleware(['auth:sanctum'])->group(function () {
+// Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+//     Route::get('/dashboard', function () {
+//         return view('livewire.dashboard');
+//     })->name('dashboard');
 // item
     Route::get('/barang', BarangList::class)->name('barang');
     Route::resource('foto-barang',BarangList::class);
@@ -127,7 +130,7 @@ require __DIR__ . '/auth.php';
 
 
 
-// template
+// bawaan auth template
 Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('', [RoutingController::class, 'index'])->name('root');
     Route::get('/dashboard', fn() => view('livewire.dashboard'))->name('home');
@@ -138,8 +141,4 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
 });
 
 
-
- // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->name('dashboard');
 
