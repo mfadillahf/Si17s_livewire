@@ -62,11 +62,9 @@
                                             @endforeach 
                                         </select>
                                         <small class="badge bg-info-subtle text-info">Pilih Non-Auditor</small>
-                                        @error('selected_auditor') <small class="text-danger">{{ $message }}</small> @enderror
+                                        @error('is_auditor') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
-
-
 
                             @elseif($is_auditor == '1')
                                 <div wire:key="auditor-form" class="row mb-3">
@@ -128,7 +126,7 @@
                                             @endforeach 
                                         </select>
                                         <small class="badge bg-info-subtle text-info">Pilih Auditor</small>
-                                        @error('selected_auditor') <small class="text-danger">{{ $message }}</small> @enderror
+                                        @error('is_auditor') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
 

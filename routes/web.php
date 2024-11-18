@@ -4,11 +4,7 @@ use App\Livewire\Auth\Login;
 
 use App\Livewire\Dashboard;
 
-use App\Livewire\Institutes\Instansi;
 use App\Livewire\Items\BarangList;
-use App\Livewire\ServerAssets\AsetServer;
-use App\Livewire\ServerVisitors\Kunjungan;
-use App\Livewire\Visitors\Tamu;
 use App\Models\ItemImage;
 
 use App\Livewire\Items\BarangMaintenance;
@@ -46,6 +42,17 @@ use App\Livewire\Pengaturan\DataCreate;
 use App\Livewire\Pengaturan\DataEdit;
 use App\Livewire\Pengaturan\ChangePassword;
 
+
+use App\Livewire\Visitors\Tamu;
+
+use App\Livewire\Institutes\Instansi;
+
+use App\Livewire\ServerVisitors\Kunjungan;
+use App\Livewire\ServerVisitors\KunjunganCreate;
+
+use App\Livewire\ServerAssets\AsetServer;
+
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\RoutingController;
@@ -62,12 +69,15 @@ use App\Http\Controllers\RoutingController;
 */
 
 
-require __DIR__ . '/auth.php';
+// require __DIR__ . '/auth.php';
 
 // Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 //     Route::get('/dashboard', function () {
 //         return view('livewire.dashboard');
 //     })->name('dashboard');
+    // Route::get('{first}/{second}/{third}', [RoutingController::class, 'thirdLevel'])->name('third');
+    // Route::get('{first}/{second}', [RoutingController::class, 'secondLevel'])->name('second');
+    // Route::get('{any}', [RoutingController::class, 'root'])->name('any');
 // item
     Route::get('/barang', BarangList::class)->name('barang');
     Route::resource('foto-barang',BarangList::class);
@@ -110,12 +120,17 @@ require __DIR__ . '/auth.php';
 
 
     // Kunjungan Ruang Server
+    // tamu
     Route::get('/ruang-server/tamu', Tamu::class)->name('tamu');
 
+    // instansi
     Route::get('/ruang-server/instansi', Instansi::class)->name('instansi');
 
+    // kunjungan
     Route::get('/ruang-server/kunjungan', Kunjungan::class)->name('kunjungan');
+    Route::get('/ruang-server/kunjungan/create', KunjunganCreate::class)->name('kunjungan.create');
 
+    // aset
     Route::get('/ruang-server/aset', AsetServer::class)->name('aset');
 
     // Pengaturan
@@ -137,7 +152,6 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function () {
     Route::get('{first}/{second}/{third}', [RoutingController::class, 'thirdLevel'])->name('third');
     Route::get('{first}/{second}', [RoutingController::class, 'secondLevel'])->name('second');
     Route::get('{any}', [RoutingController::class, 'root'])->name('any');
-    
 });
 
 

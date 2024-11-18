@@ -2,13 +2,16 @@
 
 namespace App\Livewire\Arsip;
 
-use Livewire\Component;
-use App\Models\DocumentArchive as ModelsArchive;
 use Carbon\Carbon;
+use Livewire\Component;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
+use App\Models\DocumentArchive as ModelsArchive;
 
 class DocumentArchive extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     
     public $title = 'Arsip Dokumen';
     public $tab = '';

@@ -3,10 +3,13 @@
 namespace App\Livewire\User;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\AppUser as ModelsUser;
 
 class UserAplikasi extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $title = 'User Aplikasi';
     public $tab = '';
     public $activeTab = 'Non-Auditor';

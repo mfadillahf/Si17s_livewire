@@ -134,7 +134,7 @@
                                     <a class="nav-link" href="{{ route('tamu') }}">Daftar Tamu Ruang Server</a>
                                 </li><!--end nav-item-->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('instansi') }}">Daftar instansi Ruang Server</a>
+                                    <a class="nav-link" href="{{ route('instansi') }}">Daftar Instansi Ruang Server</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('kunjungan') }}">Daftar Kunjungan</a>

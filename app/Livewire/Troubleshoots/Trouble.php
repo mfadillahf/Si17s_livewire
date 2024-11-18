@@ -2,14 +2,17 @@
 
 namespace App\Livewire\Troubleshoots;
 
-use Livewire\Component;
-use App\Models\TroubleshootReport as ModelsTroubleshoot;
 use Carbon\Carbon;
+use Livewire\Component;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
+use App\Models\TroubleshootReport as ModelsTroubleshoot;
 
 
 class Trouble extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $title = 'Troubleshoots';
     public $trouble;
     public $date;

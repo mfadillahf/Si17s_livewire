@@ -18,17 +18,17 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('server_asset_id')
-                ->constrained()
+                ->constrained('server_assets')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreignId('server_asset_category_id')
-                ->constrained()
+                ->constrained('server_asset_categories')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreignId('server_visitor_report_id')
-                ->constrained()
+                ->constrained('server_visitor_reports')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

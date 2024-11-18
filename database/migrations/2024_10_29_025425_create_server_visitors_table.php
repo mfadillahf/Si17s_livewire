@@ -16,12 +16,12 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('server_visitor_report_id')
-                ->constrained()
+                ->constrained('server_visitor_reports')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreignId('visitor_id')
-                ->constrained()
+                ->constrained('visitors')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

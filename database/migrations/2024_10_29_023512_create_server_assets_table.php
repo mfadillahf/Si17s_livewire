@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->foreignId('server_asset_category_id')
                 ->nullable()
-                ->constrained()
+                ->constrained('server_asset_categories')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

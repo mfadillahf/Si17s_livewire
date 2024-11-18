@@ -45,7 +45,7 @@ class UserEdit extends Component
 
         $this->validate([
             'is_auditor' => 'required|integer',
-            'user_identity' => 'nullable|integer',
+            'user_identity' => 'required|string|max:16|regex:/^([1-9][0-9]{15})$/',
             'name' => 'required|string',
             'email' => 'nullable|email',
             'phone_number' => 'nullable|string|max:15|regex:/^08\d{8,13}$/',

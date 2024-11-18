@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Pengaturan;
 
-use App\Models\User as ModelsDataUser;
-use Livewire\Component;
 use App\Models\Role;
+use Livewire\Component;
+use Livewire\WithPagination;
+use App\Models\User as ModelsDataUser;
 
 class DataUser extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $title = 'Data User';
     public $user;
     public $user_id;

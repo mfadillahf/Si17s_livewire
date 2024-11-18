@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Request;
 
-use App\Models\DocumentArchive;
 use Livewire\Component;
+use Livewire\WithPagination;
+use App\Models\DocumentArchive;
 use App\Models\Request as ModelsRequest;
 
 class UserRequest extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $title = 'User Request';
     
     public $tab = '';

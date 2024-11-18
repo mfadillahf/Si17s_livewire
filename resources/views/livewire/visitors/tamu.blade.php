@@ -14,7 +14,7 @@
                     <!-- Search and Add Document Button -->
                     <div class="mb-3 d-flex justify-content-end">
                         <div>
-                            <input type="text" class="form-control" wire:model.defer="keyword" placeholder="Cari User...">
+                            <input type="text" class="form-control" wire:model.defer="keyword" placeholder="Cari Tamu...">
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -31,31 +31,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @forelse($dataUser as $dU)
+                                @forelse($dt as $dT)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $dU->name }}</td>
-                                        <td>{{ $dU->email }}</td>
-                                        <td>{{ $dU->roles?->pluck('name')->implode(', ') }}</td>
+                                        <td>{{ $dT->identity_number }}</td>
+                                        <td>{{ $dT->name }}</td>
+                                        <td>{{ $dT->phone_number }}</td>
+                                        <td>{{ $dT->email }}</td>
+                                        <td>{{ $dT->institute->name }}</td>
+
                                         <td>
-                                            <button wire:click ="openPassword({{ $dU->id }})" class="btn btn-sm btn-info">
-                                                <i class="icofont-ui-reply"></i>
+                                            <button wire:click ="detail({{ $dT->id }})" class="btn btn-sm btn-info">
+                                                <i class="fas fa-info-circle"></i>
                                             </button>
-                                            <a href="/data-user/edit/{{$dU->id}}" class="btn btn-warning btn-sm">
-                                                <i class="fas fa-pen-square"></i></a>
-                                            <button wire:click="openDelete({{ $dU->id }})" class="btn btn-danger btn-sm">
+                                            <button wire:click.prevent="openEdit({{ $dT->id }})" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-pen-square"></i>
+                                            </button>
+                                            <button wire:click="openDelete({{ $dT->id }})" class="btn btn-danger btn-sm">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="text-center text-muted">Tidak Ada Data User.</td>
+                                        <td colspan="7" class="text-center text-muted">Tidak Ada Data Tamu.</td>
                                     </tr>
-                                @endforelse --}}
+                                @endforelse
                             </tbody>
                         </table>
-                        {{-- {{ $dataUser->links() }} --}}
+                        {{ $dt->links() }}
                     </div>
                 </div>
             </div>
@@ -63,30 +67,169 @@
     </div>
 
 
-    {{-- reset --}}
-    {{-- @if($showGanti)
-    <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h6 class="modal-title m-0">Konfirmasi</h6>
-                    <button type="button" class="btn-close" wire:click="closePassword" aria-label="Close"></button>
-                </div><!--end modal-header-->
-                <div class="modal-body text-center">
-                    <img src="/images/extra/card/infomax.png" alt="Warning" class="img-fluid mb-3" style="width: 80px;">
-                    <h5>Apakah kamu yakin?</h5>
-                    <p>*Setelah direset, kata sandi diperbaharui menjadi <strong class="text-danger">123456</strong></p>
-                </div><!--end modal-body-->
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closePassword">Cancel</button>
-                    <button id="warningConfirm" type="button" class="btn btn-info btn-sm" wire:click.prevent="gantiPassword">Reset</button>
-                </div><!--end modal-footer-->
-            </div><!--end modal-content-->
-        </div><!--end modal-dialog-->
-    </div>
 
-    <div class="modal-backdrop fade show"></div>
-@endif --}}
+{{-- detail --}}
+@if($showDetail)
+<div wire:ignore.self class="modal fade show"  style="display: block;" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">Detail Identitas {{$name}} </h5>
+                <button type="button" class="btn-close" wire:click="closeDetail" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>No. Identitas</th>
+                                <td>{{ $identity_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>Jenis Identitas </th>
+                                <td>{{ $identity_type }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Nama</th>
+                                <td>{{ $name }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Jenis Kelamin</th>
+                                <td>{{ $sex }}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th>E-mail</th>
+                                <td>{{ $email }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>No. Telpon</th>
+                                <td>{{ $phone_number }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Instansi</th>
+                                <td>{{ $institute->name }}</td>
+                            </tr>
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show"></div>
+@endif
+
+
+
+
+ {{-- modal Edit --}}
+ @if($showEdit)
+<div wire:ignore.self class="modal fade show" id="edit" style="display: block;" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title text-white">Form Update Tamu</h5>
+                <button type="button" class="btn-close" wire:click="closeEdit" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form wire:submit.prevent='update'>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="identity_number" class="form-label">No. Identitas</label>
+                            <input type="text" id="identity_number" wire:model="identity_number" class="form-control @error('identity_number') is-invalid @enderror" placeholder="No. Identitas">
+                            @error('identity_number') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="identity_type" class="form-label">Jenis Identitas</label>
+                            <select class="form-select" id="identity_type" wire:model="identity_type" class="form-control @error('identity_type') is-invalid @enderror">
+                                <option value="" disabled selected>Pilih Jenis Identitas</option>
+                                <option value="KTP">KTP</option>
+                                <option value="SIM">SIM</option>
+                                <option value="Paspor">Paspor</option>
+                            </select>
+                            @error('identity_type') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Nama</label>
+                            <input type="text" id="name" wire:model="name" class="form-control @error('name') is-invalid @enderror" placeholder="Nama">
+                            @error('name') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="sex" class="form-label">Jenis Kelamin</label>
+                            <select class="form-select" id="sex" wire:model="sex" class="form-control @error('sex') is-invalid @enderror">
+                                <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                            @error('sex') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="email" id="email" wire:model="email" class="form-control @error('email') is-invalid @enderror" placeholder="E-mail">
+                            @error('email') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="phone_number" class="form-label">No. Telepon</label>
+                            <input type="text" id="phone_number" wire:model="phone_number" class="form-control @error('phone_number') is-invalid @enderror" placeholder="No. Telepon">
+                            @error('phone_number') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="instansi" class="form-label">Instansi</label>
+                            <select class="form-select" id="instansi" wire:model="selectedInstitute" class="form-control @error('selectedInstitute') is-invalid @enderror">
+                                <option value="" disabled selected>Pilih Instansi</option>
+                                @foreach($institutes as $ins)
+                                    <option value="{{ $ins->id }}">{{ $ins->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('selectedInstitute') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="alamat" class="form-label">Alamat</label>
+                            <textarea id="address" wire:model="address" class="form-control @error('address') is-invalid @enderror" placeholder="Alamat"></textarea>
+                            @error('address') <small class="invalid-feedback">{{ $message }}</small> @enderror
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary float-end" wire:click="closeEdit">Close</button>
+                        <button type="submit" class="btn btn-warning float-end">
+                            <i class="fas fa-pen-square mr-1"></i> Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show"></div>
+@endif
+
+
+
 
 
 
@@ -94,7 +237,7 @@
 
 
 {{-- delete --}}
-{{-- @if($showDelete)
+@if($showDelete)
 <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -109,7 +252,6 @@
                     </div><!--end col-->
                     <div class="col-lg-9">
                         <h5>Anda yakin ingin menghapus data ini?</h5>
-                        <span class="badge bg-light text-dark">Terakhir diupdate: {{ $lastUpdatedDate }}</span>
                         <div class="mt-3">
                             <strong class="text-danger ms-1">*aksi tidak bisa dibatalkan setelah diproses</strong>
                         </div>
@@ -126,7 +268,7 @@
 
 <div class="modal-backdrop fade show">
 </div>
-@endif --}}
+@endif
 
     @section('script')
     @vite(['resources/js/pages/sweet-alert.init.js'])

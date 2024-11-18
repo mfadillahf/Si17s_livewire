@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="col-6 form-group">
                                     <label class="form-label" for="judul_laporan">Judul Laporan*</label>
-                                    <input type="text" wire:model.defer="title" class="form-control" placeholder="Input nama Instansi">
+                                    <input type="text" wire:model.defer="title" class="form-control" placeholder="Judul laporan">
                                     @error('title') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>

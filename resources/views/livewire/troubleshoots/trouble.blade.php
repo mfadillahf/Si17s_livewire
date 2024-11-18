@@ -31,7 +31,7 @@
                                 <tbody>
                                     @if ($dataTrouble->isEmpty())
                                         <tr>
-                                            <td colspan="4" class="text-center">
+                                            <td colspan="3" class="text-center">
                                                 <p class="text-muted">data kosong</p>
                                             </td>
                                         </tr>

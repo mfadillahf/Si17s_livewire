@@ -10,8 +10,6 @@
                     <h4 class="card-title">Data Instansi</h4>
                 </div>
                 <div class="card-body pt-0">
-    
-                    <!-- Search and Add Document Button -->
                     <div class="mb-3 d-flex justify-content-end">
                         <div>
                             <input type="text" class="form-control" wire:model.defer="keyword" placeholder="Cari Instansi...">
@@ -26,31 +24,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @forelse($dataUser as $dU)
+                                @forelse($ins as $isi)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $dU->name }}</td>
-                                        <td>{{ $dU->email }}</td>
-                                        <td>{{ $dU->roles?->pluck('name')->implode(', ') }}</td>
+                                        <td>{{ $isi->name }}</td>
                                         <td>
-                                            <button wire:click ="openPassword({{ $dU->id }})" class="btn btn-sm btn-info">
-                                                <i class="icofont-ui-reply"></i>
+                                            <button wire:click.prevent="openEdit({{ $isi->id }})" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-pen-square"></i>
                                             </button>
-                                            <a href="/data-user/edit/{{$dU->id}}" class="btn btn-warning btn-sm">
-                                                <i class="fas fa-pen-square"></i></a>
-                                            <button wire:click="openDelete({{ $dU->id }})" class="btn btn-danger btn-sm">
+                                            <button wire:click="openDelete({{ $isi->id }})" class="btn btn-danger btn-sm">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="text-center text-muted">Tidak Ada Data User.</td>
+                                        <td colspan="8" class="text-center text-muted">Tidak Ada Data Instansi.</td>
                                     </tr>
-                                @endforelse --}}
+                                @endforelse
                             </tbody>
                         </table>
-                        {{-- {{ $dataUser->links() }} --}}
+                        {{$ins->links() }} 
                     </div>
                 </div>
             </div>
@@ -58,38 +51,41 @@
     </div>
 
 
-    {{-- reset --}}
-    {{-- @if($showGanti)
-    <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+{{-- edit --}}
+    @if($showEdit)
+    <div wire:ignore.self class="modal fade show" id="edit" style="display: block;" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
             <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h6 class="modal-title m-0">Konfirmasi</h6>
-                    <button type="button" class="btn-close" wire:click="closePassword" aria-label="Close"></button>
-                </div><!--end modal-header-->
-                <div class="modal-body text-center">
-                    <img src="/images/extra/card/infomax.png" alt="Warning" class="img-fluid mb-3" style="width: 80px;">
-                    <h5>Apakah kamu yakin?</h5>
-                    <p>*Setelah direset, kata sandi diperbaharui menjadi <strong class="text-danger">123456</strong></p>
-                </div><!--end modal-body-->
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closePassword">Cancel</button>
-                    <button id="warningConfirm" type="button" class="btn btn-info btn-sm" wire:click.prevent="gantiPassword">Reset</button>
-                </div><!--end modal-footer-->
-            </div><!--end modal-content-->
-        </div><!--end modal-dialog-->
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title text-white">Form Update Tamu</h5>
+                    <button type="button" class="btn-close" wire:click="closeEdit" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form wire:submit.prevent='update'>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="institute" class="form-label">Instansi</label>
+                                <input type="text" id="institute" wire:model="name" class="form-control @error('name') is-invalid @enderror" placeholder="Nama Instansi">
+                                @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary float-end" wire:click="closeEdit">Close</button>
+                            <button type="submit" class="btn btn-warning float-end">
+                                <i class="fas fa-pen-square mr-1"></i> Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
     <div class="modal-backdrop fade show"></div>
-@endif --}}
-
-
-
-
-
+    @endif
 
 {{-- delete --}}
-{{-- @if($showDelete)
+@if($showDelete)
 <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -104,7 +100,6 @@
                     </div><!--end col-->
                     <div class="col-lg-9">
                         <h5>Anda yakin ingin menghapus data ini?</h5>
-                        <span class="badge bg-light text-dark">Terakhir diupdate: {{ $lastUpdatedDate }}</span>
                         <div class="mt-3">
                             <strong class="text-danger ms-1">*aksi tidak bisa dibatalkan setelah diproses</strong>
                         </div>
@@ -121,7 +116,7 @@
 
 <div class="modal-backdrop fade show">
 </div>
-@endif --}}
+@endif
 
     @section('script')
     @vite(['resources/js/pages/sweet-alert.init.js'])

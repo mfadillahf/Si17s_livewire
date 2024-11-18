@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('document_id')
-                ->constrained('providers')
+                ->constrained('documents')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreignId('provider_id')

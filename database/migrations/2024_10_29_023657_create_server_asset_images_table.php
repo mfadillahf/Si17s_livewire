@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('server_asset_id')
-                ->constrained()
+                ->constrained('server_assets')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

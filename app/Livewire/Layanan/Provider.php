@@ -2,14 +2,17 @@
 
 namespace App\Livewire\Layanan;
 
-use Livewire\Component;
-use App\Models\Provider as ModelsProvider;
 use Carbon\Carbon;
+use Livewire\Component;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Provider as ModelsProvider;
 
 
 class Provider extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $title = 'Layanan';
     public $provider;
     public $date;

@@ -24,6 +24,7 @@
         "animate.css": "^4.1.1",
         "apexcharts": "^3.49.1",
         "bootstrap": "^5.3.3",
+        "bootstrap-icons": "^1.11.3",
         "chart.js": "^4.4.3",
         "clipboard": "^2.0.11",
         "cropperjs": "^1.6.2",

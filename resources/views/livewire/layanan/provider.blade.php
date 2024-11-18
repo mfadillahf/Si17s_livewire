@@ -39,7 +39,7 @@
                             <tbody>
                             @if ($layanan->isEmpty())
                                 <tr>
-                                    <td colspan="4" class="text-center">
+                                    <td colspan="8" class="text-center">
                                         <p class="text-muted">data kosong</p>
                                     </td>
                                 </tr>

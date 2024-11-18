@@ -3,12 +3,15 @@
 namespace App\Livewire\Consultations;
 
 use Livewire\Component;
-use App\Models\ConsultationReport as ModelsConsultation;
-use Illuminate\Support\Facades\Storage;
+use Livewire\WithPagination;
 use App\Models\ConsultationDocument;
+use Illuminate\Support\Facades\Storage;
+use App\Models\ConsultationReport as ModelsConsultation;
 
 class Konsultasi extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $titles = 'Pelaporan dan Konsultasi';
     public $consultation;
     public $name;

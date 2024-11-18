@@ -55,6 +55,14 @@ window.addEventListener('swal:reset', function () {
   })
 });
 
+window.addEventListener('swal:checkout', function () {
+  Swal.fire({
+    icon: 'success',
+    title: 'Berhasil Checkout',
+    timer: 1000
+  })
+});
+
 // window.addEventListener('swal:berhasil', function (event) {
 //   Swal.fire({
 //       title: event.detail.title,
