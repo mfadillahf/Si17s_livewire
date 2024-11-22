@@ -60,9 +60,11 @@
                                             <button  wire:click ="detail({{ $ak->id }})" class="btn btn-sm btn-info">
                                                 <i class="fas fa-info-circle"></i>
                                             </button>
-                                            <button wire:click ="openEdit({{ $ak->id }})" class="btn btn-sm btn-warning">
+                                            {{-- <button wire:click ="/agenda/edit/({{ $ak->id }})" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-pen-square"></i>
-                                            </button>
+                                            </button> --}}
+                                            <a href="/agenda/edit/{{$ak->id}}"  class="btn btn-warning btn-sm">
+                                                <i class="fas fa-pen-square"></i></a>
                                             <button  wire:click.prevent ="openDelete({{ $ak->id }})" class="btn btn-sm btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
@@ -157,10 +159,14 @@
                             </div>
 
                             <div class="modal-footer">
+                                <span wire:loading wire:target="images" class="text-muted ms-2">
+                                    <i class="fas fa-spinner fa-spin"></i> Sedang mengunggah gambar...
+                                </span>
                                 <button type="button" class="btn btn-secondary float-end" wire:click="closeCreate">Close</button>
-                                <button type="submit" class="btn btn-primary float-end" id="success">
+                                <button type="submit" class="btn btn-primary float-end" id="success"  wire:loading.attr="disabled" wire:loading.class="disabled">
                                     <i class="fas fa-save mr-1"></i> Simpan
                                 </button>
+                            
                             </div>
                         </div>
                     </form>

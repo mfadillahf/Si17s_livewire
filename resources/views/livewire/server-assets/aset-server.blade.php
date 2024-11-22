@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Data Kunjungan Ruang Server</h4>
+                    <h4 class="card-title">Data Aset Ruang Server</h4>
                 </div>
                 <div class="card-body pt-0">
                     <!-- Nav tabs -->
@@ -43,30 +43,29 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{-- @forelse($rnoa as $rA)
+                                            @forelse($amk as $ak)
                                                 <tr>
-                                                    <td>{{ $rA->document_archive_id }}</td>
-                                                    <td>{{ $rA->institute }}</td>
+                                                    <td>{{ $ak->name }}</td>
+                                                    <td>{{ $ak->type}}</td>
+                                                    <td>{{ $ak->serial_number }}</td>
+                                                    <td>{{ $ak->serverAssetFlows->first()->serverVisitorReport->institute->name ?? 'N/A' }}</td>
                                                     
                                                     <td>
-                                                        <button wire:click ="detail({{ $rA->id }})" class="btn btn-sm btn-info">
+                                                        <button wire:click ="detail({{ $ak->id }})" class="btn btn-sm btn-info">
                                                             <i class="fas fa-info-circle"></i>
                                                         </button>
-                                                        <a href="/user-aplikasi/edit/{{$rA->id}}" class="btn btn-warning btn-sm">
+                                                        <a href="/ruang-server/aset/{{$ak->id}}" class="btn btn-warning btn-sm">
                                                             <i class="fas fa-pen-square"></i></a>
-                                                        <button wire:click="openDelete({{ $rA->id }})" class="btn btn-danger btn-sm">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
                                                     </td>
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="3" class="text-center text-muted">Tidak Ada Data User.</td>
+                                                    <td colspan="5" class="text-center text-muted">Tidak Ada Data User.</td>
                                                 </tr>
-                                            @endforelse --}}
+                                            @endforelse
                                         </tbody>
                                     </table>
-                                    {{-- {{ $rnoa->links() }} --}}
+                                    {{ $amk->links() }}
                                 </div>
                         </div>
     
@@ -84,32 +83,28 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{-- @forelse($rau as $rN)
+                                            @forelse($akr as $ar)
                                                 <tr>
-                                                    <td>{{ $rN->user_identity }}</td>
-                                                    <td>{{ $rN->identity_number }}</td>
-                                                    <td>{{ $rN->name }}</td>
-                                                    <td>{{ $rN->email }}</td>
-                                                    <td>{{ $rN->phone_number }}</td>
+                                                    <td>{{ $ar->name }}</td>
+                                                    <td>{{ $ar->type}}</td>
+                                                    <td>{{ $ar->serial_number }}</td>
+                                                    <td>{{ $ar->serverAssetFlows->first()->serverVisitorReport->institute->name ?? 'N/A' }}</td>
                                                     <td>
-                                                        <button  wire:click ="detail({{ $rN->id }})" class="btn btn-sm btn-info">
+                                                        <button  wire:click ="detail({{ $ar->id }})" class="btn btn-sm btn-info">
                                                             <i class="fas fa-info-circle"></i>
                                                         </button>
-                                                        <a href="/user-aplikasi/edit/{{$rN->id}}"  class="btn btn-warning btn-sm">
+                                                        <a href="/ruang-server/aset/{{$ar->id}}"  class="btn btn-warning btn-sm">
                                                             <i class="fas fa-pen-square"></i></a>
-                                                        <button wire:click="openDelete({{ $rN->id }})" class="btn btn-danger btn-sm">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
                                                     </td>
                                                 </tr>
                                             @empty
                                                 <tr>
                                                     <td colspan="6" class="text-center text-muted">Tidak Ada Data User.</td>
                                                 </tr>
-                                            @endforelse --}}
+                                            @endforelse
                                         </tbody>
                                     </table>
-                                    {{-- {{ $rau->links() }} --}}
+                                    {{ $akr->links() }}
                                 </div>
                         </div>
                     </div>
@@ -121,95 +116,59 @@
 
 
 {{-- detail --}}
-{{-- @if($showDetail)
+@if($showDetail)
 <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-title text-center w-100 large-title">{{ $name }}</h5>
+                <h5 class="modal-title">Detail Aset</h5>
                 <button type="button" class="btn-close" wire:click="closeDetail" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-striped text-center">
-                            <tr>
-                                <th>User ID</th>
-                                <td>{{ $user_identity }}</td>
-                            </tr>
-                            <tr>
-                                <th>{{ $is_auditor == '0' ? 'NIP/NIK' : 'NIP/NRP' }}</th>
-                                <td>{{ $identity_number }}</td>
-                            </tr>
-                            <tr>
-                                <th>Nama</th>
-                                <td>{{ $name }}</td>
-                            </tr>
-                            <tr>
-                                <th>E-mail</th>
-                                <td>{{ $email }}</td>
-                            </tr>
-                            <tr>
-                                <th>Telpon</th>
-                                <td>{{ $phone_number }}</td>
-                            </tr>
-                            @if($is_auditor == '0')
-                                <tr>
-                                    <th>Jenis User</th>
-                                    <td>{{ $nA->userType->name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Jenis Aplikasi</th>
-                                    <td>{{ $nA->reportCategory->name }}</td>
-                                </tr>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Nama Aset</th>
+                        <td>{{ $name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Jenis</th>
+                        <td>{{ $type }}</td>
+                    </tr>
+                    <tr>
+                        <th>No. Seri</th>
+                        <td>{{ $serial_number }}</td>
+                    </tr>
+                    <tr>
+                        <th>Instansi</th>
+                        <td>{{ $institute_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Foto Aset</th>
+                        <td>
+                            @if($images)
+                                <div class="mb-3">
+                                    <div class="text-center mb-2">Gambar Aset</div>
+                                    <div class="d-flex justify-content-center">
+                                        @foreach ($images as $image)
+                                            <img src="{{ asset('storage/' . $image->path) }}" alt="Gambar Aset" class="img-thumbnail m-1" style="max-width: 150px;">
+                                        @endforeach
+                                    </div>
+                                </div>
                             @endif
-                        </table>
-                    </div>
-                </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" wire:click="closeDetail">Close</button>
             </div>
         </div>
     </div>
 </div>
 <div class="modal-backdrop fade show"></div>
-@endif --}}
+@endif
 
 
-
-
-{{-- delete --}}
-{{-- @if($showDelete)
-<div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-danger">
-                <h6 class="modal-title m-0 text-white" id="exampleModalDanger1">Konfirmasi</h6>
-                <button type="button" class="btn-close" wire:click="closeDelete" aria-label="Close"></button>
-            </div><!--end modal-header-->
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-3 text-center align-self-center">
-                        <img src="/images/extra/card/litter.png" alt="Warning" class="img-fluid">
-                    </div><!--end col-->
-                    <div class="col-lg-9">
-                        <h5>Anda yakin ingin menghapus data ini?</h5>
-                        <span class="badge bg-light text-dark">Terakhir diupdate: {{ $lastUpdatedDate }}</span>
-                        <div class="mt-3">
-                            <strong class="text-danger ms-1">*aksi tidak bisa dibatalkan setelah diproses</strong>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end modal-body-->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDelete">Cancel</button>
-                <button id="warningConfirm" type="button" class="btn btn-danger btn-sm" wire:click.prevent="delete" id="warning">Delete</button>
-            </div><!--end modal-footer-->
-        </div><!--end modal-content-->
-    </div><!--end modal-dialog-->
-</div>
-
-<div class="modal-backdrop fade show">
-</div>
-@endif --}}
 
     @section('script')
     @vite(['resources/js/pages/sweet-alert.init.js'])

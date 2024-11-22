@@ -1,5 +1,6 @@
 <div>
     @section('css')
+    @vite(['node_modules/mobius1-selectr/dist/selectr.min.css'])
     @vite(['node_modules/sweetalert2/dist/sweetalert2.min.css', 'node_modules/animate.css/animate.min.css'])
     @endsection
 
@@ -17,7 +18,7 @@
                         </li>
                         <li class="nav-item waves-effect waves-light">
                             <a class="nav-link {{ $activeTab == 'Masih-Berkunjung' ? 'active' : '' }}" wire:click="setActiveTab('Masih-Berkunjung')" data-bs-toggle="tab" href="#Masih-Berkunjung" role="tab" aria-selected="false">Masih Berkunjung
-                                <span class="badge bg-light text-dark">{{ $countStillVisit }}</span>
+                                <span wire:poll.2000ms="updateCount" class="badge bg-light text-dark">{{ $countStillVisit }}</span>
                             </a>
                         </li>
                     </ul>
@@ -104,9 +105,12 @@
                                                         <button wire:click="openAsetMasuk({{ $mb->id }})" class="btn btn-primary btn-sm">
                                                             <i class="fa fa-arrow-down" aria-hidden="true"></i>
                                                         </button>
-                                                        <button wire:click="openDelete({{ $mb->id }})" class="btn btn-danger btn-sm">
+                                                        {{-- <button wire:click="openAsetKeluar({{ $mb->id }})" class="btn btn-danger btn-sm">
                                                             <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                                                        </button>
+                                                        </button> --}}
+                                                        <a href="/ruang-server/kunjungan/aset-keluar" class="btn btn-danger btn-sm" >
+                                                            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @empty
@@ -162,7 +166,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title">Tambah Aset Masuk</h5>
-                    <button type="button" class="btn-close" wire:click="closeCreate" aria-label="Close"></button>
+                    <button type="button" class="btn-close" wire:click="closeAsetMasuk" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent='createAsetMasuk'>
@@ -197,9 +201,12 @@
                         </div>
 
                         <div class="modal-footer">
+                            <span wire:loading wire:target="images" class="text-muted ms-2">
+                                <i class="fas fa-spinner fa-spin"></i> Sedang mengunggah gambar...
+                            </span>
                             {{-- <input id="server-visitor-report-id" type="hidden" wire:model=">server_asset_category_id"> --}}
                             <button type="button" class="btn btn-secondary" wire:click="closeAsetMasuk">Close</button>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled" wire:loading.class="disabled">
                                 <i class="fas fa-save mr-1"></i> Simpan
                             </button>
                         </div>
@@ -214,52 +221,162 @@
 
 
 
+
+
 {{-- detail --}}
-{{-- @if($showDetail)
+@if($showDetail)
 <div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-title text-center w-100 large-title">{{ $name }}</h5>
+                <h5 class="modal-title text-center w-100">Kunjungan #{{ $vr_id }}</h5>
                 <button type="button" class="btn-close" wire:click="closeDetail" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-striped text-center">
+                <div class="mb-3">
+                    <table class="table">
+                        <tr>
+                            <th>Nama Instansi</th>
+                            <td>{{ $institute_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Masuk</th>
+                            <td>{{ $entered_at }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Keluar</th>
+                            <td>{{ $exited_at ?? 'Masih Berkunjung' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Keperluan</th>
+                            <td>{{ $description }}</td>
+                        </tr>
+                    </table>
+                </div>
+                {{-- Daftar Pengunjung --}}
+                <div class="mb-3">
+                    <div class="bg-primary text-white text-center p-2">Daftar Pengunjung</div>
+                    <table class="table table-bordered text-center">
+                        <thead class="bg-light">
                             <tr>
-                                <th>User ID</th>
-                                <td>{{ $user_identity }}</td>
+                                <th>No. Identitas</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Telepon</th>
                             </tr>
-                            <tr>
-                                <th>{{ $is_auditor == '0' ? 'NIP/NIK' : 'NIP/NRP' }}</th>
-                                <td>{{ $identity_number }}</td>
-                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($vis as $visitor)
+                                <tr>
+                                    <td>{{ $visitor['identity_number'] }}</td>
+                                    <td>{{ $visitor['name'] }}</td>
+                                    <td>{{ $visitor['email'] }}</td>
+                                    <td>{{ $visitor['phone_number'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                {{-- Aset Masuk --}}
+                <div class="mb-3">
+                    <div class="bg-success text-white text-center p-2">Aset Masuk</div>
+                    <table class="table table-bordered text-center">
+                        <thead class="bg-light">
                             <tr>
                                 <th>Nama</th>
-                                <td>{{ $name }}</td>
+                                <th>Jenis</th>
+                                <th>Serial Number</th>
                             </tr>
-                            <tr>
-                                <th>E-mail</th>
-                                <td>{{ $email }}</td>
-                            </tr>
-                            <tr>
-                                <th>Telpon</th>
-                                <td>{{ $phone_number }}</td>
-                            </tr>
-                            @if($is_auditor == '0')
+                        </thead>
+                        <tbody>
+                            @foreach ($asem as $assetIn)
                                 <tr>
-                                    <th>Jenis User</th>
-                                    <td>{{ $nA->userType->name }}</td>
+                                    <td>{{ $assetIn['name'] }}</td>
+                                    <td>{{ $assetIn['type'] }}</td>
+                                    <td>{{ $assetIn['serial_number'] }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Jenis Aplikasi</th>
-                                    <td>{{ $nA->reportCategory->name }}</td>
-                                </tr>
-                            @endif
-                        </table>
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
+                {{-- Aset Keluar --}}
+                <div>
+                    <div class="bg-danger text-white text-center p-2">Aset Keluar</div>
+                    <table class="table table-bordered text-center">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Nama</th>
+                                <th>Jenis</th>
+                                <th>Serial Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($akar as $assetOut)
+                                <tr>
+                                    <td>{{ $assetOut['name'] }}</td>
+                                    <td>{{ $assetOut['type'] }}</td>
+                                    <td>{{ $assetOut['serial_number'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show"></div>
+@endif
+
+
+    @section('script')
+    @vite(['resources/js/pages/forms-advanced.js'])
+    @vite(['resources/js/pages/sweet-alert.init.js'])
+    @endsection
+</div>
+
+
+
+
+
+
+{{-- aset Keluar --}}
+{{-- @if($showAsetKeluar)
+<div wire:ignore.self class="modal fade show" id="create" style="display: block;" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title">Tambah Data Aset Keluar</h5>
+                <button type="button" class="btn-close" wire:click="closeAsetKeluar" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form wire:submit.prevent="createAsetKeluar">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="multiSelect" class="form-label">Tambah Aset Keluar</label>
+                            <!-- Selectr Select -->
+                            <select id="multiSelect" wire:model.defer="selectedAsetId" class="form-select selectr" multiple="multiple" wire:ignore>
+                                @foreach ($amk as $selectedAm)
+                                    <option value="{{ $selectedAm->id }}">{{ $selectedAm->name }} | {{ $selectedAm->type }} | {{ $selectedAm->serial_number }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="tanggal_pemeliharaan" class="form-label">Tanggal Diambil</label>
+                            <input class="form-control" type="date" value="" id="example-date-input" wire:model="exited_date">
+                            <small class="badge bg-info-subtle text-info">Tanggal Aset Keluar</small>
+                        </div>
+                    </div>
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" wire:click="closeAsetKeluar">Close</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-save mr-1"></i> Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -268,50 +385,3 @@
 @endif --}}
 
 
-
-
-
-
-
-
-
-
-{{-- delete --}}
-{{-- @if($showDelete)
-<div wire:ignore.self class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-danger">
-                <h6 class="modal-title m-0 text-white" id="exampleModalDanger1">Konfirmasi</h6>
-                <button type="button" class="btn-close" wire:click="closeDelete" aria-label="Close"></button>
-            </div><!--end modal-header-->
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-3 text-center align-self-center">
-                        <img src="/images/extra/card/litter.png" alt="Warning" class="img-fluid">
-                    </div><!--end col-->
-                    <div class="col-lg-9">
-                        <h5>Anda yakin ingin menghapus data ini?</h5>
-                        <span class="badge bg-light text-dark">Terakhir diupdate: {{ $lastUpdatedDate }}</span>
-                        <div class="mt-3">
-                            <strong class="text-danger ms-1">*aksi tidak bisa dibatalkan setelah diproses</strong>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end modal-body-->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDelete">Cancel</button>
-                <button id="warningConfirm" type="button" class="btn btn-danger btn-sm" wire:click.prevent="delete" id="warning">Delete</button>
-            </div><!--end modal-footer-->
-        </div><!--end modal-content-->
-    </div><!--end modal-dialog-->
-</div>
-
-<div class="modal-backdrop fade show">
-</div>
-@endif --}}
-
-    @section('script')
-    @vite(['resources/js/pages/sweet-alert.init.js'])
-    @endsection
-</div>

@@ -36,9 +36,9 @@ class DocumentArchive extends Component
     public $sortDirection = 'asc';
 
     public function setActiveTab($tabId)
-{
-    $this->activeTab = $tabId;
-}
+    {
+        $this->activeTab = $tabId;
+    }
 
     public function sort($columnName){
         $this->sortColumn = $columnName;

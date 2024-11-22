@@ -5,12 +5,13 @@ namespace App\Livewire\ServerVisitors;
 use Livewire\Component;
 use App\Models\ServerVisitorReport as ModelsVisitorReport;
 use App\Models\Visitor;
+use App\Models\ServerVisitor;
 use App\Models\Institute;
 use Illuminate\Support\Facades\Http;
 
 class KunjunganCreate extends Component
 {
-    public $title = 'Daftar Kunjungan Create';
+    public $title = 'Tambah Daftar Kunjungan';
     public $searchQuery;
     public $searchResults = [];
     public $selectedData = [];
@@ -20,7 +21,7 @@ class KunjunganCreate extends Component
 
     public function mount()
     {
-    $this->entered_at = now()->format('Y-m-d\TH:i');
+        $this->entered_at = now()->format('Y-m-d\TH:i');
     }
 
     public function uniqueByEmail($array, $key)
@@ -87,7 +88,7 @@ class KunjunganCreate extends Component
             ['name' => $item['instansi']]
         );
 
-        Visitor::create([
+        $cv = Visitor::create([
             'name' => $item['nama'],
             'email' => $item['email'],
             'identity_number' => $item['nik'],
@@ -96,12 +97,19 @@ class KunjunganCreate extends Component
             'institute_id' => $ins->id,
         ]);
 
-        ModelsVisitorReport::create([
+        $svr = ModelsVisitorReport::create([
             'status' => 'Masih Berkunjung',
             'entered_at' => $this->entered_at,
             'description' => $this->description,
             'institute_id' => $ins->id,
         ]);
+
+        ServerVisitor::create([
+            'server_visitor_report_id' => $svr->id,
+            'visitor_id' => $cv->id,
+        ]);
+
+
     }
 
     // Reset data setelah penyimpanan
@@ -116,20 +124,20 @@ class KunjunganCreate extends Component
     // fungsi hapus pada tabel sementara
     public function removeFromSelectedData($index)
     {
-    if (isset($this->selectedData[$index])) {
-        // Ambil data dari selectedData
-        $item = $this->selectedData[$index];
+        if (isset($this->selectedData[$index])) {
+            // Ambil data dari selectedData
+            $item = $this->selectedData[$index];
 
-        // Tambahkan kembali ke searchResults
-        $this->searchResults[] = $item;
+            // Tambahkan kembali ke searchResults
+            $this->searchResults[] = $item;
 
-        // Hapus data dari selectedData
-        unset($this->selectedData[$index]);
+            // Hapus data dari selectedData
+            unset($this->selectedData[$index]);
 
-        // Perbarui array dengan reindexing
-        $this->selectedData = array_values($this->selectedData);
-        $this->dispatch('swal:delete');
-    }
+            // Perbarui array dengan reindexing
+            $this->selectedData = array_values($this->selectedData);
+            $this->dispatch('swal:delete');
+        }
     }
 
     public function render()

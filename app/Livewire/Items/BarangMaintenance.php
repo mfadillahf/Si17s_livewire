@@ -18,7 +18,7 @@ class BarangMaintenance extends Component
     public $showCreate = false;
     public $showEdit = false;
     public $showDelete = false;
-    public $selectedItemId=[];
+    public $selectedItemId = [];
     public $date;
     public $description;
     public $lastUpdatedDate;
@@ -59,8 +59,8 @@ class BarangMaintenance extends Component
     // fungsi create
     public function openCreate()
     {
+        $this->resetForm();
         $this->showCreate =true;
-        $this->dispatch('open');
 
     }
 

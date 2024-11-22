@@ -5,13 +5,11 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Dashboard;
 
 use App\Livewire\Items\BarangList;
-use App\Models\ItemImage;
 
 use App\Livewire\Items\BarangMaintenance;
 
 use App\Livewire\Agendas\Agenda;
 use App\Livewire\Agendas\AgendaEdit;
-use App\Models\AgendaImage;
 
 use App\Livewire\Arsip\DocumentArchive;
 use App\Livewire\Arsip\ArchiveCreate;
@@ -49,8 +47,10 @@ use App\Livewire\Institutes\Instansi;
 
 use App\Livewire\ServerVisitors\Kunjungan;
 use App\Livewire\ServerVisitors\KunjunganCreate;
+use App\Livewire\ServerVisitors\KunjunganAsetKeluar;
 
 use App\Livewire\ServerAssets\AsetServer;
+use App\Livewire\ServerAssets\AsetEdit;
 
 
 use Illuminate\Support\Facades\Route;
@@ -80,13 +80,12 @@ use App\Http\Controllers\RoutingController;
     // Route::get('{any}', [RoutingController::class, 'root'])->name('any');
 // item
     Route::get('/barang', BarangList::class)->name('barang');
-    Route::resource('foto-barang',BarangList::class);
+
     Route::get('/maintenance-barang', BarangMaintenance::class)->name('maintenance');
 
-    // ageda
+    // agenda
     Route::get('/agenda', Agenda::class)->name('agenda');
-    // Route::get('/agenda/edit/{id}', AgendaEdit::class)->name('agenda.edit');
-    Route::resource('foto-kegiatan',Agenda::class);
+    Route::get('/agenda/edit/{id}', AgendaEdit::class)->name('agenda.edit');
 
     // dokumen arsip
     Route::get('/arsip-dokumen', DocumentArchive::class)->name('arsip');
@@ -129,9 +128,11 @@ use App\Http\Controllers\RoutingController;
     // kunjungan
     Route::get('/ruang-server/kunjungan', Kunjungan::class)->name('kunjungan');
     Route::get('/ruang-server/kunjungan/create', KunjunganCreate::class)->name('kunjungan.create');
+    Route::get('/ruang-server/kunjungan/aset-keluar', KunjunganAsetKeluar::class)->name('kunjungan.aset-keluar');
 
     // aset
     Route::get('/ruang-server/aset', AsetServer::class)->name('aset');
+    Route::get('/ruang-server/aset/{id}', AsetEdit::class)->name('aset.edit');
 
     // Pengaturan
     Route::get('/data-user', DataUser::class)->name('datauser');

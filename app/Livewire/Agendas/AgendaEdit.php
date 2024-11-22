@@ -21,7 +21,8 @@ class AgendaEdit extends Component
     public $images;
     public $fileLinks = [];
     public $toDelete = [];
-    public $newFiles = [];
+    public $tempFiles = [];
+    public $newImage;
 
     public function mount($id)
     {
@@ -31,9 +32,14 @@ class AgendaEdit extends Component
             $this->started_at = $this->agenda->started_at;
             $this->finished_at = $this->agenda->finished_at;
             $this->employee_tagging = $this->agenda->employee_tagging;
+            $this->fileLinks = $this->agenda->images->map(function ($image) {
+                return [
+                    'id' => $image->id,
+                    'name' => pathinfo($image->file, PATHINFO_BASENAME),
+                    'url' => Storage::url($image->file),
+                ];
+            })->toArray();
 
-
-            $this->file();
     }
 
     public function update()
@@ -55,96 +61,85 @@ class AgendaEdit extends Component
             'employee_tagging' => $this->employee_tagging,
         ]);
 
-
         foreach ($this->toDelete as $fileId) {
+            // Cari gambar berdasarkan ID
             $file = AgendaImage::find($fileId);
-            if ($file && $file->file && Storage::exists($file->file)) {
+            if ($file) {
+                // Hapus file dari storage
                 Storage::delete($file->file);
+                // Hapus file dari database
+                $file->delete();
             }
-            $file?->delete();
         }
 
-        foreach ($this->newFiles as $file) {
-            $permanentPath = 'public/images/agenda' . $file['name'];
-            Storage::move($file['path'], $permanentPath); // Move from temp to permanent location
-
-            // Create a new database entry for the file
+        // Simpan file sementara ke lokasi permanen dan database
+        foreach ($this->tempFiles as $tempFile) {
+            $permanentPath = str_replace('public/temp', 'public/images/agenda', $tempFile['path']);
+            Storage::move($tempFile['path'], $permanentPath);
+    
+            // Simpan ke database hanya saat update
             AgendaImage::create([
                 'agenda_id' => $this->agenda->id,
                 'file' => $permanentPath,
             ]);
         }
 
-        // Clear the arrays after processing
-        $this->newFiles = [];
+        $this->tempFiles = [];
         $this->toDelete = [];
 
-        // Dispatch success message
         $this->dispatch('swal:edit');
-
-        // Redirect to document archive page
         return redirect('/agenda');
     }
 
-    public function file()
+    public function deleteFile($fileIndex)
     {
-        // Load all files associated with this archive
-        $this->fileLinks = $this->agenda->images->map(function ($f) {
-            return [
-                'id' => $f->id,
-                'name' => pathinfo($f->file, PATHINFO_BASENAME),
-                'url' => Storage::url($f->file), // Generate the file URL
-            ];
-        });
-
-        
-        // dd($this->fileLinks);
-    }
-
-    public function deleteFile($fileId)
-    {
-        // Add the file ID to the toDelete array (optional, if you want to track deletions)
-        $this->toDelete[] = $fileId;
-
-        // Find the file by ID in $this->fileLinks
-        $file = collect($this->fileLinks)->firstWhere('id', $fileId);
-
-        if ($file) {
-            // Delete the file from storage
-            Storage::delete($file['path']);
-            
-            // Remove the file from the fileLinks array and reindex the array
-            $this->fileLinks = collect($this->fileLinks)
-                ->reject(function ($file) use ($fileId) {
-                    return $file['id'] == $fileId;
-                })
-                ->values()  // Reindex the array
-                ->all();
+        // Cek apakah file yang dihapus adalah file sementara atau file yang ada di database
+        $file = $this->fileLinks[$fileIndex];
+    
+        // Jika file sudah ada di database (memiliki 'id')
+        if ($file['id']) {
+            // Hapus file dari array toDelete
+            $this->toDelete[] = $file['id'];
         }
+    
+        // Hapus file dari array fileLinks (tampilan)
+        unset($this->fileLinks[$fileIndex]);
+    
+        // Jika file sementara, hapus dari tempFiles
+        if (isset($this->tempFiles[$fileIndex])) {
+            unset($this->tempFiles[$fileIndex]);
+        }
+    
+        // Reindex array fileLinks
+        $this->fileLinks = array_values($this->fileLinks);
     }
 
     public function addFile()
     {
         $this->validate([
-            'images' => 'required|image|mimes:jpg,png,jpeg,webp|max:10240', 
+            'newImage' => 'required|image|mimes:jpg,png,jpeg,webp|max:10240',
         ]);
 
-            // Store each file in the 'temp' directory
-            $filePath = $this->images->store('temp');  // Store in a temporary directory
+        // Simpan gambar sementara di folder temp
+        $path = $this->newImage->store('public/temp');
+        $name = $this->newImage->getClientOriginalName();
 
-            $this->newFiles[] = [
-                'path' => $filePath,
-                'name' => $this->images->getClientOriginalName(),
-            ];
-    
-            $this->fileLinks[] = [
-                'id' => null,  // Not saved yet
-                'url' => Storage::url($filePath),
-                'name' => $this->images->getClientOriginalName(),
-            ];
+        // Simpan data file sementara dalam array (belum disimpan ke database)
+        $this->tempFiles[] = [
+            'path' => $path,
+            'name' => $name,
+        ];
 
-        $this->reset('images');
-    } 
+        // Perbarui tampilan gambar sementara pada UI
+        $this->fileLinks[] = [
+            'id' => null, // Belum ada ID karena belum disimpan ke database
+            'name' => $name,
+            'url' => Storage::url($path),
+        ];
+
+        // Reset input image setelah upload
+        $this->reset('newImage');
+    }
 
     public function render()
     {

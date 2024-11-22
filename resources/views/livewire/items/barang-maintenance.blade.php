@@ -238,7 +238,6 @@
         @endif
         {{-- multi script --}}
         @push('scripts')
-        {{-- @vite(['resources/js/pages/forms-advanced.js']) --}}
         @vite(['resources/js/app.js'])
         @vite(['resources/js/pages/selectr.js'])
         @vite(['resources/js/pages/sweet-alert.init.js'])

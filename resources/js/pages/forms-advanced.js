@@ -12,56 +12,63 @@ import IMask from 'imask'
 let selectrInstances = {};
 
 function initializeSelectr() {
-    // Pastikan Selectr tersedia sebelum melanjutkan
+   
     if (typeof Selectr === 'undefined') {
         console.warn("Selectr tidak ditemukan. Pastikan Selectr telah di-load.");
         return;
     }
 
-    // Hancurkan instansi Selectr yang ada sebelum inisialisasi baru
+    
     Object.keys(selectrInstances).forEach(key => {
         if (selectrInstances[key]) {
             try {
                 selectrInstances[key].destroy();
+                console.log(`Selectr instance '${key}' destroyed.`);
             } catch (error) {
                 console.error(`Gagal menghancurkan instansi Selectr: ${key}`, error);
             }
         }
     });
 
-    // Inisialisasi Selectr baru dengan debounce
-    debounce(() => {
-        if (document.querySelector('#default')) {
-            selectrInstances.default = new Selectr('#default');
-        }
-        if (document.querySelector('#multiSelect')) {
-            selectrInstances.multiSelect = new Selectr('#multiSelect', {
-                multiple: true
-            });
-        }
-        if (document.querySelector('#taggableSelect')) {
-            selectrInstances.taggableSelect = new Selectr('#taggableSelect', {
-                taggable: true,
-                tagSeparators: [",", "|"]
-            });
-        }
-    }, 100)(); // Delay 100 ms untuk mencegah inisialisasi berlebihan
+    
+    if (document.querySelector('#default')) {
+        selectrInstances.default = new Selectr('#default');
+        console.log("Selectr default initialized.");
+    }
+
+    if (document.querySelector('#multiSelect')) {
+        selectrInstances.multiSelect = new Selectr('#multiSelect', {
+            multiple: true
+        });
+        console.log("inisiasi Selectr multiSelect .");
+    }
+
+    if (document.querySelector('#taggableSelect')) {
+        selectrInstances.taggableSelect = new Selectr('#taggableSelect', {
+            taggable: true,
+            tagSeparators: [",", "|"]
+        });
+        console.log("Selectr taggableSelect initialized.");
+    }
 }
 
-// Fungsi debounce
-function debounce(func, delay) {
-    let timer;
-    return function () {
-        clearTimeout(timer);
-        timer = setTimeout(func, delay);
-    };
-}
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Initializing Selectr on DOMContentLoaded...");
+    initializeSelectr();
+});
 
-// Inisialisasi Selectr pertama kali saat halaman di-load
-document.addEventListener('DOMContentLoaded', initializeSelectr);
+document.addEventListener('initializeSelectr', () => {
+    console.log("Custom event 'initializeSelectr' triggered.");
+    initializeSelectr();
+});
 
-// Inisialisasi ulang Selectr setiap kali Livewire melakukan render ulang
-document.addEventListener('livewire:rendered', initializeSelectr);
+
+document.addEventListener('livewire:rendered', () => {
+    console.log("Livewire rendered, reinitializing Selectr...");
+    initializeSelectr();
+});
+
+
 
 
 
@@ -86,23 +93,23 @@ document.addEventListener('livewire:rendered', initializeSelectr);
 
 // Datepicker
 
-var elem = document.querySelector('input[name="foo"]');
-new Datepicker(elem, {
-}); 
+// var elem = document.querySelector('input[name="foo"]');
+// new Datepicker(elem, {
+// }); 
 
 
-elem = document.getElementById('inline_calendar');
-new Datepicker(elem, {
-  // ...options
-});
+// elem = document.getElementById('inline_calendar');
+// new Datepicker(elem, {
+//   // ...options
+// });
 
-elem = document.getElementById('DateRange');
-new DateRangePicker(elem, {
-  format: 'yyyy-mm-dd', // Contoh format tanggal
-  language: 'en',       // Atur bahasa sesuai kebutuhan
-  minDate: new Date(),  // Contoh batasan tanggal, mulai dari hari ini
-  // ...options
-}); 
+// elem = document.getElementById('DateRange');
+// new DateRangePicker(elem, {
+//   format: 'yyyy-mm-dd', // Contoh format tanggal
+//   language: 'en',       // Atur bahasa sesuai kebutuhan
+//   minDate: new Date(),  // Contoh batasan tanggal, mulai dari hari ini
+//   // ...options
+// }); 
 
 // // Imask
 
